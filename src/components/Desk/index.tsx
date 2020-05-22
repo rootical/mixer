@@ -1,20 +1,22 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import Meter from '/components/Meter';
-import Icon from '/components/Icon';
+import Meter from './../Meter';
+import Icon from './../Icon';
 
 import {
     isPlaying,
     isPaused,
     isNotActive,
-} from '/helpers/playback';
+} from './../../helpers/playback';
 
 import style from './style.css';
 
 
 const Desk = ({
-    playback = {},
+    playback = {
+        analyser: null
+    },
 
     onPlay = () => {},
     onPause = () => {},
@@ -23,7 +25,7 @@ const Desk = ({
     tracks = [],
     effects = [],
 }) => {
-    const btnClassNames = isButtonPressed => classnames(
+    const btnClassNames = (isButtonPressed: boolean) => classnames(
         style.control,
         style.button,
         isButtonPressed && style.isButtonPressed,
@@ -41,8 +43,8 @@ const Desk = ({
                 <div className={style.controls}>
                     {playback.analyser && <Meter analyser={playback.analyser} />}
 
-                    <button 
-                        className={btnClassNames(isPlaying(playback))} 
+                    <button
+                        className={btnClassNames(isPlaying(playback))}
                         onClick={onPlay}
                         disabled={isDisabled}
                     >
@@ -50,8 +52,8 @@ const Desk = ({
                         Play
                     </button>
 
-                    <button 
-                        className={btnClassNames(isPaused(playback))} 
+                    <button
+                        className={btnClassNames(isPaused(playback))}
                         onClick={onPause}
                         disabled={isDisabled}
                     >
@@ -59,7 +61,7 @@ const Desk = ({
                         Pause
                     </button>
 
-                    <button 
+                    <button
                         className={btnClassNames(false)}
                         onClick={onRewind}
                         disabled={isDisabled}

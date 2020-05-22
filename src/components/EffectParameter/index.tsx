@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Fader from '/components/Fader';
-import Radio from '/components/Radio';
+import Fader from './../Fader';
+import Radio from './../Radio';
 
 import style from './style.css';
 
@@ -26,7 +26,7 @@ const EffectParameter = ({
 
     const Control = getControlByType(type);
 
-    return Control 
+    return Control
     ? (
         <div className={style.parameter} key={id}>
             <span className={style.title}>{name}:</span>

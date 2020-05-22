@@ -1,18 +1,16 @@
-'use strict';
-
 import React, {useReducer, useEffect} from 'react';
 import {render} from 'react-dom';
 
-import Desk from '/containers/Desk';
-import Context from '/containers/Context';
+import Desk from './containers/Desk';
+import Context from './containers/Context';
 
-import {initialState} from '/store';
-import {mixdesk} from '/store/mixdesk';
-import {reducer} from '/store/reducers';
+import {initialState} from './store';
+import {mixdesk} from './store/mixdesk';
+import {reducer} from './store/reducers';
 import {
     setReadyStateOnLoad,
     getDispatchWithLog,
-} from '/store/helpers';
+} from './store/helpers';
 
 
 const App = () => {

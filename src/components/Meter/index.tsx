@@ -4,9 +4,8 @@ import {getAverage, createMeterGradient} from './helpers';
 
 import style from './style.css';
 
-
 const Meter = ({
-    analyser,
+    analyser = null,
     width = 210,
     height = 20,
 }) => {

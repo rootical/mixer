@@ -1,9 +1,8 @@
 import React from 'react';
 
-import EffectParameter from '/components/EffectParameter';
+import EffectParameter from '../EffectParameter';
 
 import style from './style.css';
-
 
 const Effect = ({
     name = 'Untitled',

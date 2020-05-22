@@ -24,7 +24,7 @@ const EVENTS_MAP = {
 
 const hasTouchEventsSupport = () => 'ontouchstart' in window;
 
-const getEventNameByFeature = eventName => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
+const getEventNameByFeature = (eventName) => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
 
 
 const Fader = ({
@@ -68,7 +68,7 @@ const Fader = ({
 
         return false;
     }
-    
+
     const thumbEventName = hasTouchEventsSupport() ? 'onTouchStart' : 'onMouseDown';
 
     return (
