@@ -12,8 +12,18 @@ import {
 
 import style from './style.css';
 
+interface DeskProps {
+    playback: {
+        analyser: boolean;
+    };
+    onPlay: () => void;
+    onPause: () => void;
+    onRewind: () => void;
+    tracks: [];
+    effects?: [];
+};
 
-const Desk = ({
+const Desk: React.FC<DeskProps> = ({
     playback = {
         analyser: null
     },

@@ -18,9 +18,9 @@ const extensions = [".ts", ".js", ".tsx"];
 export default {
     input: './src/index.tsx',
     output: {
-        file: './dist/bundle.min.js',
+        file: './demo_dist/bundle.min.js',
         // format: 'iife',
-        dir: './dist/',
+        dir: './demo_dist/',
         // name: 'bundle',
     },
     plugins: [

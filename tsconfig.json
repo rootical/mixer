@@ -9,7 +9,7 @@
         "emitDecoratorMetadata": true,
         "module": "es6",
         "moduleResolution": "node",
-        "target": "es5",
+        "target": "ESNext",
         "allowJs": true,
         "jsx": "react",
         "preserveConstEnums": true

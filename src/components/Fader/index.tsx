@@ -26,8 +26,14 @@ const hasTouchEventsSupport = () => 'ontouchstart' in window;
 
 const getEventNameByFeature = (eventName) => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
 
+interface FaderProps {
+    value: number;
+    isVertical?: boolean;
+    // TODO: 🤯how to declare a type here? Refactor
+    onChange: any;
+}
 
-const Fader = ({
+const Fader: React.FC<FaderProps> = ({
     value = 0,
     isVertical = false,
     onChange = () => {},
