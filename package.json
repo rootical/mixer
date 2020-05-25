@@ -12,6 +12,7 @@
     "tsc:watch": "tsc --watch",
     "copy": "copyfiles -u 1 src/**/*.css dist"
   },
+  "sideEffects": false,
   "keywords": [],
   "author": "panamaprophet",
   "license": "ISC",
