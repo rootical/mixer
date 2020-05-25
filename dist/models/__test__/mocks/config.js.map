@@ -1,1 +1,0 @@
-{"version":3,"file":"config.js","sourceRoot":"","sources":["../../../../src/models/__test__/mocks/config.js"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,UAAU,GAAG;IACtB;QACI,KAAK,EAAE,OAAO;QACd,GAAG,EAAE,EAAE;KACV;IACD;QACI,KAAK,EAAE,MAAM;QACb,GAAG,EAAE,EAAE;KACV;IACD;QACI,KAAK,EAAE,QAAQ;QACf,GAAG,EAAE,EAAE;KACV;CACJ,CAAC"}
