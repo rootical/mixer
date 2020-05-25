@@ -20,7 +20,6 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-react": "^7.7.4",
-    "@babel/preset-typescript": "^7.9.0",
     "@rollup/plugin-alias": "^2.2.0",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-node-resolve": "^6.0.0",
