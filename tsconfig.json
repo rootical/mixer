@@ -12,7 +12,8 @@
         "target": "ESNext",
         "allowJs": true,
         "jsx": "react",
-        "preserveConstEnums": true
+        "preserveConstEnums": true,
+        "declaration": true
     },
     "include": [
         "./src/**/*"

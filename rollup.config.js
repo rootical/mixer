@@ -2,50 +2,41 @@ import babel from 'rollup-plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import alias from '@rollup/plugin-alias';
 import serve from 'rollup-plugin-serve';
-// import commonjs from '@rollup/plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import postcss from 'rollup-plugin-postcss';
 import {terser} from 'rollup-plugin-terser';
-import typescript from '@rollup/plugin-typescript';
 
-// import React from 'react';
-// import ReactDom from 'react-dom';
+import React from 'react';
+import ReactDom from 'react-dom';
 
 const ENVIRONMENT = process.env.NODE_ENV || 'development';
 
-const extensions = [".ts", ".js", ".tsx"];
-
 export default {
-    input: './src/index.tsx',
+    input: './dist/index.js',
     output: {
-        file: './demo_dist/bundle.min.js',
-        // format: 'iife',
-        dir: './demo_dist/',
-        // name: 'bundle',
+        file: './dist-demo/bundle.min.js',
+        format: 'iife',
+        name: 'bundle',
     },
     plugins: [
-        typescript({tsconfig: './tsconfig.json'}),
-        resolve({
-            // jsnext: true,
-            extensions
-        }),
+        resolve(),
         postcss({
             extract: true,
             modules: true,
             minimize: true,
         }),
-        // commonjs({
-        //     include: 'node_modules/**',
-        //     namedExports: {
-        //         react: Object.keys(React),
-        //         'react-dom': Object.keys(ReactDom),
-        //     },
-        // }),
+        commonjs({
+            include: 'node_modules/**',
+            namedExports: {
+                react: Object.keys(React),
+                'react-dom': Object.keys(ReactDom),
+            },
+        }),
         babel({
             babelrc: false,
             exclude: 'node_modules/**',
             presets: ['@babel/preset-react'],
-            extensions: extensions
         }),
         replace({
             'process.env.NODE_ENV': JSON.stringify(ENVIRONMENT),
@@ -59,6 +50,6 @@ export default {
             ],
         }),
         terser(),
-        serve('dist'),
+        serve('dist-demo'),
     ],
 }

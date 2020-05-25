@@ -16,7 +16,7 @@ interface TrackProps {
     send: {};
     onMute: (id) => {};
     onBypass: (id) => {};
-    onVolumeChange: () => {};
+    onVolumeChange: (id) => {};
     onSendLevelChange: (id) => {};
 }
 
@@ -28,10 +28,10 @@ const Track: React.FC<TrackProps> = ({
     isEffectsDisabled = false,
     send = {},
 
-    onMute = () => {},
-    onBypass = () => {},
-    onVolumeChange = () => {},
-    onSendLevelChange = () => {},
+    onMute = (id) => {},
+    onBypass = (id) => {},
+    onVolumeChange = (id) => {},
+    onSendLevelChange = (id) => {},
 }) => (
     <div className={style.track}>
         <Fader onChange={onVolumeChange} value={volume} isVertical={true} />

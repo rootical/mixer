@@ -11,7 +11,7 @@ const EVENTS_MAP = {
 };
 const hasTouchEventsSupport = () => 'ontouchstart' in window;
 const getEventNameByFeature = (eventName) => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
-const Fader = ({ value = 0, isVertical = false, onChange = () => { }, }) => {
+const Fader = ({ value = 0, isVertical = false, onChange = (id) => { }, }) => {
     const containerRef = useRef(null);
     const onMoveStart = event => {
         event.preventDefault();

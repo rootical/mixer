@@ -7,9 +7,10 @@
   "scripts": {
     "test": "jest --no-cache",
     "build": "rollup -c",
-    "watch": "rollup -c -w",
+    "watch": "tsc && copy && rollup -c -w",
     "tsc": "tsc",
-    "tsc:watch": "tsc --watch"
+    "tsc:watch": "tsc --watch",
+    "copy": "copyfiles -u 1 src/**/*.css dist"
   },
   "keywords": [],
   "author": "panamaprophet",
@@ -24,10 +25,13 @@
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-node-resolve": "^6.0.0",
     "@rollup/plugin-replace": "^2.3.0",
-    "@rollup/plugin-typescript": "^4.1.2",
     "@types/classnames": "^2.2.10",
+    "@types/ramda": "^0.27.6",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
     "autoprefixer": "^6.7.0",
     "classnames": "^2.2.6",
+    "copyfiles": "^2.2.0",
     "core-js": "^3.6.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
@@ -45,9 +49,6 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
-    "@types/ramda": "^0.27.6",
-    "@types/react": "^16.9.35",
-    "@types/react-dom": "^16.9.8",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },

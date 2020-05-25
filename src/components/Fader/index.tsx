@@ -30,13 +30,14 @@ interface FaderProps {
     value: number;
     isVertical?: boolean;
     // TODO: 🤯how to declare a type here? Refactor
+    // used in a couple of places in different way
     onChange: any;
 }
 
 const Fader: React.FC<FaderProps> = ({
     value = 0,
     isVertical = false,
-    onChange = () => {},
+    onChange = (id) => {},
 }) => {
     const containerRef = useRef(null);
 
