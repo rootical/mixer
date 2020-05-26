@@ -37,9 +37,9 @@ interface FaderProps {
 const Fader: React.FC<FaderProps> = ({
     value = 0,
     isVertical = false,
-    onChange = (id) => {},
+    onChange = () => {},
 }) => {
-    const containerRef = useRef(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const onMoveStart = event => {
         event.preventDefault();
@@ -54,7 +54,7 @@ const Fader: React.FC<FaderProps> = ({
         event.preventDefault();
 
         const containerElement = containerRef.current;
-        const offset = containerElement.getBoundingClientRect();
+        const offset = containerElement && containerElement.getBoundingClientRect();
         const x = getX(event) - document.documentElement.scrollLeft;
         const y = getY(event) - document.documentElement.scrollTop;
 

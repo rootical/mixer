@@ -1,14 +1,14 @@
 import React, {useContext} from 'react';
 
-import Track from './../../components/Track';
-import Context from './../Context'
+import Track from '../../components/Track';
+import Context from '../Context/Context'
 
 import {
     setTrackVolume,
     setTrackSendLevel,
     toggleTrack,
     toggleTrackFx,
-} from './../../store/actions';
+} from '../../store/actions';
 
 
 const TrackContainer = props => {

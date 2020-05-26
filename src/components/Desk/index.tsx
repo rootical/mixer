@@ -13,9 +13,8 @@ import {
 import style from './style.css';
 
 interface DeskProps {
-    playback: {
-        analyser: boolean;
-    };
+  // TODO: find
+    playback: any;
     onPlay: () => void;
     onPause: () => void;
     onRewind: () => void;
@@ -24,9 +23,7 @@ interface DeskProps {
 };
 
 const Desk: React.FC<DeskProps> = ({
-    playback = {
-        analyser: null
-    },
+    playback = {},
 
     onPlay = () => {},
     onPause = () => {},

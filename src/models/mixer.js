@@ -7,9 +7,9 @@ import {
     createTrackFromSource,
     isContextRunning,
     resumeContext,
-} from '/helpers/audio';
-import {setNodeParams,setNodeParamNormalizedValue} from '/helpers/node';
-import {playAll, pauseAll, rewindAll} from '/helpers/playback';
+} from './../helpers/audio';
+import {setNodeParams,setNodeParamNormalizedValue} from './../helpers/node';
+import {playAll, pauseAll, rewindAll} from './../helpers/playback';
 
 
 /**
@@ -29,7 +29,7 @@ class Mixer {
         this.masterBus = createMasterBus(this.context, [this.analyser]);
 
         this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
-        
+
         this.tracks = sources.map(createTrackFromSource({
             context: this.context,
             masterBus: this.masterBus,
@@ -71,7 +71,7 @@ class Mixer {
     }
 
     /**
-     * @param {TrackId} trackId 
+     * @param {TrackId} trackId
      * @param {number} volume
      * @returns {Promise<Track[]>}
      */
@@ -86,10 +86,10 @@ class Mixer {
     }
 
     /**
-     * 
-     * @param {TrackId} trackId 
-     * @param {SendId} sendId 
-     * @param {number} level 
+     *
+     * @param {TrackId} trackId
+     * @param {SendId} sendId
+     * @param {number} level
      * @returns {Promise<Track[]>}
      */
     async setTrackSendLevel(trackId, sendId, level) {
@@ -103,7 +103,7 @@ class Mixer {
     }
 
     /**
-     * @param {TrackId} trackId 
+     * @param {TrackId} trackId
      * @returns {Promise<Track[]>}
      */
     async toggleTrack(trackId) {
@@ -117,7 +117,7 @@ class Mixer {
     }
 
     /**
-     * @param {TrackId} trackId 
+     * @param {TrackId} trackId
      * @returns {Promise<Track[]>}
      */
     async toggleTrackFx(trackId) {
@@ -131,9 +131,9 @@ class Mixer {
     }
 
     /**
-     * 
-     * @param {SendId} sendId 
-     * @param {number|string} value 
+     *
+     * @param {SendId} sendId
+     * @param {number|string} value
      * @retruns {Promise<Send[]>}
      */
     async setSendParamValue(sendId, parameterId, value) {

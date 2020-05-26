@@ -28,10 +28,10 @@ const Track: React.FC<TrackProps> = ({
     isEffectsDisabled = false,
     send = {},
 
-    onMute = (id) => {},
-    onBypass = (id) => {},
-    onVolumeChange = (id) => {},
-    onSendLevelChange = (id) => {},
+    onMute = () => {},
+    onBypass = () => {},
+    onVolumeChange = () => {},
+    onSendLevelChange = () => {},
 }) => (
     <div className={style.track}>
         <Fader onChange={onVolumeChange} value={volume} isVertical={true} />

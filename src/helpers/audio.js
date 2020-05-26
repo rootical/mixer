@@ -2,11 +2,11 @@
 
 import {keys, curry} from 'ramda';
 
-import Track from '/models/track';
+import Track from './../models/track';
 
 import {
     CONTEXT_STATE,
-} from '/constants';
+} from './../constants';
 
 
 export const createContext = () => new (window.AudioContext || window.webkitAudioContext)();

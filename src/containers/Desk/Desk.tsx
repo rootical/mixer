@@ -1,15 +1,15 @@
 import React, {useContext} from 'react';
 
-import Desk from './../../components/Desk';
-import Effect from './../Effect';
-import Context from './../Context';
-import Track from './../Track';
+import Desk from '../../components/Desk';
+import Effect from '../Effect/Effect';
+import Context from '../Context/Context';
+import Track from '../Track/Track';
 
 import {
     play,
     pause,
     rewind,
-} from './../../store/actions';
+} from '../../store/actions';
 
 
 const DeskContainer = ({

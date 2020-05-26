@@ -4,9 +4,7 @@ import {
     createEffectEntity,
     createPlaybackEntity,
     createTrackEntity,
-} from '/helpers/entities';
-
-import {mixdesk} from './mixdesk';
+} from './../helpers/entities';
 
 
 const compact = reject(item => not(Boolean(item)));
@@ -35,7 +33,7 @@ const dispatchSetTrackState = curry((dispatch, {id, state}) => dispatch({
  * @param {function} — dispatch
  * @returns {Promise<Track[]>}
  */
-export const setReadyStateOnLoad = (dispatch, mixdesk) => 
+export const setReadyStateOnLoad = (dispatch, mixdesk) =>
     Promise
         .all(getLoadingStates(mixdesk))
         .then(map(dispatchSetTrackState(dispatch)))

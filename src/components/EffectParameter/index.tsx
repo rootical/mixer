@@ -5,7 +5,6 @@ import Radio from './../Radio';
 
 import style from './style.css';
 
-
 const EffectParameterMap = {
     'fader': Fader,
     'radio': Radio,
@@ -13,8 +12,14 @@ const EffectParameterMap = {
 
 const getControlByType = type => EffectParameterMap[type];
 
+export interface EffectParameterProps {
+  id: string;
+  name: string;
+  type: 'fader' | 'radio';
+  onChange: (id) => void;
+}
 
-const EffectParameter = ({
+const EffectParameter: React.FC<EffectParameterProps> = ({
     onChange,
     ...props
 }) => {

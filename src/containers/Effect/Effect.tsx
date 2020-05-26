@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
 
-import Effect from './../../components/Effect';
-import Context from './../Context';
+import Effect from '../../components/Effect';
+import Context from '../Context/Context';
 
 import {
     setSendParamValue,
-} from './../../store/actions';
+} from '../../store/actions';
 
 
 const EffectContainer = props => {
