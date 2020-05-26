@@ -1,6 +1,6 @@
 {
   "name": "react-mixdesk-example",
-  "homepage": "https://rootical.github.io/react-mixdesk",
+  "homepage": "https://rootical.github.io/mixer",
   "version": "0.0.0",
   "private": true,
   "dependencies": {

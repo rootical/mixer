@@ -4,7 +4,7 @@
   "description": "Your Web Dub mixing console",
   "author": "prophetpanama, rootical",
   "license": "MIT",
-  "repository": "rootical/react-mixdesk",
+  "repository": "rootical/mixer",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.ts",

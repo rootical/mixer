@@ -11,7 +11,6 @@ import {
     rewind,
 } from '../../store/actions';
 
-
 export const DeskContainer = ({
     tracks,
     effects,
