@@ -33,7 +33,7 @@ const Meter: React.FC<MeterProps> = ({
 
             if (context) {
               context.clearRect(0, 0, width, height);
-              context.fillStyle = createMeterGradient(context, {width, height});
+              context.fillStyle = createMeterGradient(context as any, {width, height});
               context.fillRect(0, 0, (width / 100) * average, height);
             }
             requestAnimationFrame(drawMeter);

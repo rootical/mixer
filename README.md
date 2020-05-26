@@ -10,8 +10,6 @@
 npm install --save react-mixdesk
 ```
 
-## Usage
-
 ```tsx
 import React, { Component } from 'react'
 
@@ -24,7 +22,3 @@ class Example extends Component {
   }
 }
 ```
-
-## License
-
-MIT © [prophetpanama, rootical](https://github.com/prophetpanama, rootical)
