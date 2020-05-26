@@ -2,11 +2,17 @@ import React, {useRef, useEffect} from 'react';
 
 import {getAverage, createMeterGradient} from './helpers';
 
-import style from './style.css';
+import style from './style.module.css';
 
+interface MeterProps {
+  // Todo what is it?
+  analyser: any;
+  width?: number;
+  height?: number;
+}
 
-const Meter = ({
-    analyser,
+const Meter: React.FC<MeterProps> = ({
+    analyser = null,
     width = 210,
     height = 20,
 }) => {
@@ -14,10 +20,10 @@ const Meter = ({
         return null;
     }
 
-    const canvasRef = useRef(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        const context = canvasRef.current.getContext('2d');
+        const context = canvasRef.current && canvasRef.current.getContext('2d');
         const array = new Uint8Array(analyser.frequencyBinCount);
 
         const drawMeter = () => {
@@ -25,10 +31,11 @@ const Meter = ({
 
             const average = getAverage(array);
 
-            context.clearRect(0, 0, width, height);
-            context.fillStyle = createMeterGradient(context, {width, height});
-            context.fillRect(0, 0, (width / 100) * average, height);
-
+            if (context) {
+              context.clearRect(0, 0, width, height);
+              context.fillStyle = createMeterGradient(context as any, {width, height});
+              context.fillRect(0, 0, (width / 100) * average, height);
+            }
             requestAnimationFrame(drawMeter);
         }
 

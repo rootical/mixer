@@ -6,7 +6,7 @@ import {all, head, filter} from 'ramda';
 import Mixer from '/models/mixer';
 import Delay from '/models/fx/delay';
 
-import {getNodeParamNormalizedValue} from '/helpers/node';
+import {getNodeParamNormalizedValue} from './../../helpers/node';
 
 import './mocks/';
 import {trackMocks} from './mocks/config';

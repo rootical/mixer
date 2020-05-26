@@ -2,7 +2,7 @@
 
 import {keys} from 'ramda';
 
-import {isAudioParam} from '/helpers/audio';
+import {isAudioParam} from './audio';
 
 
 export const getNodeParamNormalizedValue = node => {
@@ -53,7 +53,7 @@ export const setNodeParams = (node, params) => keys(params).forEach(key => {
     return node;
 });
 
-export const connectNodes = (source, destination) => 
+export const connectNodes = (source, destination) =>
     source.connect(destination);
 
 export const connectNodesSingle = (source, destination) => {

@@ -2,7 +2,7 @@
 
 import {
     getNodeParamNormalizedValue,
-} from '/helpers/node';
+} from './../../helpers/node';
 
 import FX from './fx-base';
 

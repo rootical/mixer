@@ -2,12 +2,25 @@ import React from 'react';
 import classnames from 'classnames';
 import {keys} from 'ramda';
 
-import Fader from '/components/Fader';
+import Fader from './../Fader';
 
-import style from './style.css';
+import style from './style.module.css';
 
 
-const Track = ({
+interface TrackProps {
+    id: number;
+    title: string;
+    volume: number;
+    isMuted: boolean;
+    isEffectsDisabled: boolean;
+    send: {};
+    onMute: (id) => {};
+    onBypass: (id) => {};
+    onVolumeChange: (id) => {};
+    onSendLevelChange: (id) => {};
+}
+
+const Track: React.FC<TrackProps> = ({
     id,
     title = 'Untitled',
     volume = 0,
@@ -29,7 +42,7 @@ const Track = ({
                 onClick={() => onMute(id)}>
                     Mute
             </button>
-            <button 
+            <button
                 className={classnames(style.button, isEffectsDisabled && style.isPressed)}
                 onClick={() => onBypass(id)}>
                     Bypass FX

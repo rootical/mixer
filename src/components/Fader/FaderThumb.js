@@ -1,10 +1,10 @@
 import React from 'react';
 
-import style from './style.css';
+import style from './style.module.css';
 
 
 const FaderThumb = ({
-    position = 0, 
+    position = 0,
     isVertical = false,
     events = {},
 }) => {

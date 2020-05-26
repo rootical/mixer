@@ -1,12 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import style from './style.css';
+import style from './style.module.css';
 
 
 const Radio = ({
     name,
-    value: currentValue, 
+    value: currentValue,
     values = [],
     onChange = () => {},
 }) => (

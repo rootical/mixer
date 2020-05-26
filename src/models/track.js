@@ -1,18 +1,18 @@
 'use strict';
 
-import {generateIdByTitle} from '/helpers/entities';
-import {fetchAudioAsArrayBuffer} from '/helpers/audio';
+import {generateIdByTitle} from './../helpers/entities';
+import {fetchAudioAsArrayBuffer} from './../helpers/audio';
 
 import {
     connectNodes,
     createGainNode,
     getNodeParamNormalizedValue,
     setNodeParamNormalizedValue,
-} from '/helpers/node';
+} from './../helpers/node';
 
 import {
     TRACK_STATE,
-} from '/constants';
+} from './../constants';
 
 /**
  * @typedef {string} TrackId
@@ -48,12 +48,12 @@ class Track {
         this.bypassFX = false;
 
         this.state = TRACK_STATE.NOT_SET;
-        
+
         this.bus = createGainNode(context);
         connectNodes(this.bus, masterBus);
 
         this.fx = {};
-        
+
         if (sends.length > 0) {
             this.addFx(sends);
         }
@@ -77,7 +77,7 @@ class Track {
     load(url) {
         return fetchAudioAsArrayBuffer(url)
             .then(audioBuffer => {
-                return new Promise((resolve, reject) => 
+                return new Promise((resolve, reject) =>
                     this.context.decodeAudioData(audioBuffer, resolve, reject));
             })
             .then(decodedAudioData => {

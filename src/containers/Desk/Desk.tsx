@@ -1,29 +1,29 @@
 import React, {useContext} from 'react';
 
-import Desk from '/components/Desk';
-import Effect from '/containers/Effect';
-import Context from '/containers/Context';
-import Track from '/containers/Track';
+import Desk from '../../components/Desk';
+import {EffectContainer} from './../Effect';
+import {Context} from './../Context';
+import {TrackContainer} from './../Track/Track';
 
 import {
     play,
     pause,
     rewind,
-} from '/store/actions';
+} from '../../store/actions';
 
 
-const DeskContainer = ({
+export const DeskContainer = ({
     tracks,
     effects,
     playback,
 }) => {
     const dispatch = useContext(Context);
 
-    const Tracks = tracks.map(track => (<Track {...track} key={track.id} />));
-    const Effects = effects.map(effect => (<Effect {...effect} key={effect.id} />));
+    const Tracks = tracks.map(track => (<TrackContainer {...track} key={track.id} />));
+    const Effects = effects.map(effect => (<EffectContainer {...effect} key={effect.id} />));
 
     return (
-        <Desk 
+        <Desk
             onPlay={() => play(dispatch)}
             onPause={() => pause(dispatch)}
             onRewind={() => rewind(dispatch)}
@@ -35,5 +35,3 @@ const DeskContainer = ({
         </Desk>
     );
 }
-
-export default DeskContainer;

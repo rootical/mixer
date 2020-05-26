@@ -1,13 +1,18 @@
 import React from 'react';
 
-import EffectParameter from '/components/EffectParameter';
+import EffectParameter, { EffectParameterProps } from '../EffectParameter';
 
-import style from './style.css';
+import style from './style.module.css';
 
+interface Effect {
+  name: string;
+  parameters: EffectParameterProps[];
+  onParamChange: () => void;
+}
 
 const Effect = ({
     name = 'Untitled',
-    parameters = [],
+    parameters,
     onParamChange = () => {},
 }) => {
     return (

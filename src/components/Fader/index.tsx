@@ -13,7 +13,7 @@ import {
     getPointerHorizontalPosition,
 } from './helpers';
 
-import style from './style.css';
+import style from './style.module.css';
 
 
 const EVENTS_MAP = {
@@ -24,15 +24,22 @@ const EVENTS_MAP = {
 
 const hasTouchEventsSupport = () => 'ontouchstart' in window;
 
-const getEventNameByFeature = eventName => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
+const getEventNameByFeature = (eventName) => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
 
+interface FaderProps {
+    value: number;
+    isVertical?: boolean;
+    // TODO: 🤯how to declare a type here? Refactor
+    // used in a couple of places in different way
+    onChange: any;
+}
 
-const Fader = ({
+const Fader: React.FC<FaderProps> = ({
     value = 0,
     isVertical = false,
     onChange = () => {},
 }) => {
-    const containerRef = useRef(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const onMoveStart = event => {
         event.preventDefault();
@@ -47,7 +54,7 @@ const Fader = ({
         event.preventDefault();
 
         const containerElement = containerRef.current;
-        const offset = containerElement.getBoundingClientRect();
+        const offset = containerElement && containerElement.getBoundingClientRect();
         const x = getX(event) - document.documentElement.scrollLeft;
         const y = getY(event) - document.documentElement.scrollTop;
 
@@ -68,7 +75,7 @@ const Fader = ({
 
         return false;
     }
-    
+
     const thumbEventName = hasTouchEventsSupport() ? 'onTouchStart' : 'onMouseDown';
 
     return (
