@@ -7,7 +7,7 @@ import Fader from './../Fader';
 import style from './style.module.css';
 
 
-interface TrackProps {
+interface Track {
     id: number;
     title: string;
     volume: number;
@@ -20,7 +20,7 @@ interface TrackProps {
     onSendLevelChange: (id) => {};
 }
 
-const Track: React.FC<TrackProps> = ({
+const Track: React.FC<Track> = ({
     id,
     title = 'Untitled',
     volume = 0,

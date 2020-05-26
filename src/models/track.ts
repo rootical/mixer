@@ -1,40 +1,55 @@
 'use strict';
 
-import {generateIdByTitle} from './../helpers/entities';
-import {fetchAudioAsArrayBuffer} from './../helpers/audio';
+import {generateIdByTitle} from '../helpers/entities';
+import {fetchAudioAsArrayBuffer} from '../helpers/audio';
 
 import {
     connectNodes,
     createGainNode,
     getNodeParamNormalizedValue,
     setNodeParamNormalizedValue,
-} from './../helpers/node';
+} from '../helpers/node';
 
 import {
     TRACK_STATE,
-} from './../constants';
+} from '../constants';
 
 /**
  * @typedef {string} TrackId
  */
 
- /**
-  * @typedef {string} SendId
-  */
-
 /**
  * @typedef {Object} Track
- * @property {number} volume — value normalized between 0 .. 100
+ * @property {number} volume
  * @property {string} title
  * @property {TrackId} id
  */
 
+type TrackId = string;
+
+interface Track {
+  source: AudioBufferSourceNode | null;
+  title: string;
+  id: TrackId;
+  buffer: any;
+  context: AudioContext;
+  pausedAt: number;
+  startedAt: number;
+  muted: boolean;
+  playing: boolean;
+  bypassFX: boolean;
+  // ?
+  state: any;
+  bus: any;
+  fx: {};
+  loadingState: Promise<any>
+  previousVolume: number;
+}
 
 class Track {
     constructor({url, title, context, masterBus, sends = []}) {
         this.id = generateIdByTitle(title);
 
-        this.source = null;
         this.buffer = null;
 
         this.title = title;
@@ -95,20 +110,17 @@ class Track {
             });
     }
 
-
     play() {
-        if (this.playing) {
-            return false;
+        if (!this.playing) {
+          this.source = this.context.createBufferSource()
+          this.source.buffer = this.buffer
+          this.source.connect(this.bus)
+          this.source.start(0, this.pausedAt)
+
+          this.startedAt = this.context.currentTime - this.pausedAt
+          this.pausedAt = 0
+          this.playing = true
         }
-
-        this.source = this.context.createBufferSource()
-        this.source.buffer = this.buffer
-        this.source.connect(this.bus)
-        this.source.start(0, this.pausedAt)
-
-        this.startedAt = this.context.currentTime - this.pausedAt
-        this.pausedAt = 0
-        this.playing = true
     }
 
     pause() {

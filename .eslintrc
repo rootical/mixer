@@ -3,10 +3,10 @@
   "extends": [
     "standard",
     "standard-react",
-    "plugin:prettier/recommended",
     "prettier/standard",
     "prettier/react",
-    "plugin:@typescript-eslint/eslint-recommended"
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:prettier/recommended"
   ],
   "env": {
     "node": true

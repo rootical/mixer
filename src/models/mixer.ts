@@ -1,5 +1,3 @@
-'use strict';
-
 import {
     createContext,
     createAnalyser,
@@ -7,23 +5,22 @@ import {
     createTrackFromSource,
     isContextRunning,
     resumeContext,
-} from './../helpers/audio';
-import {setNodeParams,setNodeParamNormalizedValue} from './../helpers/node';
-import {playAll, pauseAll, rewindAll} from './../helpers/playback';
+} from '../helpers/audio';
+import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
+import {playAll, pauseAll, rewindAll} from '../helpers/playback';
 
-
-/**
- * @typedef {Object} Mixer
- * @property {GainNode} masterBus
- * @property {AudioContext} context
- * @property {AnalyserNode} analyser
- * @property {Track[]} tracks
- * @property {Send[]} fx
- */
-
+interface Mixer {
+  context: AudioContext;
+  analyser: AnalyserNode;
+  tracks: any[];
+  // TODO: rename fx to sends as tracks
+  fx: any[];
+  masterBus: GainNode;
+}
 
 class Mixer {
-    constructor(sources = [], effects = []) {
+  // TODO: types
+    constructor(sources = [], effects: any[] = []) {
         this.context = createContext();
         this.analyser = createAnalyser(this.context);
         this.masterBus = createMasterBus(this.context, [this.analyser]);
