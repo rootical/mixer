@@ -21,17 +21,19 @@ interface Mixer {
 class Mixer {
   // TODO: types
     constructor(sources = [], effects: any[] = []) {
-        this.context = createContext();
-        this.analyser = createAnalyser(this.context);
-        this.masterBus = createMasterBus(this.context, [this.analyser]);
 
-        this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
+          this.context =  createContext();
 
-        this.tracks = sources.map(createTrackFromSource({
-            context: this.context,
-            masterBus: this.masterBus,
-            sends: this.fx,
-        }));
+          this.analyser = createAnalyser(this.context);
+          this.masterBus = createMasterBus(this.context, [this.analyser]);
+          this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
+
+          this.tracks = sources.map(createTrackFromSource({
+              context: this.context,
+              masterBus: this.masterBus,
+              sends: this.fx,
+          }));
+
     }
 
     /**

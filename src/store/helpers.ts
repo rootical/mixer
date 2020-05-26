@@ -4,7 +4,7 @@ import {
     createEffectEntity,
     createPlaybackEntity,
     createTrackEntity,
-} from './../helpers/entities';
+} from '../helpers/entities';
 
 
 const compact = reject(item => not(Boolean(item)));

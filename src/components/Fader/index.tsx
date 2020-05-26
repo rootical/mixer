@@ -1,6 +1,3 @@
-'use strict';
-
-
 import React, {useRef} from 'react';
 import classnames from 'classnames';
 
@@ -15,22 +12,22 @@ import {
 
 import style from './style.module.css';
 
-
 const EVENTS_MAP = {
     'mousemove': 'touchmove',
     'mouseup': 'touchend',
     'mousedown': 'touchstart',
 };
 
-const hasTouchEventsSupport = () => 'ontouchstart' in window;
+const isServer = typeof window === 'undefined';
+
+const hasTouchEventsSupport = () => isServer && 'ontouchstart' in window;
 
 const getEventNameByFeature = (eventName) => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
 
 interface FaderProps {
     value: number;
     isVertical?: boolean;
-    // TODO: 🤯how to declare a type here? Refactor
-    // used in a couple of places in different way
+    // TODO: 🤯 Refactor onChange due to type inconsistency
     onChange: any;
 }
 
