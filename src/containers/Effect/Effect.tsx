@@ -1,14 +1,14 @@
 import React, {useContext} from 'react';
 
 import Effect from '../../components/Effect';
-import Context from '../Context/Context';
+import {Context} from '../Context/Context';
 
 import {
     setSendParamValue,
 } from '../../store/actions';
 
 
-const EffectContainer = props => {
+export const EffectContainer = props => {
     const dispatch = useContext(Context);
 
     return (
@@ -19,4 +19,3 @@ const EffectContainer = props => {
     );
 };
 
-export default EffectContainer;

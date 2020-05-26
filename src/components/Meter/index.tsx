@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from 'react';
 
 import {getAverage, createMeterGradient} from './helpers';
 
-import style from './style.css';
+import style from './style.module.css';
 
 interface MeterProps {
   // Todo what is it?

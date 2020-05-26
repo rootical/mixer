@@ -13,7 +13,7 @@ import {
     getPointerHorizontalPosition,
 } from './helpers';
 
-import style from './style.css';
+import style from './style.module.css';
 
 
 const EVENTS_MAP = {

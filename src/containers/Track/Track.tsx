@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 
 import Track from '../../components/Track';
-import Context from '../Context/Context'
+import {Context} from '../Context'
 
 import {
     setTrackVolume,
@@ -11,7 +11,7 @@ import {
 } from '../../store/actions';
 
 
-const TrackContainer = props => {
+export const TrackContainer = props => {
     const {id: trackId} = props;
     const dispatch = useContext(Context);
 
@@ -26,5 +26,3 @@ const TrackContainer = props => {
         />
     );
 }
-
-export default TrackContainer;

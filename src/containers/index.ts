@@ -1,4 +1,4 @@
 export * from './Context';
-export * from './Desk/Desk';
-export * from './Effect/Effect';
-export * from './Track/Track';
+export * from './Desk';
+export * from './Effect';
+export * from './Track';

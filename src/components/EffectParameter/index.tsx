@@ -3,7 +3,7 @@ import React from 'react';
 import Fader from './../Fader';
 import Radio from './../Radio';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const EffectParameterMap = {
     'fader': Fader,

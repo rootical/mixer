@@ -3,7 +3,7 @@
 import React, {useReducer, useEffect} from 'react';
 
 import {Desk, Context, initialState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
-// import Context from 'react-mixdesk/containers/Context';
+// import {Context} from 'react-mixdesk/containers/Context';
 
 // import {initialState} from 'react-mixdesk/store';
 // import {mixdesk} from 'react-mixdesk/store/mixdesk';

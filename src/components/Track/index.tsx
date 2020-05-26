@@ -4,7 +4,7 @@ import {keys} from 'ramda';
 
 import Fader from './../Fader';
 
-import style from './style.css';
+import style from './style.module.css';
 
 
 interface TrackProps {

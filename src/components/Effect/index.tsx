@@ -2,7 +2,7 @@ import React from 'react';
 
 import EffectParameter, { EffectParameterProps } from '../EffectParameter';
 
-import style from './style.css';
+import style from './style.module.css';
 
 interface Effect {
   name: string;

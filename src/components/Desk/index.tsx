@@ -10,7 +10,7 @@ import {
     isNotActive,
 } from './../../helpers/playback';
 
-import style from './style.css';
+import style from './style.module.css';
 
 interface DeskProps {
   // TODO: find

@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 
 import Desk from '../../components/Desk';
-import Effect from '../Effect/Effect';
-import Context from '../Context/Context';
-import Track from '../Track/Track';
+import {EffectContainer} from './../Effect';
+import {Context} from './../Context';
+import {TrackContainer} from './../Track/Track';
 
 import {
     play,
@@ -12,15 +12,15 @@ import {
 } from '../../store/actions';
 
 
-const DeskContainer = ({
+export const DeskContainer = ({
     tracks,
     effects,
     playback,
 }) => {
     const dispatch = useContext(Context);
 
-    const Tracks = tracks.map(track => (<Track {...track} key={track.id} />));
-    const Effects = effects.map(effect => (<Effect {...effect} key={effect.id} />));
+    const Tracks = tracks.map(track => (<TrackContainer {...track} key={track.id} />));
+    const Effects = effects.map(effect => (<EffectContainer {...effect} key={effect.id} />));
 
     return (
         <Desk
@@ -35,5 +35,3 @@ const DeskContainer = ({
         </Desk>
     );
 }
-
-export default DeskContainer;
