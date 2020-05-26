@@ -1,8 +1,6 @@
-'use strict';
-
 import React, {useReducer, useEffect} from 'react';
 
-import {Desk, Context, initialState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
+import {DeskContainer, Context, initialState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
 // import {Context} from 'react-mixdesk/containers/Context';
 
 // import {initialState} from 'react-mixdesk/store';
@@ -24,7 +22,7 @@ const App = () => {
 
     return (
         <Context.Provider value={dispatchWithLog}>
-            <Desk {...state} />
+            <DeskContainer {...state} />
         </Context.Provider>
     );
 };
