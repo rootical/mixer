@@ -1,16 +1,7 @@
 import React, {useReducer, useEffect} from 'react';
 
 import {DeskContainer, Context, initialState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
-// import {Context} from 'react-mixdesk/containers/Context';
-
-// import {initialState} from 'react-mixdesk/store';
-// import {mixdesk} from 'react-mixdesk/store/mixdesk';
-// import {reducer} from 'react-mixdesk/store/reducers';
-// import {
-//     setReadyStateOnLoad,
-//     getDispatchWithLog,
-// } from 'react-mixdesk/store/helpers';
-
+import 'react-mixdesk/dist/index.css'
 
 const App = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
