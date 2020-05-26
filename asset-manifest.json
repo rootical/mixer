@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/react-mixdesk/static/css/main.71dcf0ac.chunk.css",
-    "main.js": "/react-mixdesk/static/js/main.b06ed9dd.chunk.js",
-    "main.js.map": "/react-mixdesk/static/js/main.b06ed9dd.chunk.js.map",
-    "runtime-main.js": "/react-mixdesk/static/js/runtime-main.f5c7f8aa.js",
-    "runtime-main.js.map": "/react-mixdesk/static/js/runtime-main.f5c7f8aa.js.map",
-    "static/js/2.8d65340e.chunk.js": "/react-mixdesk/static/js/2.8d65340e.chunk.js",
-    "static/js/2.8d65340e.chunk.js.map": "/react-mixdesk/static/js/2.8d65340e.chunk.js.map",
-    "index.html": "/react-mixdesk/index.html",
-    "precache-manifest.fe58a23ceba47ec04b0b4a0ff8087873.js": "/react-mixdesk/precache-manifest.fe58a23ceba47ec04b0b4a0ff8087873.js",
-    "service-worker.js": "/react-mixdesk/service-worker.js",
-    "static/css/main.71dcf0ac.chunk.css.map": "/react-mixdesk/static/css/main.71dcf0ac.chunk.css.map",
-    "static/js/2.8d65340e.chunk.js.LICENSE.txt": "/react-mixdesk/static/js/2.8d65340e.chunk.js.LICENSE.txt",
-    "static/js/main.b06ed9dd.chunk.js.LICENSE.txt": "/react-mixdesk/static/js/main.b06ed9dd.chunk.js.LICENSE.txt"
+    "main.css": "/mixer/static/css/main.71dcf0ac.chunk.css",
+    "main.js": "/mixer/static/js/main.b06ed9dd.chunk.js",
+    "main.js.map": "/mixer/static/js/main.b06ed9dd.chunk.js.map",
+    "runtime-main.js": "/mixer/static/js/runtime-main.8a23f0c5.js",
+    "runtime-main.js.map": "/mixer/static/js/runtime-main.8a23f0c5.js.map",
+    "static/js/2.8d65340e.chunk.js": "/mixer/static/js/2.8d65340e.chunk.js",
+    "static/js/2.8d65340e.chunk.js.map": "/mixer/static/js/2.8d65340e.chunk.js.map",
+    "index.html": "/mixer/index.html",
+    "precache-manifest.aca654cbdc3247ec02b37605fc9fd2c1.js": "/mixer/precache-manifest.aca654cbdc3247ec02b37605fc9fd2c1.js",
+    "service-worker.js": "/mixer/service-worker.js",
+    "static/css/main.71dcf0ac.chunk.css.map": "/mixer/static/css/main.71dcf0ac.chunk.css.map",
+    "static/js/2.8d65340e.chunk.js.LICENSE.txt": "/mixer/static/js/2.8d65340e.chunk.js.LICENSE.txt",
+    "static/js/main.b06ed9dd.chunk.js.LICENSE.txt": "/mixer/static/js/main.b06ed9dd.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f5c7f8aa.js",
+    "static/js/runtime-main.8a23f0c5.js",
     "static/js/2.8d65340e.chunk.js",
     "static/css/main.71dcf0ac.chunk.css",
     "static/js/main.b06ed9dd.chunk.js"
