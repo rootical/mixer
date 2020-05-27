@@ -53,7 +53,8 @@
     "ramda": "^0.26.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "standardized-audio-context-mock": "^8.3.10"
   },
   "files": [
     "dist"

@@ -36,12 +36,12 @@ class Track {
     muted: boolean;
     playing: boolean;
     bypassFX: boolean;
+    previousVolume: number;
     // ?
     state: any;
     bus: any;
     fx: {};
     loadingState: any;
-    previousVolume: number;
 
     constructor({url, title, context, masterBus, sends = []}) {
         this.id = generateIdByTitle(title);

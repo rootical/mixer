@@ -14,7 +14,6 @@ const RESPONSES = {
 
 export class Reverb extends FX {
 
-    // Enum?
     responses: typeof RESPONSES;
     // TODO: enum or whatever
     currentResponseId: 'Versatile' | 'Pattan' | 'Style';
