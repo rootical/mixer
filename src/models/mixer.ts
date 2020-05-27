@@ -9,17 +9,16 @@ import {
 import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
 import {playAll, pauseAll, rewindAll} from '../helpers/playback';
 
-export interface Mixer {
-  context: AudioContext;
-  analyser: AnalyserNode;
-  tracks: any[];
-  // TODO: rename fx to sends?
-  fx: any[];
-  masterBus: GainNode;
-}
 
 export class Mixer {
-  // TODO: types
+    // TODO: types
+    context: AudioContext;
+    analyser: AnalyserNode;
+    tracks: any[];
+    // TODO: rename fx to sends?
+    fx: any[];
+    masterBus: GainNode;
+
     constructor(sources: any[] = [], effects: any[] = []) {
 
           this.context =  createContext();

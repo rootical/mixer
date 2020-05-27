@@ -50,7 +50,8 @@ export class Reverb extends FX {
     async loadResponse() {
         const url = this.responses[this.currentResponseId];
 
-        const arrayBuffer =
+        // TODO:
+        const arrayBuffer: any =
             await fetchAudioAsArrayBuffer(url)
                 .catch(error => console.log('[ERROR LOADING RESPONSE]', error));
 

@@ -25,28 +25,24 @@ import {
  * @property {TrackId} id
  */
 
-type TrackId = string;
-
-interface Track {
-  source: AudioBufferSourceNode | null;
-  title: string;
-  id: TrackId;
-  buffer: any;
-  context: AudioContext;
-  pausedAt: number;
-  startedAt: number;
-  muted: boolean;
-  playing: boolean;
-  bypassFX: boolean;
-  // ?
-  state: any;
-  bus: any;
-  fx: {};
-  loadingState: Promise<any>
-  previousVolume: number;
-}
-
 class Track {
+    source: AudioBufferSourceNode | null;
+    title: string;
+    id: string;
+    buffer: any;
+    context: AudioContext;
+    pausedAt: number;
+    startedAt: number;
+    muted: boolean;
+    playing: boolean;
+    bypassFX: boolean;
+    // ?
+    state: any;
+    bus: any;
+    fx: {};
+    loadingState: any;
+    previousVolume: number;
+
     constructor({url, title, context, masterBus, sends = []}) {
         this.id = generateIdByTitle(title);
 
