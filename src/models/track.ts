@@ -14,16 +14,6 @@ import {
     TRACK_STATE,
 } from '../constants';
 
-/**
- * @typedef {string} TrackId
- */
-
-/**
- * @typedef {Object} Track
- * @property {number} volume
- * @property {string} title
- * @property {TrackId} id
- */
 
 class Track {
     source: AudioBufferSourceNode | null;
