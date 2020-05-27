@@ -2,17 +2,23 @@
 
 import {head, keys} from 'ramda';
 
-import FX from './fx-base';
-import {fetchAudioAsArrayBuffer} from './../../helpers/audio';
+import {FX} from './fx-base';
+import {fetchAudioAsArrayBuffer} from '../../helpers/audio';
 
-
+// TODO: lib assets
 const RESPONSES = {
     'Versatile': 'assets/audio/impulse-response/impulse-1.mp3',
     'Pattan': 'assets/audio/impulse-response/impulse-2.mp3',
     'Style': 'assets/audio/impulse-response/impulse-3.mp3',
 };
 
-export default class Reverb extends FX {
+export class Reverb extends FX {
+
+    // Enum?
+    responses: typeof RESPONSES;
+    // TODO: enum or whatever
+    currentResponseId: 'Versatile' | 'Pattan' | 'Style';
+
     constructor(context, masterBus, options = {responses: RESPONSES}) {
         super({
             context,

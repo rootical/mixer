@@ -9,18 +9,18 @@ import {
 import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
 import {playAll, pauseAll, rewindAll} from '../helpers/playback';
 
-interface Mixer {
+export interface Mixer {
   context: AudioContext;
   analyser: AnalyserNode;
   tracks: any[];
-  // TODO: rename fx to sends as tracks
+  // TODO: rename fx to sends?
   fx: any[];
   masterBus: GainNode;
 }
 
-class Mixer {
+export class Mixer {
   // TODO: types
-    constructor(sources = [], effects: any[] = []) {
+    constructor(sources: any[] = [], effects: any[] = []) {
 
           this.context =  createContext();
 
@@ -28,11 +28,7 @@ class Mixer {
           this.masterBus = createMasterBus(this.context, [this.analyser]);
           this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
 
-          this.tracks = sources.map(createTrackFromSource({
-              context: this.context,
-              masterBus: this.masterBus,
-              sends: this.fx,
-          }));
+          this.load(sources);
 
     }
 
@@ -144,7 +140,14 @@ class Mixer {
             return fx;
         });
     }
+
+    load(sources) {
+      this.tracks = sources.map(createTrackFromSource({
+          context: this.context,
+          masterBus: this.masterBus,
+          sends: this.fx,
+      }));
+
+      return Promise.all(this.tracks.map(track => track.loadingState));
+    }
 }
-
-
-export default Mixer;

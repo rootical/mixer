@@ -8,8 +8,6 @@ import {
     CONTEXT_STATE,
 } from '../constants';
 
-const isServer = typeof window === 'undefined';
-
 export const createContext = () => new (window.AudioContext || window.webkitAudioContext)();
 
 export const createMasterBus = (context, connections = []) => {
