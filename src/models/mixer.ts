@@ -9,29 +9,26 @@ import {
 import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
 import {playAll, pauseAll, rewindAll} from '../helpers/playback';
 
-interface Mixer {
-  context: AudioContext;
-  analyser: AnalyserNode;
-  tracks: any[];
-  // TODO: rename fx to sends as tracks
-  fx: any[];
-  masterBus: GainNode;
-}
 
-class Mixer {
-  // TODO: types
-    constructor(sources = [], effects: any[] = []) {
-        this.context = createContext();
-        this.analyser = createAnalyser(this.context);
-        this.masterBus = createMasterBus(this.context, [this.analyser]);
+export class Mixer {
+    // TODO: types
+    context: AudioContext;
+    analyser: AnalyserNode;
+    tracks: any[];
+    // TODO: rename fx to sends?
+    fx: any[];
+    masterBus: GainNode;
 
-        this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
+    constructor(sources: any[] = [], effects: any[] = []) {
 
-        this.tracks = sources.map(createTrackFromSource({
-            context: this.context,
-            masterBus: this.masterBus,
-            sends: this.fx,
-        }));
+          this.context =  createContext();
+
+          this.analyser = createAnalyser(this.context);
+          this.masterBus = createMasterBus(this.context, [this.analyser]);
+          this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
+
+          this.load(sources);
+
     }
 
     /**
@@ -142,7 +139,14 @@ class Mixer {
             return fx;
         });
     }
+
+    load(sources) {
+      this.tracks = sources.map(createTrackFromSource({
+          context: this.context,
+          masterBus: this.masterBus,
+          sends: this.fx,
+      }));
+
+      return Promise.all(this.tracks.map(track => track.loadingState));
+    }
 }
-
-
-export default Mixer;

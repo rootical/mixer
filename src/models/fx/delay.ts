@@ -2,16 +2,20 @@
 
 import {
     getNodeParamNormalizedValue,
-} from './../../helpers/node';
+} from '../../helpers/node';
 
-import FX from './fx-base';
+import {FX} from './fx-base';
 
 
 const DEFAULT_FEEDBACK = 80;
 const DEFAULT_TIME = 25;
 const DEFAULT_FREQUENCY = 5; // 1120 of 20000 in percents
 
-export default class Delay extends FX {
+export class Delay extends FX {
+
+    // TODO
+    chain: any;
+
     constructor(context, masterBus) {
         super({
             context,

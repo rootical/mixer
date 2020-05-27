@@ -2,16 +2,27 @@
 
 import {keys, curry} from 'ramda';
 
-import Track from './../models/track';
+import Track from '../models/track';
 
 import {
     CONTEXT_STATE,
-} from './../constants';
+} from '../constants';
 
+let audioContext;
 
-export const createContext = () => new (window.AudioContext || window.webkitAudioContext)();
+try {
+  audioContext =
+    new (window.AudioContext || window.webkitAudioContext)();
+} catch (error) {
+  console.error(
+    `Sorry, but your browser doesn't support the Web Audio API!`
+  );
+}
 
-export const createMasterBus = (context, connections = []) => {
+export const createContext = () => new (audioContext());
+
+// TODO
+export const createMasterBus = (context, connections: any[] = []) => {
     const gain = context.createGain();
 
     gain.connect(context.destination);

@@ -1,14 +1,4 @@
-import Mixer from '../models/mixer';
-import Delay from '../models/fx/delay';
-import Reverb from '../models/fx/reverb';
-import Distortion from '../models/fx/distortion';
+import {Mixer} from '../models';
+import {Delay, Reverb, Distortion} from '../models';
 
-import {tracks} from '../config';
-
-const effects = [
-    Delay,
-    Reverb,
-    Distortion,
-];
-
-export const mixdesk = new Mixer(tracks, effects);
+export const mixdesk = new Mixer([], [Delay, Reverb, Distortion]);

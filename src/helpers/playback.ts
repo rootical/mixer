@@ -2,7 +2,7 @@ import {map, not} from 'ramda';
 
 import {
     PLAYBACK_STATUS,
-} from './../constants';
+} from '../constants';
 
 
 export const isPlaying = playback => playback.status === PLAYBACK_STATUS.PLAYING;

@@ -1,10 +1,16 @@
 'use strict';
 
 import {last, head} from 'ramda';
-import {setNodeParams, connectNodes, connectNodesSingle, createGainNode} from './../../helpers/node';
+import {setNodeParams, connectNodes, connectNodesSingle, createGainNode} from '../../helpers/node';
 
-
-class FX {
+export class FX {
+    id: string;
+    isLooped: boolean;
+    // TODO
+    chain: any[];
+    context: AudioContext;
+    signalIn: GainNode;
+    signalOut: GainNode;
     constructor({id, context, masterBus}) {
         this.id = id;
         this.isLooped = false;
@@ -67,6 +73,3 @@ class FX {
         return this.isLooped;
     }
 }
-
-
-export default FX

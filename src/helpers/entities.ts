@@ -7,7 +7,7 @@ import {
 import {
     PLAYBACK_STATUS,
     FILTER_TYPES,
-} from './../constants';
+} from '../constants';
 
 
 const createReverbEntity = ({id, responses, currentResponse}) => ({

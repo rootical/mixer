@@ -2,10 +2,9 @@
 
 import {
     getNodeParamNormalizedValue,
-} from './../../helpers/node';
+} from '../../helpers/node';
 
-import FX from './fx-base';
-
+import {FX} from './fx-base';
 
 const STRENGTH_MIN = 0;
 const STRENGTH_MAX = 1000;
@@ -20,30 +19,20 @@ const strengthToNode = value => ({
     value,
 });
 
-export default class Distortion extends FX {
-    constructor(context, masterBus) {
-        super({
-            context,
-            masterBus,
-            id: 'distortion',
-        });
+export class Distortion extends FX {
 
-        this._strength = DEFAULT_STRENGTH;
+    private _strength = DEFAULT_STRENGTH;
 
-        this.addNode(context.createBiquadFilter(), {
-            type: DEFAULT_FILTER_TYPE,
-            frequency: DEFAULT_FILTER_FREQUENCY,
-            Q: DEFAULT_FILTER_Q,
-        })
-
-        this.addNode(context.createWaveShaper(), {
-            curve: this.getCurve(this._strength),
-            oversample: '4x'
-        })
+    get strength() {
+      return getNodeParamNormalizedValue(strengthToNode(this._strength));
+    }
+    set strength(value) {
+        this._strength = value
+        this.tweakNode(1, 'curve', this.getCurve(value))
     }
 
     set filterType(value) {
-        this.tweakNode(0, 'type', value)
+      this.tweakNode(0, 'type', value)
     }
 
     get filterType() {
@@ -58,13 +47,24 @@ export default class Distortion extends FX {
         return getNodeParamNormalizedValue(this.chain[0].frequency);
     }
 
-    set strength(value) {
-        this._strength = value
-        this.tweakNode(1, 'curve', this.getCurve(value))
-    }
 
-    get strength() {
-        return getNodeParamNormalizedValue(strengthToNode(this._strength));
+    constructor(context, masterBus) {
+        super({
+            context,
+            masterBus,
+            id: 'distortion',
+        });
+
+        this.addNode(context.createBiquadFilter(), {
+            type: DEFAULT_FILTER_TYPE,
+            frequency: DEFAULT_FILTER_FREQUENCY,
+            Q: DEFAULT_FILTER_Q,
+        })
+
+        this.addNode(context.createWaveShaper(), {
+            curve: this.getCurve(this._strength),
+            oversample: '4x'
+        })
     }
 
     getCurve(strength) {

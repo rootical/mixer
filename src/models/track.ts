@@ -14,39 +14,25 @@ import {
     TRACK_STATE,
 } from '../constants';
 
-/**
- * @typedef {string} TrackId
- */
-
-/**
- * @typedef {Object} Track
- * @property {number} volume
- * @property {string} title
- * @property {TrackId} id
- */
-
-type TrackId = string;
-
-interface Track {
-  source: AudioBufferSourceNode | null;
-  title: string;
-  id: TrackId;
-  buffer: any;
-  context: AudioContext;
-  pausedAt: number;
-  startedAt: number;
-  muted: boolean;
-  playing: boolean;
-  bypassFX: boolean;
-  // ?
-  state: any;
-  bus: any;
-  fx: {};
-  loadingState: Promise<any>
-  previousVolume: number;
-}
 
 class Track {
+    source: AudioBufferSourceNode | null;
+    title: string;
+    id: string;
+    buffer: any;
+    context: AudioContext;
+    pausedAt: number;
+    startedAt: number;
+    muted: boolean;
+    playing: boolean;
+    bypassFX: boolean;
+    previousVolume: number;
+    // ?
+    state: any;
+    bus: any;
+    fx: {};
+    loadingState: any;
+
     constructor({url, title, context, masterBus, sends = []}) {
         this.id = generateIdByTitle(title);
 
