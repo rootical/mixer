@@ -19,12 +19,7 @@ try {
   );
 }
 
-if (audioContext !== undefined) {
-  /* Our code goes here */
-}
-
-
-export const createContext = () => new (audioContext && audioContext());
+export const createContext = () => new (audioContext());
 
 // TODO
 export const createMasterBus = (context, connections: any[] = []) => {
