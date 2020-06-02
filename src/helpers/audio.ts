@@ -8,18 +8,9 @@ import {
     CONTEXT_STATE,
 } from '../constants';
 
-let audioContext;
-
-try {
-  audioContext =
-    new (window.AudioContext || window.webkitAudioContext)();
-} catch (error) {
-  console.error(
-    `Sorry, but your browser doesn't support the Web Audio API!`
-  );
-}
-
-export const createContext = () => new (audioContext());
+export const createContext = () => {
+  return new AudioContext();
+};
 
 // TODO
 export const createMasterBus = (context, connections: any[] = []) => {
