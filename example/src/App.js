@@ -4,22 +4,22 @@ import {DeskContainer, Context, createState, mixdesk, reducer, setReadyStateOnLo
 import 'react-mixdesk/dist/index.css'
 
 const defaultTracks = [
-  {
-      title : 'Drums',
-      url : 'assets/audio/drums.mp3'
-  },
-  {
-      title : 'Bass',
-      url : 'assets/audio/bass.mp3'
-  },
-  {
-      title : 'Keys',
-      url : 'assets/audio/riddim.mp3'
-  },
-  {
-      title : 'Melodies',
-      url : 'assets/audio/vox.mp3'
-  }
+    {
+        title : 'Drums',
+        url : 'mixer/assets/audio/drums.mp3'
+    },
+    {
+        title : 'Bass',
+        url : 'mixer/assets/audio/bass.mp3'
+    },
+    {
+        title : 'Keys',
+        url : 'mixer/assets/audio/riddim.mp3'
+    },
+    {
+        title : 'Melodies',
+        url : 'mixer/assets/audio/vox.mp3'
+    }
 ];
 
 const App = ({
