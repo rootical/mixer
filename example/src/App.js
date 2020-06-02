@@ -6,19 +6,19 @@ import 'react-mixdesk/dist/index.css'
 const defaultTracks = [
     {
         title : 'Drums',
-        url : 'mixer/assets/audio/drums.mp3'
+        url : 'assets/drums.mp3'
     },
     {
         title : 'Bass',
-        url : 'mixer/assets/audio/bass.mp3'
+        url : 'assets/bass.mp3'
     },
     {
         title : 'Keys',
-        url : 'mixer/assets/audio/riddim.mp3'
+        url : 'assets/riddim.mp3'
     },
     {
         title : 'Melodies',
-        url : 'mixer/assets/audio/vox.mp3'
+        url : 'assets/vox.mp3'
     }
 ];
 
