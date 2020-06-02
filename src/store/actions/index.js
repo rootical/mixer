@@ -1,28 +1,28 @@
     import {curry} from 'ramda';
 
-    import {createMixdesk} from '../createMixdesk';
+    import {mixdesk} from '../mixdesk';
 
 
     export const play = async dispatch => {
-        await createMixdesk().play();
+        await mixdesk.play();
 
         return dispatch({type: 'PLAYBACK_PLAY'});
     };
 
     export const pause = async dispatch => {
-        await createMixdesk().pause();
+        await mixdesk.pause();
 
         return dispatch({type: 'PLAYBACK_PAUSE'});
     };
 
     export const rewind = async dispatch => {
-        await createMixdesk().rewind();
+        await mixdesk.rewind();
 
         return dispatch({type: 'PLAYBACK_REWIND'});
     };
 
     export const setSendParamValue = curry(async (dispatch, effectId, parameterId, value) => {
-        await createMixdesk().setSendParamValue(effectId, parameterId, value);
+        await mixdesk.setSendParamValue(effectId, parameterId, value);
 
         return dispatch({
             type: 'SET_EFFECT_PARAM_VALUE',
@@ -35,19 +35,19 @@
     });
 
     export const setTrackVolume = curry(async (dispatch, trackId, value) => {
-        await createMixdesk().setTrackVolume(trackId, value);
-
+        await mixdesk.setTrackVolume(trackId, value);
+        
         return dispatch({
             type: 'SET_TRACK_VOLUME',
             payload: {
-                trackId,
+                trackId, 
                 value,
             },
         });
     });
 
     export const setTrackSendLevel = curry(async (dispatch, trackId, fxId, value) => {
-        await createMixdesk().setTrackSendLevel(trackId, fxId, value);
+        await mixdesk.setTrackSendLevel(trackId, fxId, value);
 
         return dispatch({
             type: 'SET_TRACK_SEND_LEVEL',
@@ -59,8 +59,8 @@
         });
     });
 
-    export const toggleTrack = curry(async (dispatch, trackId) => {
-        await createMixdesk().toggleTrack(trackId);
+    export const toggleTrack = curry(async (dispatch, trackId) => { 
+        await mixdesk.toggleTrack(trackId);
 
         return dispatch({
             type: 'TRACK_MUTE_TOGGLE',
@@ -71,7 +71,7 @@
     });
 
     export const toggleTrackFx = curry(async (dispatch, trackId) => {
-        await createMixdesk().toggleTrackFx(trackId);
+        await mixdesk.toggleTrackFx(trackId);
 
         return dispatch({
             type: 'TRACK_FX_TOGGLE',

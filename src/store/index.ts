@@ -1,5 +1,5 @@
 export * from './actions';
 export * from './reducers';
 export * from './helpers';
-export * from './createInitialState';
-export * from './createMixdesk';
+export * from './initialState';
+export * from './mixdesk';
