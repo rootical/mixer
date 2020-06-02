@@ -19,7 +19,7 @@ interface DeskProps {
     onPause: () => void;
     onRewind: () => void;
     tracks: [];
-    effects?: [];
+    effects: [];
 };
 
 const Desk: React.FC<DeskProps> = ({
@@ -30,7 +30,7 @@ const Desk: React.FC<DeskProps> = ({
     onRewind = () => {},
 
     tracks = [],
-    effects = [],
+    effects = null,
 }) => {
     const btnClassNames = (isButtonPressed: boolean) => classnames(
         style.control,
@@ -78,9 +78,10 @@ const Desk: React.FC<DeskProps> = ({
                     </button>
                 </div>
 
-                <div className={style.effects}>
+                {effects && <div className={style.effects}>
                     {effects}
-                </div>
+                </div>}
+
             </div>
         </div>
     );

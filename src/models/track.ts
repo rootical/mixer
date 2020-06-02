@@ -90,7 +90,7 @@ class Track {
             .catch(error => {
                 this.state = TRACK_STATE.FAILED;
 
-                console.log('[ERROR LOADING TRACK]', error);
+                console.log('[ERROR LOADING TRACK]', error, `URL: ${url}`);
 
                 return this;
             });
