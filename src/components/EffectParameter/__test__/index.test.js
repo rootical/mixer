@@ -12,7 +12,7 @@ const propsMock = {
 };
 
 describe('<EffectParameter />', () => {
-	it('should renders without any errors', () => {
+	it('should render without any errors', () => {
 		const wrapper = shallow(<EffectParameter {...propsMock} />);
 
 		expect(wrapper).toMatchSnapshot();
