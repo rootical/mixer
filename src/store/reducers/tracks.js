@@ -4,7 +4,7 @@ const setTrackVolume = (volume, trackId, tracks) => tracks.map(track => {
             ...track,
             volume,
         };
-    } 
+    }
 
     return track;
 });
@@ -87,7 +87,10 @@ export const trackReducer = (tracks, {type, payload}) => {
                 payload.trackId,
                 tracks,
             );
+        case 'SET_TRACKS':
+          return [...payload];
         default:
             return tracks;
     }
 };
+

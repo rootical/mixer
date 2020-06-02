@@ -1,15 +1,45 @@
 import React, {useReducer, useEffect} from 'react';
 
-import {DeskContainer, Context, initialState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
+import {DeskContainer, Context, createState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
 import 'react-mixdesk/dist/index.css'
 
-const App = () => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+const defaultTracks = [
+  {
+      title : 'Drums',
+      url : 'assets/audio/drums.mp3'
+  },
+  {
+      title : 'Bass',
+      url : 'assets/audio/bass.mp3'
+  },
+  {
+      title : 'Keys',
+      url : 'assets/audio/riddim.mp3'
+  },
+  {
+      title : 'Melodies',
+      url : 'assets/audio/vox.mp3'
+  }
+];
+
+const App = ({
+  tracks = defaultTracks,
+  eventListener = (...args) => {},
+}) => {
+    const [state, dispatch] = useReducer(reducer, createState(mixdesk));
     const dispatchWithLog = getDispatchWithLog(dispatch);
 
     useEffect(() => {
-        setReadyStateOnLoad(dispatchWithLog, mixdesk);
-    }, []);
+        mixdesk.load(tracks).then(trackStates => {
+            const {tracks} = createState(mixdesk);
+
+            setReadyStateOnLoad((...args) => {
+                dispatchWithLog(...args);
+                dispatchWithLog({ type: 'SET_TRACKS', payload: tracks });
+                eventListener(...args);
+            }, mixdesk);
+        });
+    }, [tracks]);
 
     return (
         <Context.Provider value={dispatchWithLog}>
