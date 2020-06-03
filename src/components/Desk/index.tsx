@@ -44,12 +44,11 @@ const Desk: React.FC<DeskProps> = ({
         <div className={style.desk}>
             <div className={style.tracks}>
                 {tracks}
+                {playback.analyser && <Meter analyser={playback.analyser} />}
             </div>
 
             <div className={style.controlsContainer}>
                 <div className={style.controls}>
-                    {playback.analyser && <Meter analyser={playback.analyser} />}
-
                     <button
                         className={btnClassNames(isPlaying(playback))}
                         onClick={onPlay}

@@ -6,14 +6,15 @@ import Fader from './../Fader';
 
 import style from './style.module.css';
 
-interface Track {
+interface TrackProps {
     id: number;
     title: string;
     volume: number;
     isMuted: boolean;
     isSolo: boolean;
     isEffectsDisabled: boolean;
-    send?: {};
+    // TODO: Types
+    send: any;
     onMute: (id) => {};
     onSolo: (id) => {};
     onBypass: (id) => {};
@@ -21,61 +22,59 @@ interface Track {
     onSendLevelChange?: (id) => {};
 }
 
-const Track: React.FC<Track> = ({
-    id,
-    title = 'Untitled',
-    volume = 0,
-    isMuted = false,
-    isSolo = false,
-    isEffectsDisabled = false,
-    send = {},
+const Track: React.FC<TrackProps> = (props) => (
 
-    onMute = (id) => id,
-    onSolo = (id) => id,
-    onBypass = (id) => id,
-    onVolumeChange = (id) => id,
-    onSendLevelChange = (id) => id,
-}) => {
-
-    console.log(send);
-
-    return <div className={style.track}>
-
-        <div className={style.buttonsContainer}>
+    <div className={style.track}>
+        <div className={style.trackControls}>
             <button
-                className={classnames(style.button, isMuted && style.isPressed)}
-                onClick={() => onMute(id)}>
+                className={classnames(style.button, props.isMuted && style.isPressed)}
+                onClick={() => props.onMute(props.id)}>
                     M
             </button>
             <button
-                className={classnames(style.button, isSolo && style.isPressed)}
-                onClick={() => onSolo(id)}>
+                className={classnames(style.button, props.isSolo && style.isPressed)}
+                onClick={() => props.onSolo(props.id)}>
                     S
             </button>
             {
-            send && <button
-            className={classnames(style.button, isEffectsDisabled && style.isPressed)}
-            onClick={() => onBypass(id)}>
+            keys(props.send).length > 0 && <button
+            className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
+            onClick={() => props.onBypass(props.id)}>
                 Bypass FX
               </button>
             }
         </div>
 
-        <Fader onChange={onVolumeChange} value={volume} isVertical={true} />
+        <Fader onChange={props.onVolumeChange} value={props.volume} isVertical={true} />
 
-        {send &&
+        {keys(props.send).length > 0 &&
             <div className={style.sends}>
-                {keys(send).map(sendId => (
+                {keys(props.send).map(sendId => (
                     <div className={style.send} key={sendId}>
                         <span className={style.sendTitle}>{sendId}</span>
-                        <Fader onChange={onSendLevelChange(sendId)} value={send[sendId]} />
+                        <Fader onChange={props.onSendLevelChange(sendId)} value={props.send[sendId]} />
                     </div>
                 ))}
             </div>
         }
 
-        <div className={style.title}>{title}</div>
+        <div className={style.title}>{props.title}</div>
     </div>
-};
+);
+
+Track.defaultProps = {
+  title: 'Untitled',
+  volume: 0,
+  isMuted: false,
+  isSolo: false,
+  isEffectsDisabled: false,
+  // TODO: why is it always truthy even though no send is passed
+  send: null,
+  onMute: (id) => id,
+  onSolo: (id) => id,
+  onBypass: (id) => id,
+  onVolumeChange: (id) => id,
+  onSendLevelChange: (id) => id
+} as Partial<TrackProps>;
 
 export default Track;

@@ -22,13 +22,23 @@ describe('Track', () => {
     describe('volume', () => {
         it('sets correctly', () => {
             const volume = 42.0;
-            
+
             track.volume = volume;
 
             expect(track.volume).toBe(volume);
         });
     });
-    
+
+    describe('pan', () => {
+      it('sets correctly', () => {
+          const pan = 42.0;
+
+          track.pan = pan;
+
+          expect(track.pan).toBe(pan);
+      });
+    })
+
     describe('play()', () => {
         it('starts to play track', () => {
             track.play();
@@ -36,7 +46,7 @@ describe('Track', () => {
             expect(track.playing).toBe(true);
         });
     });
-    
+
     describe('pause()', () => {
         it('pauses track', () => {
             track.play();
@@ -102,3 +112,4 @@ describe('Track', () => {
         });
     });
 });
+
