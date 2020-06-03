@@ -3,7 +3,7 @@
 
     text-align: center;
 
-    background: #c4cace; /* url("i/metal-texture-small.jpg"); */
+    background-color: #808080;
     background-size: contain;
 }
 
@@ -14,9 +14,8 @@
 .control {
     position: relative;
 
-    height: calc(100% - 68px);
-    margin-top: 34px;
-    margin-bottom: 34px;
+    height: calc(100% - 16px);
+    margin-top: 16px;
 }
 
 .control:after {

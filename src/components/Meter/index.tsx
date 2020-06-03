@@ -13,8 +13,8 @@ interface MeterProps {
 
 const Meter: React.FC<MeterProps> = ({
     analyser = null,
-    width = 210,
-    height = 20,
+    width = 0,
+    height = 210,
 }) => {
     if (!analyser) {
         return null;
@@ -34,7 +34,7 @@ const Meter: React.FC<MeterProps> = ({
             if (context) {
               context.clearRect(0, 0, width, height);
               context.fillStyle = createMeterGradient(context as any, {width, height});
-              context.fillRect(0, 0, (width / 100) * average, height);
+              context.fillRect(0, 0, width, (height / 100) * average);
             }
             requestAnimationFrame(drawMeter);
         }

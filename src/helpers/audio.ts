@@ -8,18 +8,7 @@ import {
     CONTEXT_STATE,
 } from '../constants';
 
-let audioContext;
-
-try {
-  audioContext =
-    new (window.AudioContext || window.webkitAudioContext)();
-} catch (error) {
-  console.error(
-    `Sorry, but your browser doesn't support the Web Audio API!`
-  );
-}
-
-export const createContext = () => new (audioContext());
+export const createContext = () => new (window.AudioContext || window.webkitAudioContext)();
 
 // TODO
 export const createMasterBus = (context, connections: any[] = []) => {
@@ -38,6 +27,8 @@ export const createAnalyser = (context, parameters = {fftSize: 2048}) => {
 
     return analyser;
 };
+
+export const createPanner = context => context.createStereoPanner();
 
 export const createTrackFromSource = curry(({context, masterBus, sends = []}, {url, title}) => new Track({
     url,
