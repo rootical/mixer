@@ -1,4 +1,4 @@
-# react-mixdesk
+# react-mixdesk-exp
 
 > Your Web Dub mixing console. Experimental. Mind this is a fork!
 
