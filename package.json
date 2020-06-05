@@ -1,7 +1,7 @@
 {
   "name": "react-mixdesk-exp",
   "version": "0.0.0",
-  "description": "Your Web Dub mixing console",
+  "description": "React web dub mixdesk",
   "author": "prophetpanama, rootical",
   "license": "MIT",
   "repository": "rootical/mixer",
@@ -53,8 +53,7 @@
     "ramda": "^0.26.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1",
-    "standardized-audio-context-mock": "^8.3.10"
+    "react-scripts": "^3.4.1"
   },
   "files": [
     "dist"
