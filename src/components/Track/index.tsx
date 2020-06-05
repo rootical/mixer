@@ -63,8 +63,9 @@ const Track: React.FC<TrackProps> = (props) => (
 );
 
 Track.defaultProps = {
+  // TODO: Default track props do not work
   title: 'Untitled',
-  volume: 0,
+  volume: 70,
   isMuted: false,
   isSolo: false,
   isEffectsDisabled: false,

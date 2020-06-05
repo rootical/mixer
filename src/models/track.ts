@@ -34,7 +34,7 @@ class Track {
     loadingState: any;
     panner: any;
 
-    constructor({url, title, context, masterBus, sends = []}) {
+    constructor({url, title, context, masterBus, sends = [], volume = 70}) {
         this.id = generateIdByTitle(title);
 
         this.buffer = null;
@@ -58,6 +58,9 @@ class Track {
         connectNodes(this.panner, masterBus);
 
         this.fx = {};
+
+        // TODO: why default track props doesn't work
+        this.volume = volume;
 
         if (sends.length > 0) {
             this.addFx(sends);

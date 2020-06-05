@@ -19,7 +19,6 @@ export const TrackContainer = props => {
         <Track
             {...props}
 
-            volume={70}
             onMute={toggleTrack(dispatch)}
             onBypass={toggleTrackFx(dispatch)}
             onVolumeChange={setTrackVolume(dispatch, trackId)}

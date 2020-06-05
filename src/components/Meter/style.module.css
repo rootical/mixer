@@ -1,6 +1,6 @@
 .meter {
     position: relative;
-
+    z-index: 0;
     width: 8px;
     height: 100%;
     margin-bottom: 8px;
