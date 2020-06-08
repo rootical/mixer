@@ -54,6 +54,9 @@ export const getDispatchWithLog = curry((dispatch, args) => {
 });
 
 export const createState = mixdesk => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
     const tracks = compact(mixdesk.tracks.map(createTrackEntity));
     const effects = compact(mixdesk.fx.map(createEffectEntity));
     const playback = createPlaybackEntity({
@@ -66,3 +69,4 @@ export const createState = mixdesk => {
         playback,
     };
 }
+

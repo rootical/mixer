@@ -20,15 +20,15 @@ export class Mixer {
     masterBus: GainNode;
 
     constructor(sources: any[] = [], effects: any[] = []) {
-
-          this.context =  createContext();
+        if (typeof window !== 'undefined') {
+          this.context = createContext();
 
           this.analyser = createAnalyser(this.context);
           this.masterBus = createMasterBus(this.context, [this.analyser]);
           this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
 
           this.load(sources);
-
+        }
     }
 
     /**
