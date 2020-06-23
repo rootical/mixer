@@ -7,9 +7,9 @@ import {fetchAudioAsArrayBuffer} from '../../helpers/audio';
 
 // TODO: lib assets
 const RESPONSES = {
-    'Versatile': 'assets/audio/impulse-response/impulse-1.mp3',
-    'Pattan': 'assets/audio/impulse-response/impulse-2.mp3',
-    'Style': 'assets/audio/impulse-response/impulse-3.mp3',
+    'Versatile': 'https://panamaprophet.com/mixdesk/assets/audio/impulse-response/impulse-1.mp3',
+    'Pattan': 'https://panamaprophet.com/mixdesk/assets/audio/impulse-response/impulse-2.mp3',
+    'Style': 'https://panamaprophet.com/mixdesk/assets/audio/impulse-response/impulse-3.mp3',
 };
 
 export class Reverb extends FX {
@@ -54,7 +54,7 @@ export class Reverb extends FX {
             await fetchAudioAsArrayBuffer(url)
                 .catch(error => console.log('[ERROR LOADING RESPONSE]', error));
 
-        if (arrayBuffer.byteLength > 0) {
+        if (arrayBuffer?.byteLength > 0) {
             const decodedDataPromise = new Promise((resolve, reject) =>
                 this.context.decodeAudioData(arrayBuffer, resolve, reject));
 

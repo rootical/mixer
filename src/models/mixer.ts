@@ -25,6 +25,7 @@ export class Mixer {
 
           this.analyser = createAnalyser(this.context);
           this.masterBus = createMasterBus(this.context, [this.analyser]);
+
           this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
 
           this.load(sources);
