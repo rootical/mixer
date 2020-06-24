@@ -9,9 +9,7 @@ import {
 import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
 import {playAll, pauseAll, rewindAll} from '../helpers/playback';
 
-
 export class Mixer {
-    // TODO: types
     context: AudioContext;
     analyser: AnalyserNode;
     tracks: any[];
@@ -19,7 +17,7 @@ export class Mixer {
     fx: any[];
     masterBus: GainNode;
 
-    constructor(sources: any[] = [], effects: any[] = []) {
+    constructor(sources= [], effects = []) {
         if (typeof window !== 'undefined') {
           this.context = createContext();
 

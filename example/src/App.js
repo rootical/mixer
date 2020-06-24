@@ -1,6 +1,6 @@
 import React, {useReducer, useEffect} from 'react';
 
-import {DeskContainer, Context, createState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
+import {DeskContainer, Context, createState, mixdeskInstance, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
 import 'react-mixdesk/dist/index.css'
 
 const defaultTracks = [
@@ -30,14 +30,13 @@ const App = ({
     const dispatchWithLog = getDispatchWithLog(dispatch);
 
     useEffect(() => {
-        mixdesk.load(tracks).then(trackStates => {
-            const {tracks} = createState(mixdesk);
-
+        mixdeskInstance.load(tracks).then(trackStates => {
+            const {tracks} = state;
             setReadyStateOnLoad((...args) => {
                 dispatchWithLog(...args);
                 dispatchWithLog({ type: 'SET_TRACKS', payload: tracks });
                 eventListener(...args);
-            }, mixdesk);
+            }, mixdeskInstance);
         });
     }, [tracks]);
 
