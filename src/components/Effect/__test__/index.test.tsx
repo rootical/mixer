@@ -1,8 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import Effect from '../';
-
+import Effect from '..';
 
 const propsMock = {
     name: 'Effect',

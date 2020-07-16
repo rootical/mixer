@@ -1,13 +1,14 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 
-import Track from '../';
+import Track from '..';
 
 
 const propsMock = {
     id: 'track',
     title: 'Track',
     volume: 42.0,
+    isSolo: false,
     isMuted: false,
     isEffectsDisabled: false,
     send: {
@@ -18,10 +19,12 @@ const propsMock = {
     onBypass: jest.fn(),
     onVolumeChange: jest.fn(),
     onSendLevelChange: jest.fn(),
+    onSolo: jest.fn()
 };
 
 const MUTE_BUTTON = 0;
-const FX_BYPASS_BUTTON = 1;
+const SOLO_BUTTON = 1;
+const FX_BYPASS_BUTTON = 2;
 const FADER_VOLUME = 0;
 const FADER_SEND = 1;
 
@@ -45,6 +48,18 @@ describe('<Track />', () => {
 
             expect(propsMock.onMute).toBeCalled();
         });
+    });
+
+    describe('onSolo', () => {
+      it('should be called on solo toggler click', () => {
+          const wrapper = shallow(
+              <Track {...propsMock} />
+          );
+
+          wrapper.find('button').at(SOLO_BUTTON).simulate('click');
+
+          expect(propsMock.onSolo).toBeCalled();
+      });
     });
 
     describe('onBypass', () => {

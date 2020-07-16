@@ -1,11 +1,11 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 
-import Fader from '../';
+import Fader from '..';
 
 
 describe('<Fader />', () => {
-    it('should renders without any errors', () => {
+    it('should render without any errors', () => {
         const wrapper = shallow(
             <Fader />
         );

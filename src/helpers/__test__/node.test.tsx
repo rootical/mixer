@@ -1,4 +1,4 @@
-import * as Node from '/helpers/node';
+import * as Node from '../node';
 
 
 describe('node helpers', () => {

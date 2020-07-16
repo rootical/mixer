@@ -1,8 +1,8 @@
 import {
     PLAYBACK_STATUS,
-} from '/constants';
+} from '../../constants';
 
-import * as Playback from '/helpers/playback';
+import * as Playback from '../playback';
 
 
 describe('playback helpers', () => {

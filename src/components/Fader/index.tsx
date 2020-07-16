@@ -25,10 +25,10 @@ const hasTouchEventsSupport = () => isServer && 'ontouchstart' in window;
 const getEventNameByFeature = (eventName) => hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName;
 
 interface FaderProps {
-    value: number;
+    value?: number;
     isVertical?: boolean;
     // TODO: 🤯 Refactor onChange due to type inconsistency
-    onChange: any;
+    onChange?: any;
 }
 
 const Fader: React.FC<FaderProps> = ({

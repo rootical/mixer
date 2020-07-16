@@ -12,10 +12,12 @@ const EffectParameterMap = {
 
 const getControlByType = type => EffectParameterMap[type];
 
+export type EffectParameterType = 'fader' | 'radio';
+
 export interface EffectParameterProps {
   id: string;
   name: string;
-  type: 'fader' | 'radio';
+  type: EffectParameterType;
   onChange: (id) => void;
 }
 
