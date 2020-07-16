@@ -1,5 +1,3 @@
-'use strict';
-
 import {keys} from 'ramda';
 
 import {isAudioParam} from './audio';

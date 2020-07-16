@@ -8,7 +8,7 @@ import {
     CONTEXT_STATE,
 } from '../constants';
 
-export const createContext = () => new (window.AudioContext || window.webkitAudioContext)();
+export const createContext = () => new AudioContext();
 
 // TODO
 export const createMasterBus = (context, connections: any[] = []) => {
