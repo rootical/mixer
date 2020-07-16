@@ -1,6 +1,6 @@
 import React, {useReducer, useEffect} from 'react';
 
-import {DeskContainer, Context, createState, mixdeskInstance, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
+import {DeskContainer, Context, createState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
 import 'react-mixdesk/dist/index.css'
 
 const defaultTracks = [
@@ -26,19 +26,19 @@ const App = ({
   tracks = defaultTracks,
   eventListener = (...args) => {},
 }) => {
-    const [state, dispatch] = useReducer(reducer, createState(mixdesk));
-    const dispatchWithLog = getDispatchWithLog(dispatch);
+    const [state, dispatch] = useReducer(reducer, createState(mixdesk))
+    const dispatchWithLog = getDispatchWithLog(dispatch)
 
     useEffect(() => {
-        mixdeskInstance.load(tracks).then(trackStates => {
-            const {tracks} = state;
-            setReadyStateOnLoad((...args) => {
-                dispatchWithLog(...args);
-                dispatchWithLog({ type: 'SET_TRACKS', payload: tracks });
-                eventListener(...args);
-            }, mixdeskInstance);
-        });
-    }, [tracks]);
+      mixdesk.load(tracks).then((trackStates) => {
+        setReadyStateOnLoad((...args) => {
+          dispatchWithLog(...args)
+          dispatchWithLog({ type: 'SET_TRACKS', payload: trackStates })
+          eventListener(...args)
+        }, mixdesk)
+      })
+    // eslint-disable-next-line
+    }, [tracks])
 
     return (
         <Context.Provider value={dispatchWithLog}>
