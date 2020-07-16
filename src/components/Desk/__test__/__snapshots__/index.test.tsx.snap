@@ -6,16 +6,17 @@ exports[`<Desk /> should renders without any errors 1`] = `
 >
   <div
     className="tracks"
-  />
+  >
+    <Meter
+      analyser={Object {}}
+    />
+  </div>
   <div
     className="controlsContainer"
   >
     <div
       className="controls"
     >
-      <Meter
-        analyser={Object {}}
-      />
       <button
         className="control button"
         disabled={false}

@@ -7,7 +7,7 @@ import Fader from './../Fader';
 import style from './style.module.css';
 
 interface TrackProps {
-    id: number;
+    id: string;
     title: string;
     volume: number;
     isMuted: boolean;

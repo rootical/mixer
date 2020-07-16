@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Fader /> should renders without any errors 1`] = `
+exports[`<Fader /> should render without any errors 1`] = `
 <div
   className="fader isHorisontal"
 >

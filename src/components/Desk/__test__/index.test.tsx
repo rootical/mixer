@@ -1,17 +1,25 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import {Desk} from '../';
+import Desk from '../'
 
 import {
     PLAYBACK_STATUS,
-} from '/constants';
+} from '../../../constants';
 
 const playbackMock = {
     analyser: {},
     status: PLAYBACK_STATUS.PAUSED,
-    currentPosition: 0,
+    currentPosition: 0
 };
+
+const deskProps = {
+  tracks: [],
+  effects: [],
+  onPlay: () => {},
+  onPause: () => {},
+  onRewind: () => {}
+}
 
 const PLAY_BUTTON = 0;
 const PAUSE_BUTTON = 1;
@@ -21,7 +29,7 @@ const REWIND_BUTTON = 2;
 describe('<Desk />', () => {
     it('should renders without any errors', () => {
         const wrapper = shallow(
-            <Desk playback={{
+            <Desk {...deskProps} playback={{
                 ...playbackMock,
             }} />
         );
@@ -32,7 +40,7 @@ describe('<Desk />', () => {
     describe('playback buttons', () => {
         it('should be disabled if mixdesk is not active', () => {
             const wrapper = shallow(
-                <Desk playback={{
+                <Desk {...deskProps} playback={{
                     ...playbackMock,
                     status: PLAYBACK_STATUS.NOT_SET,
                 }} />
@@ -47,7 +55,7 @@ describe('<Desk />', () => {
     describe('play button', () => {
         it('should call onPlay on press', () => {
             const onPlay = jest.fn();
-            const wrapper = shallow(<Desk playback={{
+            const wrapper = shallow(<Desk {...deskProps} playback={{
                 ...playbackMock,
             }} onPlay={onPlay} />);
 
@@ -57,7 +65,7 @@ describe('<Desk />', () => {
         });
 
         it('should have active class on playing', () => {
-            const wrapper = shallow(<Desk playback={{
+            const wrapper = shallow(<Desk {...deskProps} playback={{
                 ...playbackMock,
                 status: PLAYBACK_STATUS.PLAYING,
             }} />);
@@ -71,7 +79,7 @@ describe('<Desk />', () => {
     describe('pause button', () => {
         it('should call onPause on press', () => {
             const onPause = jest.fn();
-            const wrapper = shallow(<Desk playback={{
+            const wrapper = shallow(<Desk {...deskProps} playback={{
                 ...playbackMock,
             }} onPause={onPause} />);
 
@@ -81,7 +89,7 @@ describe('<Desk />', () => {
         });
 
         it('should have active class on pause', () => {
-            const wrapper = shallow(<Desk playback={{
+            const wrapper = shallow(<Desk {...deskProps} playback={{
                 ...playbackMock,
                 status: PLAYBACK_STATUS.PAUSED,
                 currentPosition: 420,
@@ -96,7 +104,7 @@ describe('<Desk />', () => {
     describe('rewind button', () => {
         it('should call onRewind on press', () => {
             const onRewind = jest.fn();
-            const wrapper = shallow(<Desk playback={{
+            const wrapper = shallow(<Desk {...deskProps} playback={{
                 ...playbackMock,
             }} onRewind={onRewind} />);
 

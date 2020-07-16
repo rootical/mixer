@@ -1,13 +1,13 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import EffectParameter from '../';
+import EffectParameter, {EffectParameterType} from '../';
 
 
 const propsMock = {
     id: 'delay',
     name: 'Delay',
-    type: 'radio',
+    type: 'radio' as EffectParameterType,
     onChange: jest.fn(),
 };
 
@@ -21,8 +21,7 @@ describe('<EffectParameter />', () => {
 	describe('type', () => {
 		it('"radio" renders <Radio />', () => {
 			const props = {
-				...propsMock,
-				type: 'radio',
+				...propsMock
 			};
 
 			const wrapper = shallow(<EffectParameter {...props} />);
@@ -34,7 +33,7 @@ describe('<EffectParameter />', () => {
 		it('"fader" renders <Fader />', () => {
 			const props = {
 				...propsMock,
-				type: 'fader',
+				type: 'fader' as EffectParameterType,
 			};
 
 			const wrapper = shallow(<EffectParameter {...props} />);
@@ -47,7 +46,7 @@ describe('<EffectParameter />', () => {
 		it('returns nothing for unsupported type', () => {
 			const props = {
 				...propsMock,
-				type: 'weed',
+				type: 'weed' as EffectParameterType,
 			};
 
 			const wrapper = shallow(<EffectParameter {...props} />);

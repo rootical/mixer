@@ -18,8 +18,8 @@ interface DeskProps {
     onPlay: () => void;
     onPause: () => void;
     onRewind: () => void;
-    tracks: [];
-    effects: [];
+    tracks: any[];
+    effects: any[];
 };
 
 const Desk: React.FC<DeskProps> = ({

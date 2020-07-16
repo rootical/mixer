@@ -4,19 +4,20 @@ exports[`<Track /> should renders without any errors 1`] = `
 <div
   className="track"
 >
-  <Fader
-    isVertical={true}
-    onChange={[MockFunction]}
-    value={42}
-  />
   <div
-    className="buttons"
+    className="trackControls"
   >
     <button
       className="button"
       onClick={[Function]}
     >
-      Mute
+      M
+    </button>
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      S
     </button>
     <button
       className="button"
@@ -25,6 +26,11 @@ exports[`<Track /> should renders without any errors 1`] = `
       Bypass FX
     </button>
   </div>
+  <Fader
+    isVertical={true}
+    onChange={[MockFunction]}
+    value={42}
+  />
   <div
     className="sends"
   >
