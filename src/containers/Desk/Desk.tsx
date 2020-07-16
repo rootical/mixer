@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 
-import Desk from '../../components/Desk';
+import Desk from './../../components/Desk';
 import {EffectContainer} from './../Effect';
 import {Context} from './../Context';
 import {TrackContainer} from './../Track/Track';
@@ -9,7 +9,7 @@ import {
     play,
     pause,
     rewind,
-} from '../../store/actions';
+} from './../../store/actions';
 
 // TODO: add types
 export const DeskContainer = ({

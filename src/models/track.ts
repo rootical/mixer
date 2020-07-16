@@ -29,7 +29,7 @@ class Track {
     previousVolume: number;
     // ?
     state: any;
-    bus: any;
+    bus: GainNode;
     fx: {};
     loadingState: any;
     panner: any;
@@ -68,7 +68,6 @@ class Track {
 
         this.loadingState = this.load(url);
     }
-
 
     get volume() {
         return getNodeParamNormalizedValue(this.bus.gain);

@@ -75,6 +75,7 @@ export const createTrackEntity = ({id, title, volume, muted, bypassFX, fx, state
 });
 
 export const createEffectEntity = effect => {
+
     switch (effect.id) { //@TODO: switch to type
         case 'delay':
             return createDelayEntity(effect);

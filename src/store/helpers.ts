@@ -58,7 +58,9 @@ export const createState = mixdesk => {
       return null;
     }
     const tracks = compact(mixdesk.tracks.map(createTrackEntity));
+
     const effects = compact(mixdesk.fx.map(createEffectEntity));
+
     const playback = createPlaybackEntity({
         analyser: mixdesk.analyser,
     });

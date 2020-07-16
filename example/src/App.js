@@ -26,20 +26,19 @@ const App = ({
   tracks = defaultTracks,
   eventListener = (...args) => {},
 }) => {
-    const [state, dispatch] = useReducer(reducer, createState(mixdesk));
-    const dispatchWithLog = getDispatchWithLog(dispatch);
+    const [state, dispatch] = useReducer(reducer, createState(mixdesk))
+    const dispatchWithLog = getDispatchWithLog(dispatch)
 
     useEffect(() => {
-        mixdesk.load(tracks).then(trackStates => {
-            const {tracks} = createState(mixdesk);
-
-            setReadyStateOnLoad((...args) => {
-                dispatchWithLog(...args);
-                dispatchWithLog({ type: 'SET_TRACKS', payload: tracks });
-                eventListener(...args);
-            }, mixdesk);
-        });
-    }, [tracks]);
+      mixdesk.load(tracks).then((trackStates) => {
+        setReadyStateOnLoad((...args) => {
+          dispatchWithLog(...args)
+          dispatchWithLog({ type: 'SET_TRACKS', payload: trackStates })
+          eventListener(...args)
+        }, mixdesk)
+      })
+    // eslint-disable-next-line
+    }, [tracks])
 
     return (
         <Context.Provider value={dispatchWithLog}>

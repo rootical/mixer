@@ -61,7 +61,7 @@ export const connectNodesSingle = (source, destination) => {
     connectNodes(source, destination);
 };
 
-export const createGainNode = (context, defaultVolume = 1) => {
+export const createGainNode = (context: AudioContext, defaultVolume = 1): GainNode => {
     const gain = context.createGain();
     gain.gain.value = defaultVolume;
 
