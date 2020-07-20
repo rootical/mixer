@@ -5,20 +5,16 @@ import 'react-mixdesk/dist/index.css'
 
 const defaultTracks = [
     {
+        title : 'Click',
+        url : 'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/009/original/CLICK.m4a?1594846181'
+    },
+    {
+        title : 'Guide',
+        url : 'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/021/original/GUIDE.m4a?1594846181'
+    },
+    {
         title : 'Drums',
-        url : 'assets/drums.mp3'
-    },
-    {
-        title : 'Bass',
-        url : 'assets/bass.mp3'
-    },
-    {
-        title : 'Keys',
-        url : 'assets/riddim.mp3'
-    },
-    {
-        title : 'Melodies',
-        url : 'assets/vox.mp3'
+        url : 'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/033/original/DRUMS.m4a?1594846181'
     }
 ];
 

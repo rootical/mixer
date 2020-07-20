@@ -30,7 +30,7 @@ const Desk: React.FC<DeskProps> = ({
     onRewind = () => {},
 
     tracks = [],
-    effects = null,
+    effects = [],
 }) => {
     const btnClassNames = (isButtonPressed: boolean) => classnames(
         style.control,

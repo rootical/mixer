@@ -7,9 +7,9 @@ import {fetchAudioAsArrayBuffer} from '../../helpers/audio';
 
 // TODO: lib assets
 const RESPONSES = {
-    'Versatile': 'https://panamaprophet.com/mixdesk/assets/audio/impulse-response/impulse-1.mp3',
-    'Pattan': 'https://panamaprophet.com/mixdesk/assets/audio/impulse-response/impulse-2.mp3',
-    'Style': 'https://panamaprophet.com/mixdesk/assets/audio/impulse-response/impulse-3.mp3',
+    'Versatile': 'assets/impulse-1.mp3',
+    'Pattan': 'assets/impulse-2.mp3',
+    'Style': 'assets/impulse-3.mp3',
 };
 
 export class Reverb extends FX {

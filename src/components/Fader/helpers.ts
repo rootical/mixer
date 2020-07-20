@@ -1,8 +1,3 @@
-'use strict';
-
-
-import {min, max} from 'ramda';
-
 /**
  * @returns {number} vertical coordinate from touch or mouse event
  */
