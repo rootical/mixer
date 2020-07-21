@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import Meter from './../Meter';
+import MasterTrack from '../MasterTrack';
 import Icon from './../Icon';
 
 import {
@@ -18,6 +18,7 @@ interface DeskProps {
     onPlay: () => void;
     onPause: () => void;
     onRewind: () => void;
+    onMasterVolumeChange: (value) => void;
     tracks: any[];
     effects: any[];
 };
@@ -28,9 +29,9 @@ const Desk: React.FC<DeskProps> = ({
     onPlay = () => {},
     onPause = () => {},
     onRewind = () => {},
-
+    onMasterVolumeChange = () => {},
     tracks = [],
-    effects = null,
+    effects = [],
 }) => {
     const btnClassNames = (isButtonPressed: boolean) => classnames(
         style.control,
@@ -44,7 +45,7 @@ const Desk: React.FC<DeskProps> = ({
         <div className={style.desk}>
             <div className={style.tracks}>
                 {tracks}
-                {playback.analyser && <Meter analyser={playback.analyser} />}
+                {playback.analyser && <MasterTrack volume={playback.volume} onVolumeChange={onMasterVolumeChange} analyser={playback.analyser} />}
             </div>
 
             <div className={style.controlsContainer}>

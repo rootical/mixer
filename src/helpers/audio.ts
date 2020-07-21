@@ -11,7 +11,7 @@ import {
 export const createContext = () => new AudioContext();
 
 // TODO
-export const createMasterBus = (context, connections: any[] = []) => {
+export const createMasterBus = (context: AudioContext, connections: any[] = []): GainNode => {
     const gain = context.createGain();
 
     gain.connect(context.destination);
@@ -20,7 +20,7 @@ export const createMasterBus = (context, connections: any[] = []) => {
     return gain;
 };
 
-export const createAnalyser = (context, parameters = {fftSize: 2048}) => {
+export const createAnalyser = (context: AudioContext, parameters = {fftSize: 2048}): AnalyserNode => {
     const analyser = context.createAnalyser();
 
     keys(parameters).map(key => analyser[key] = parameters[key]);
@@ -28,7 +28,7 @@ export const createAnalyser = (context, parameters = {fftSize: 2048}) => {
     return analyser;
 };
 
-export const createPanner = context => context.createStereoPanner();
+export const createPanner = (context: AudioContext) => context.createStereoPanner();
 
 export const createTrackFromSource = curry(({context, masterBus, sends = []}, {url, title}) => new Track({
     url,
@@ -40,7 +40,7 @@ export const createTrackFromSource = curry(({context, masterBus, sends = []}, {u
 
 export const isAudioParam = (node, parameter) => node[parameter] instanceof AudioParam;
 
-export const fetchAudioAsArrayBuffer = url => fetch(url).then(response => response.arrayBuffer());
+export const fetchAudioAsArrayBuffer = (url): Promise<ArrayBuffer> => fetch(url).then(response => response.arrayBuffer());
 
 export const isContextRunning = context => context.state === CONTEXT_STATE.RUNNING;
 

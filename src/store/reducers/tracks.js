@@ -34,6 +34,17 @@ const toggleTrackMute = (trackId, tracks) => tracks.map(track => {
     return track;
 });
 
+const toggleTrackSolo = (trackId, tracks) => tracks.map(track => {
+  if (track.id === trackId) {
+      return {
+          ...track,
+          isSolo: !track.isSolo,
+      };
+  }
+
+  return track;
+});
+
 const toggleTrackFxBypass = (trackId, tracks) => tracks.map(track => {
     if (track.id === trackId) {
         return {
@@ -76,6 +87,11 @@ export const trackReducer = (tracks, {type, payload}) => {
                 payload.trackId,
                 tracks
             );
+        case 'TRACK_SOLO_TOGGLE':
+            return toggleTrackSolo(
+              payload.trackId,
+              tracks
+            )
         case 'TRACK_FX_TOGGLE':
             return toggleTrackFxBypass(
                 payload.trackId,

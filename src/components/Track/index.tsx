@@ -6,6 +6,9 @@ import Fader from './../Fader';
 
 import style from './style.module.css';
 
+type FXType = 'delay' | 'reverb' | 'distortion'
+type FX = Record<FXType, number>;
+
 interface TrackProps {
     id: string;
     title: string;
@@ -14,7 +17,7 @@ interface TrackProps {
     isSolo: boolean;
     isEffectsDisabled: boolean;
     // TODO: Types
-    send: any;
+    fx: FX;
     onMute: (id) => {};
     onSolo: (id) => {};
     onBypass: (id) => {};
@@ -37,7 +40,7 @@ const Track: React.FC<TrackProps> = (props) => (
                     S
             </button>
             {
-            keys(props.send).length > 0 && <button
+            keys(props.fx).length > 0 && <button
             className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
             onClick={() => props.onBypass(props.id)}>
                 Bypass FX
@@ -45,18 +48,18 @@ const Track: React.FC<TrackProps> = (props) => (
             }
         </div>
 
-        <Fader onChange={props.onVolumeChange} value={props.volume} isVertical={true} />
-
-        {keys(props.send).length > 0 &&
+        {keys(props.fx).length > 0 &&
             <div className={style.sends}>
-                {keys(props.send).map(sendId => (
+                {keys(props.fx).map(sendId => (
                     <div className={style.send} key={sendId}>
                         <span className={style.sendTitle}>{sendId}</span>
-                        <Fader onChange={props.onSendLevelChange(sendId)} value={props.send[sendId]} />
+                        <Fader onChange={props.onSendLevelChange(sendId)} value={props.fx[sendId]} />
                     </div>
                 ))}
             </div>
         }
+
+        <Fader onChange={props.onVolumeChange} value={props.volume} isVertical={true} />
 
         <div className={style.title}>{props.title}</div>
     </div>
@@ -70,7 +73,7 @@ Track.defaultProps = {
   isSolo: false,
   isEffectsDisabled: false,
   // TODO: why is it always truthy even though no send is passed
-  send: null,
+  fx: null,
   onMute: (id) => id,
   onSolo: (id) => id,
   onBypass: (id) => id,

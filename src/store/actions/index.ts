@@ -20,6 +20,18 @@ export const rewind = async (dispatch) => {
   return dispatch({ type: 'PLAYBACK_REWIND' })
 }
 
+export const setMasterVolume = curry(async (dispatch, value) => {
+  await mixdesk.setMasterTrackVolume(value)
+
+  return dispatch({
+    type: 'PLAYBACK_SET_MASTER_TRACK_VOLUME',
+    payload: {
+      value
+    }
+  })
+})
+
+
 export const setSendParamValue = curry(
   async (dispatch, effectId, parameterId, value) => {
     await mixdesk.setSendParamValue(effectId, parameterId, value)
@@ -61,6 +73,20 @@ export const setTrackSendLevel = curry(
     })
   }
 )
+
+
+export const toggleTrackSolo = curry(async (dispatch, trackId) => {
+
+  await mixdesk.soloTrack(trackId)
+
+  return dispatch({
+    type: 'TRACK_SOLO_TOGGLE',
+    payload: {
+      trackId
+    }
+  })
+})
+
 
 export const toggleTrack = curry(async (dispatch, trackId) => {
   await mixdesk.toggleTrack(trackId)

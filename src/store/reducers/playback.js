@@ -24,8 +24,13 @@ const setPlaybackReady = state => ({
     status: PLAYBACK_STATUS.READY,
 });
 
-export const playbackReducer = (playback, action) => {
-    switch (action.type) {
+const setPlaybackMasterTrackVolume = (state, value) => ({
+  ...state,
+  masterVolume: value
+});
+
+export const playbackReducer = (playback, {type, payload}) => {
+    switch (type) {
         case 'PLAYBACK_PLAY':
             return play(playback);
         case 'PLAYBACK_PAUSE':
@@ -34,6 +39,8 @@ export const playbackReducer = (playback, action) => {
             return rewind(playback);
         case 'PLAYBACK_READY':
             return setPlaybackReady(playback);
+        case 'PLAYBACK_SET_MASTER_TRACK_VOLUME':
+            return setPlaybackMasterTrackVolume(playback, payload)
         default:
             return playback;
     }

@@ -1,0 +1,13 @@
+.meter {
+  position: relative;
+
+}
+
+.meterValue {
+    position: absolute;
+    left: 50%;
+    transform: rotate(180deg) translateX(50%);
+    height: calc(100% - 16px);
+    bottom: 39px;
+    z-index: 1;
+}
