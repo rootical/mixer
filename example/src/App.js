@@ -15,6 +15,10 @@ const defaultTracks = [
     {
         title : 'Drums',
         url : 'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/033/original/DRUMS.m4a?1594846181'
+    },
+    {
+        title : 'Melodies',
+        url : 'assets/vox.mp3'
     }
 ];
 

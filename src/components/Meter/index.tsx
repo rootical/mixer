@@ -7,8 +7,7 @@ import trackStyle from './../Track/style.module.css';
 import Fader from '../Fader';
 
 interface MeterProps {
-  // Todo what is it?
-  analyser: any;
+  analyser: AnalyserNode;
   width?: number;
   height?: number;
 }
@@ -16,7 +15,7 @@ interface MeterProps {
 const Meter: React.FC<MeterProps> = ({
     analyser = null,
     width = 6,
-    height = 210,
+    height = 210
 }) => {
     if (!analyser) {
         return null;

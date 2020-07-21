@@ -62,6 +62,19 @@ export const setTrackSendLevel = curry(
   }
 )
 
+
+export const soloTrack = curry(async (dispatch, trackId) => {
+  await mixdesk.soloTrack(trackId)
+
+  return dispatch({
+    type: 'TRACK_SOLO_TOGGLE',
+    payload: {
+      trackId
+    }
+  })
+})
+
+
 export const toggleTrack = curry(async (dispatch, trackId) => {
   await mixdesk.toggleTrack(trackId)
 

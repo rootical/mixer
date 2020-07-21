@@ -1,200 +1,203 @@
-'use strict';
+'use strict'
 
-import {generateIdByTitle} from '../helpers/entities';
-import {fetchAudioAsArrayBuffer, createPanner} from '../helpers/audio';
-
-import {
-    connectNodes,
-    createGainNode,
-    getNodeParamNormalizedValue,
-    setNodeParamNormalizedValue,
-} from '../helpers/node';
+import { generateIdByTitle } from '../helpers/entities'
+import { fetchAudioAsArrayBuffer, createPanner } from '../helpers/audio'
 
 import {
-    TRACK_STATE,
-} from '../constants';
+  connectNodes,
+  createGainNode,
+  getNodeParamNormalizedValue,
+  setNodeParamNormalizedValue
+} from '../helpers/node'
 
+import { TRACK_STATE } from '../constants'
 
 class Track {
-    source: AudioBufferSourceNode | null;
-    title: string;
-    id: string;
-    buffer: any;
-    context: AudioContext;
-    pausedAt: number;
-    startedAt: number;
-    muted: boolean;
-    playing: boolean;
-    bypassFX: boolean;
-    previousVolume: number;
-    // ?
-    state: any;
-    bus: GainNode;
-    fx: {};
-    loadingState: any;
-    panner: any;
+  source: AudioBufferSourceNode | null
+  title: string
+  id: string
+  // ?
+  buffer: any = null
+  context: AudioContext
+  pausedAt: number = 0
+  startedAt: number = 0
+  muted: boolean = false
+  soloed: boolean = false
+  playing: boolean = false
+  bypassFX: boolean = false
+  previousVolume: number
+  // ?
+  state: any = TRACK_STATE.NOT_SET
+  bus: GainNode
+  fx: {}
+  loadingState: any
+  panner: any
 
-    constructor({url, title, context, masterBus, sends = [], volume = 70}) {
-        this.id = generateIdByTitle(title);
+  constructor({ url, title, context, masterBus, sends = [], volume = 70 }) {
+    // TODO: move to the top default declarations
+    this.id = generateIdByTitle(title)
 
-        this.buffer = null;
+    this.title = title
+    this.context = context
 
-        this.title = title;
-        this.context = context;
+    this.bus = createGainNode(context)
+    this.panner = createPanner(context)
 
-        this.pausedAt = 0;
-        this.startedAt = 0;
+    connectNodes(this.bus, this.panner)
+    connectNodes(this.panner, masterBus)
 
-        this.muted = false;
-        this.playing = false;
-        this.bypassFX = false;
+    this.fx = {}
 
-        this.state = TRACK_STATE.NOT_SET;
+    // TODO: why default track props doesn't work
+    this.volume = volume
 
-        this.bus = createGainNode(context);
-        this.panner = createPanner(context);
-
-        connectNodes(this.bus, this.panner);
-        connectNodes(this.panner, masterBus);
-
-        this.fx = {};
-
-        // TODO: why default track props doesn't work
-        this.volume = volume;
-
-        if (sends.length > 0) {
-            this.addFx(sends);
-        }
-
-        this.loadingState = this.load(url);
+    if (sends.length > 0) {
+      this.addFx(sends)
     }
 
-    get volume() {
-        return getNodeParamNormalizedValue(this.bus.gain);
+    this.loadingState = this.load(url)
+  }
+
+  get volume() {
+    return getNodeParamNormalizedValue(this.bus.gain)
+  }
+
+  set volume(value) {
+    if (this.muted) {
+      this.previousVolume = value
+    } else {
+      setNodeParamNormalizedValue(this.bus.gain, value)
+    }
+  }
+
+  get pan() {
+    return getNodeParamNormalizedValue(this.panner.pan)
+  }
+
+  set pan(value) {
+    setNodeParamNormalizedValue(this.panner.pan, value)
+  }
+
+  load(url) {
+    return fetchAudioAsArrayBuffer(url)
+      .then((audioBuffer) => {
+        return new Promise((resolve, reject) =>
+          this.context.decodeAudioData(audioBuffer, resolve, reject)
+        )
+      })
+      .then((decodedAudioData) => {
+        this.buffer = decodedAudioData
+        this.state = TRACK_STATE.READY
+
+        return this
+      })
+      .catch((error) => {
+        this.state = TRACK_STATE.FAILED
+
+        console.log('[ERROR LOADING TRACK]', error, `URL: ${url}`)
+
+        return this
+      })
+  }
+
+  play() {
+    if (!this.playing) {
+      this.source = this.context.createBufferSource()
+      this.source.buffer = this.buffer
+      this.source.connect(this.bus)
+      this.source.start(0, this.pausedAt)
+
+      this.startedAt = this.context.currentTime - this.pausedAt
+      this.pausedAt = 0
+      this.playing = true
+    }
+  }
+
+  pause() {
+    if (this.playing) {
+      const elapsed = this.context.currentTime - this.startedAt
+      this.stop()
+      this.pausedAt = elapsed
+    }
+  }
+
+  stop() {
+    if (this.source) {
+      this.source.disconnect()
+      this.source.stop(0)
+      this.source = null
     }
 
-    set volume(value) {
-        if (this.muted) {
-            this.previousVolume = value;
-        } else {
-            setNodeParamNormalizedValue(this.bus.gain, value);
-        }
-    }
+    this.pausedAt = 0
+    this.startedAt = 0
+    this.playing = false
+  }
 
-    get pan() {
-      return getNodeParamNormalizedValue(this.panner.pan);
-    }
+  mute() {
+    this.previousVolume = this.volume
+    this.volume = 0
+    this.muted = true
+  }
 
-    set pan(value) {
-        setNodeParamNormalizedValue(this.panner.pan, value);
-    }
+  unmute() {
+    this.muted = false
+    this.volume = this.previousVolume
+  }
 
-    load(url) {
-        return fetchAudioAsArrayBuffer(url)
-            .then(audioBuffer => {
-                return new Promise((resolve, reject) =>
-                    this.context.decodeAudioData(audioBuffer, resolve, reject));
-            })
-            .then(decodedAudioData => {
-                this.buffer = decodedAudioData;
-                this.state = TRACK_STATE.READY;
+  toggleMute() {
+    this.muted ? this.unmute() : this.mute()
+  }
 
-                return this;
-            })
-            .catch(error => {
-                this.state = TRACK_STATE.FAILED;
+  solo() {
+    this.soloed = true
+  }
 
-                console.log('[ERROR LOADING TRACK]', error, `URL: ${url}`);
+  unsolo() {
+    this.soloed = false
+  }
 
-                return this;
-            });
-    }
+  toggleSolo() {
+    this.soloed ? this.unsolo() : this.solo()
+  }
 
-    play() {
-        if (!this.playing) {
-          this.source = this.context.createBufferSource()
-          this.source.buffer = this.buffer
-          this.source.connect(this.bus)
-          this.source.start(0, this.pausedAt)
+  addFx(effects) {
+    return effects.map((fx) => {
+      const { id, signalIn } = fx
+      const bus = createGainNode(this.context, 0)
 
-          this.startedAt = this.context.currentTime - this.pausedAt
-          this.pausedAt = 0
-          this.playing = true
-        }
-    }
+      if (this.fx[id]) {
+        return false
+      }
 
-    pause() {
-        if (this.playing) {
-            const elapsed = this.context.currentTime - this.startedAt;
-            this.stop();
-            this.pausedAt = elapsed;
-        }
-    }
+      connectNodes(this.bus, bus)
+      connectNodes(bus, signalIn)
 
-    stop() {
-        if (this.source) {
-            this.source.disconnect()
-            this.source.stop(0)
-            this.source = null
-        }
+      this.fx[id] = bus
 
-        this.pausedAt = 0
-        this.startedAt = 0
-        this.playing = false
-    }
+      return bus
+    })
+  }
 
-    mute() {
-        this.previousVolume = this.volume;
-        this.volume = 0;
-        this.muted = true;
-    }
+  removeFx(id) {
+    this.fx[id].disconnect()
+  }
 
-    unmute() {
-        this.muted = false;
-        this.volume = this.previousVolume;
-    }
+  toggleFX() {
+    const keys = Object.keys(this.fx)
 
-    toggleMute() {
-        this.muted ? this.unmute() : this.mute();
-    }
+    this.bypassFX
+      ? keys.map(
+          (fxId) => (this.fx[fxId].gain.value = this.fx[fxId].previousVolume)
+        )
+      : keys.map((fxId) => {
+          this.fx[fxId].previousVolume = this.fx[fxId].gain.value
+          this.fx[fxId].gain.value = 0
+        })
 
-    addFx(effects) {
-        return effects.map(fx => {
-            const {id, signalIn} = fx;
-            const bus = createGainNode(this.context, 0);
+    this.bypassFX = !this.bypassFX
 
-            if (this.fx[id]) {
-                return false;
-            }
-
-            connectNodes(this.bus, bus);
-            connectNodes(bus, signalIn);
-
-            this.fx[id] = bus;
-
-            return bus;
-        });
-    }
-
-    removeFx(id) {
-        this.fx[id].disconnect();
-    }
-
-    toggleFX() {
-        const keys = Object.keys(this.fx);
-
-        this.bypassFX
-            ? keys.map(fxId => this.fx[fxId].gain.value = this.fx[fxId].previousVolume)
-            : keys.map(fxId => {
-                this.fx[fxId].previousVolume = this.fx[fxId].gain.value;
-                this.fx[fxId].gain.value = 0;
-            });
-
-        this.bypassFX = !this.bypassFX;
-
-        return this.bypassFX;
-    }
+    return this.bypassFX
+  }
 }
-
 
 export default Track

@@ -8,6 +8,7 @@ import {
 } from '../helpers/audio';
 import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
 import {playAll, pauseAll, rewindAll} from '../helpers/playback';
+import Track from './track';
 
 export class Mixer {
     context: AudioContext;
@@ -109,6 +110,20 @@ export class Mixer {
             return track;
         });
     }
+
+    /**
+     * @param {TrackId} trackId
+     * @returns {Promise<Track[]>}
+     */
+    async soloTrack(trackId) {
+      return this.tracks.map((track: Track) => {
+          if (track.id === trackId) {
+              track.toggleSolo();
+          }
+
+          return track;
+      });
+  }
 
     /**
      * @param {TrackId} trackId

@@ -6,6 +6,9 @@ import Fader from './../Fader';
 
 import style from './style.module.css';
 
+type FXType = 'delay' | 'rever' | 'distortion'
+type FX = Record<FXType, GainNode>;
+
 interface TrackProps {
     id: string;
     title: string;
@@ -14,7 +17,7 @@ interface TrackProps {
     isSolo: boolean;
     isEffectsDisabled: boolean;
     // TODO: Types
-    fx: any;
+    fx: FX;
     onMute: (id) => {};
     onSolo: (id) => {};
     onBypass: (id) => {};
@@ -45,8 +48,6 @@ const Track: React.FC<TrackProps> = (props) => (
             }
         </div>
 
-        <Fader onChange={props.onVolumeChange} value={props.volume} isVertical={true} />
-
         {keys(props.fx).length > 0 &&
             <div className={style.sends}>
                 {keys(props.fx).map(sendId => (
@@ -57,6 +58,8 @@ const Track: React.FC<TrackProps> = (props) => (
                 ))}
             </div>
         }
+
+        <Fader onChange={props.onVolumeChange} value={props.volume} isVertical={true} />
 
         <div className={style.title}>{props.title}</div>
     </div>
