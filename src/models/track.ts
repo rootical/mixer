@@ -34,7 +34,6 @@ class Track {
   panner: any
 
   constructor({ url, title, context, masterBus, sends = [], volume = 70 }) {
-    // TODO: move to the top default declarations
     this.id = generateIdByTitle(title)
 
     this.title = title
@@ -150,10 +149,12 @@ class Track {
 
   solo() {
     this.soloed = true
+    this.previousVolume = this.volume
   }
 
   unsolo() {
     this.soloed = false
+    this.volume = this.previousVolume
   }
 
   toggleSolo() {

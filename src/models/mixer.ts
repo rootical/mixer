@@ -17,6 +17,7 @@ export class Mixer {
     // TODO: rename fx to sends?
     fx: any[];
     masterBus: GainNode;
+    masterVolume: number = 70;
 
     constructor(sources= [], effects = []) {
         if (typeof window !== 'undefined') {
@@ -116,20 +117,27 @@ export class Mixer {
      * @returns {Promise<Track[]>}
      */
     async soloTrack(trackId) {
+      debugger;
       return this.tracks.map((track: Track) => {
           if (track.id === trackId) {
               track.toggleSolo();
+          } else {
+            if (track.soloed) {
+              track.unmute();
+            } else {
+              track.mute();
+            }
           }
-
           return track;
       });
-  }
+    }
 
     /**
      * @param {TrackId} trackId
      * @returns {Promise<Track[]>}
      */
     async toggleTrack(trackId) {
+      debugger;
         return this.tracks.map(track => {
             if (track.id === trackId) {
                 track.toggleMute();
@@ -167,6 +175,10 @@ export class Mixer {
 
             return fx;
         });
+    }
+
+    async setMasterTrackVolume(value) {
+      this.masterVolume = value;
     }
 
     load(sources) {

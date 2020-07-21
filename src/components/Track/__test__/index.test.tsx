@@ -11,7 +11,7 @@ const propsMock = {
     isSolo: false,
     isMuted: false,
     isEffectsDisabled: false,
-    send: {
+    fx: {
         delay: 0,
         reverb: 0,
     },
@@ -27,7 +27,6 @@ const SOLO_BUTTON = 1;
 const FX_BYPASS_BUTTON = 2;
 const FADER_VOLUME = 0;
 const FADER_SEND = 1;
-
 
 describe('<Track />', () => {
     it('should renders without any errors', () => {

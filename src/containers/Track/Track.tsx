@@ -8,6 +8,7 @@ import {
     setTrackSendLevel,
     toggleTrack,
     toggleTrackFx,
+    toggleTrackSolo
 } from '../../store/actions';
 
 
@@ -19,6 +20,7 @@ export const TrackContainer = props => {
         <Track
             {...props}
 
+            onSolo={toggleTrackSolo(dispatch)}
             onMute={toggleTrack(dispatch)}
             onBypass={toggleTrackFx(dispatch)}
             onVolumeChange={setTrackVolume(dispatch, trackId)}

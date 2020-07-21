@@ -9,6 +9,7 @@ import {
     play,
     pause,
     rewind,
+    setMasterVolume
 } from './../../store/actions';
 
 // TODO: add types
@@ -27,7 +28,7 @@ export const DeskContainer = ({
             onPlay={() => play(dispatch)}
             onPause={() => pause(dispatch)}
             onRewind={() => rewind(dispatch)}
-
+            onMasterVolumeChange={(value) => setMasterVolume(dispatch, value)}
             tracks={Tracks}
             effects={Effects}
             playback={playback}

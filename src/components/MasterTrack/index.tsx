@@ -6,16 +6,20 @@ import style from './style.module.css';
 import trackStyle from './../Track/style.module.css';
 import Fader from '../Fader';
 
-interface MeterProps {
+interface MasterTrackProps {
   analyser: AnalyserNode;
   width?: number;
   height?: number;
+  volume?: number;
+  onVolumeChange: (value) => void;
 }
 
-const Meter: React.FC<MeterProps> = ({
+const MasterTrack: React.FC<MasterTrackProps> = ({
     analyser = null,
     width = 6,
-    height = 210
+    height = 210,
+    volume = 70,
+    onVolumeChange
 }) => {
     if (!analyser) {
         return null;
@@ -47,11 +51,11 @@ const Meter: React.FC<MeterProps> = ({
         <div className={`${style.meter} ${trackStyle.track}`}>
             <canvas className={style.meterValue} width={width} height={height} ref={canvasRef}></canvas>
 
-            <Fader onChange={() => {}} isVertical={true} value={70} />
+            <Fader onChange={onVolumeChange} isVertical={true} value={volume} />
 
             <div className={trackStyle.title}>Master</div>
         </div>
     );
 }
 
-export default Meter;
+export default MasterTrack;
