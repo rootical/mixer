@@ -29,7 +29,7 @@ class Track {
   // ?
   state: any = TRACK_STATE.NOT_SET
   bus: GainNode
-  fx: {}
+  fx: any
   loadingState: any
   panner: any
 
@@ -149,7 +149,7 @@ class Track {
 
   solo() {
     this.soloed = true
-    this.previousVolume = this.volume
+    // this.previousVolume = this.volume
   }
 
   unsolo() {

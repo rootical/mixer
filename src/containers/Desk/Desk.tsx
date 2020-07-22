@@ -18,17 +18,17 @@ export const DeskContainer = ({
     effects,
     playback,
 }) => {
-    const dispatch = useContext(Context);
+    const context = useContext(Context);
 
     const Tracks = tracks.map(track => (<TrackContainer {...track} key={track.id} />));
     const Effects = effects.map(effect => (<EffectContainer {...effect} key={effect.id} />));
 
     return (
         <Desk
-            onPlay={() => play(dispatch)}
-            onPause={() => pause(dispatch)}
-            onRewind={() => rewind(dispatch)}
-            onMasterVolumeChange={(value) => setMasterVolume(dispatch, value)}
+            onPlay={() => play(context)}
+            onPause={() => pause(context)}
+            onRewind={() => rewind(context)}
+            onMasterVolumeChange={(value) => setMasterVolume(context, value)}
             tracks={Tracks}
             effects={Effects}
             playback={playback}

@@ -40,7 +40,9 @@ const createDelayEntity = ({id, time, feedback, frequency}) => ({
     }],
 });
 
-const createDistortionEntity = ({id, filterType, frequency, strength}) => ({
+const createDistortionEntity = ({id, filterType, frequency, strength}) => {
+  debugger;
+  return {
     id,
     name: 'Distortion',
     parameters: [{
@@ -58,7 +60,7 @@ const createDistortionEntity = ({id, filterType, frequency, strength}) => ({
         id: 'strength',
         value: strength,
     }],
-});
+}};
 
 
 export const generateIdByTitle = title => title.replace(/[^A-Za-z0-9]+/gi, '').toLowerCase();
