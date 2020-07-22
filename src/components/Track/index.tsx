@@ -6,8 +6,8 @@ import Fader from './../Fader';
 
 import style from './style.module.css';
 
-type FXType = 'delay' | 'reverb' | 'distortion'
-type FX = Record<FXType, number>;
+export type FXType = 'delay' | 'reverb' | 'distortion'
+export type FX = Record<FXType, number>;
 
 interface TrackProps {
     id: string;

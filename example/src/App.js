@@ -1,6 +1,6 @@
 import React, {useReducer, useEffect} from 'react';
 
-import {DeskContainer, Context, createState, mixdesk, reducer, setReadyStateOnLoad, getDispatchWithLog} from 'react-mixdesk';
+import {Mixer, DeskContainer, Context, createState, reducer, setReadyStateOnLoad, getDispatchWithLog, Delay, Reverb, Distortion} from 'react-mixdesk';
 import 'react-mixdesk/dist/index.css'
 
 const defaultTracks = [
@@ -24,27 +24,37 @@ const defaultTracks = [
 
 const App = ({
   tracks = defaultTracks,
-  eventListener = (...args) => {},
+  // eventListener = (...args) => {},
 }) => {
-    const [state, dispatch] = useReducer(reducer, createState(mixdesk))
-    const dispatchWithLog = getDispatchWithLog(dispatch)
-
-    useEffect(() => {
-      mixdesk.load(tracks).then((trackStates) => {
-        setReadyStateOnLoad((...args) => {
-          dispatchWithLog(...args)
-          dispatchWithLog({ type: 'SET_TRACKS', payload: trackStates })
-          eventListener(...args)
-        }, mixdesk)
-      })
-    // eslint-disable-next-line
-    }, [tracks])
-
-    return (
-        <Context.Provider value={dispatchWithLog}>
-            <DeskContainer {...state} />
-        </Context.Provider>
-    );
+  const mixer = new Mixer([], [Delay, Reverb, Distortion]);
+  return <Mixdesk mixdesk={mixer} tracks={tracks} />
 };
+
+const Mixdesk = ({mixdesk, tracks}) => {
+
+  const [state, dispatch] = useReducer(reducer, createState(mixdesk))
+  const dispatchWithLog = getDispatchWithLog(dispatch)
+
+  useEffect(() => {
+    mixdesk.load(tracks).then((trackStates) => {
+      setReadyStateOnLoad((...args) => {
+        dispatchWithLog(...args)
+        dispatchWithLog({ type: 'SET_TRACKS', payload: trackStates })
+        // eventListener(...args)
+      }, mixdesk)
+    })
+  // eslint-disable-next-line
+  }, [tracks])
+
+  return (
+      <Context.Provider value={{
+          dispatch: dispatchWithLog,
+          mixdesk
+        }}>
+          <DeskContainer {...state} />
+      </Context.Provider>
+  );
+}
+
 
 export default App;

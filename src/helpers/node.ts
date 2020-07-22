@@ -42,7 +42,6 @@ export const setNodeParamNormalizedValue = (node, value) => {
 
 export const setNodeParams = (node, params) => keys(params).forEach(key => {
     if (isAudioParam(node, key)) {
-        // node[key].value = params[key];
         setNodeParamNormalizedValue(node[key], params[key]);
     } else {
         node[key] = params[key];
