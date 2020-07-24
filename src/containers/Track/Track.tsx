@@ -14,17 +14,17 @@ import {
 
 export const TrackContainer = props => {
     const {id: trackId} = props;
-    const dispatch = useContext(Context);
+    const context = useContext(Context);
 
     return (
         <Track
             {...props}
 
-            onSolo={toggleTrackSolo(dispatch)}
-            onMute={toggleTrack(dispatch)}
-            onBypass={toggleTrackFx(dispatch)}
-            onVolumeChange={setTrackVolume(dispatch, trackId)}
-            onSendLevelChange={setTrackSendLevel(dispatch, trackId)}
+            onSolo={toggleTrackSolo(context)}
+            onMute={toggleTrack(context)}
+            onBypass={toggleTrackFx(context)}
+            onVolumeChange={setTrackVolume(context, trackId)}
+            onSendLevelChange={setTrackSendLevel(context, trackId)}
         />
     );
 }

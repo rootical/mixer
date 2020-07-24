@@ -40,7 +40,9 @@ export const playbackReducer = (playback, {type, payload}) => {
         case 'PLAYBACK_READY':
             return setPlaybackReady(playback);
         case 'PLAYBACK_SET_MASTER_TRACK_VOLUME':
-            return setPlaybackMasterTrackVolume(playback, payload)
+            return setPlaybackMasterTrackVolume(playback, payload);
+        case 'SET_PLAYBACK':
+            return payload;
         default:
             return playback;
     }
