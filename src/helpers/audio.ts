@@ -1,8 +1,6 @@
 'use strict';
 
-import {keys, curry} from 'ramda';
-
-import Track from '../models/track';
+import {keys} from 'ramda';
 
 import {
     CONTEXT_STATE,
@@ -29,14 +27,6 @@ export const createAnalyser = (context: AudioContext, parameters = {fftSize: 204
 };
 
 export const createPanner = (context: AudioContext) => context.createStereoPanner();
-
-export const createTrackFromSource = curry(({context, masterBus, sends = []}, {url, title}) => new Track({
-    url,
-    title,
-    context,
-    masterBus,
-    sends,
-}));
 
 export const isAudioParam = (node, parameter) => node[parameter] instanceof AudioParam;
 
