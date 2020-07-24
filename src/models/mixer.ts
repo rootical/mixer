@@ -6,7 +6,7 @@ import {
     resumeContext,
 } from '../helpers/audio';
 import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
-import {playAll, pauseAll, rewindAll} from '../helpers/playback';
+import {playAll, pauseAll, rewindAll, stopAll} from '../helpers/playback';
 import Track from './track';
 
 export class Mixer {
@@ -61,6 +61,15 @@ export class Mixer {
      */
     async rewind() {
         rewindAll(this.tracks);
+
+        return this;
+    }
+
+    /**
+     * @returns {Promise<Mixer>}
+     */
+    async stop() {
+        stopAll(this.tracks);
 
         return this;
     }

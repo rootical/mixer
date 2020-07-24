@@ -23,3 +23,5 @@ export const rewindAll = map(track => {
     track.stop();
     track.play();
 });
+
+export const stopAll = map(track => track.stop());
