@@ -2,7 +2,6 @@ import {
     createContext,
     createAnalyser,
     createMasterBus,
-    createTrackFromSource,
     isContextRunning,
     resumeContext,
 } from '../helpers/audio';
@@ -182,12 +181,14 @@ export class Mixer {
     }
 
     load(sources) {
-      this.tracks = sources.map(createTrackFromSource({
-          context: this.context,
-          masterBus: this.masterBus,
-          sends: this.fx,
-      }));
+        this.tracks = sources.map(({url, title}) => new Track({
+            url,
+            title,
+            context: this.context,
+            masterBus: this.masterBus,
+            sends: this.fx,
+        }));
 
-      return Promise.all(this.tracks.map(track => track.loadingState));
+        return Promise.all(this.tracks.map(track => track.loadingState));
     }
 }
