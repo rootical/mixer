@@ -1,15 +1,15 @@
 import {useRef, useReducer, useEffect} from 'react';
 
-import {reducer} from './store/reducers';
-import {getDispatchWithLog, createState} from '/store/helpers';
+import {reducer} from '../../store/reducers';
+import {getDispatchWithLog, createState} from '../../store/helpers';
 
-import Mixer from './models/mixer';
-import Delay from './models/fx/delay';
-import Reverb from './models/fx/reverb';
-import Distortion from './models/fx/distortion';
+import {Mixer} from '../../models/mixer';
+import {Delay} from '../../models/fx/delay';
+import {Reverb} from '../../models/fx/reverb';
+import {Distortion} from '../../models/fx/distortion';
 
 
-const useMixer = (tracks, effects = [Delay, Reverb, Distortion]) => {
+export const useMixer = (tracks, effects = [Delay, Reverb, Distortion]) => {
     const mx = useRef();
 
     const [state, dispatch] = useReducer(reducer, {
@@ -21,7 +21,7 @@ const useMixer = (tracks, effects = [Delay, Reverb, Distortion]) => {
     const dispatchWithLog = getDispatchWithLog(dispatch);
 
     useEffect(() => {
-        const onLoad = async trackStates => {
+        const onLoad = async () => {
             const {tracks, effects, playback} = createState(mx.current);
 
             await dispatchWithLog({ type: 'SET_TRACKS', payload: tracks });
@@ -44,7 +44,4 @@ const useMixer = (tracks, effects = [Delay, Reverb, Distortion]) => {
         state,
         dispatch: dispatchWithLog,
     };
-}
-
-
-export default useMixer;
+};

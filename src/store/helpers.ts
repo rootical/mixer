@@ -1,4 +1,4 @@
-import {map, curry, reject, not} from 'ramda';
+import {curry, reject, not} from 'ramda';
 
 import {
     createEffectEntity,

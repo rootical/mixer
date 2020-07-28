@@ -1,7 +1,30 @@
-import './index.css'
+import 'react-mixdesk/dist/index.css';
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import {Mixdesk} from 'react-mixdesk';
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import './index.css'
+
+
+const defaultTracks = [
+    {
+        title : 'Click',
+        url : 'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/009/original/CLICK.m4a?1594846181'
+    },
+    {
+        title : 'Guide',
+        url : 'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/021/original/GUIDE.m4a?1594846181'
+    },
+    {
+        title : 'Drums',
+        url : 'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/033/original/DRUMS.m4a?1594846181'
+    },
+    {
+        title : 'Melodies',
+        url : 'assets/vox.mp3'
+    }
+];
+
+
+ReactDOM.render(<Mixdesk tracks={defaultTracks} />, document.getElementById('root'));
