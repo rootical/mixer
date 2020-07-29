@@ -1,4 +1,4 @@
-import {map, curry, reject, not} from 'ramda';
+import {curry, reject, not} from 'ramda';
 
 import {
     createEffectEntity,
@@ -8,38 +8,6 @@ import {
 
 
 const compact = reject(item => not(Boolean(item)));
-
-const getLoadingState = track => track.loadingState;
-
-const getLoadingStates = ({tracks}) => map(getLoadingState, tracks);
-
-/**
- * Dispatches set ready state action with provided track params
- *
- * @param {function} dispatch
- * @param {Track}
- */
-const dispatchSetTrackState = curry((dispatch, {id, state}) => dispatch({
-    type: 'TRACK_SET_READY_STATE',
-    payload: {
-        trackId: id,
-        state,
-    },
-}));
-
-/**
- * Updates tracks statuses in store
- *
- * @param {function} — dispatch
- * @returns {Promise<Track[]>}
- */
-export const setReadyStateOnLoad = (dispatch, mixdesk) =>
-    Promise
-        .all(getLoadingStates(mixdesk))
-        .then(map(dispatchSetTrackState(dispatch)))
-        .then(() => dispatch({
-            type: 'PLAYBACK_READY',
-        }));
 
 /**
  * Brings dispatch arguments to console
