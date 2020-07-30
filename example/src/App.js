@@ -1,6 +1,6 @@
-import React, {useReducer, useEffect} from 'react';
+import React from 'react';
 
-import {Mixerdesk} from 'react-mixdesk';
+import { Mixdesk } from 'react-mixdesk';
 import 'react-mixdesk/dist/index.css'
 
 const defaultTracks = [
@@ -20,10 +20,8 @@ const defaultTracks = [
 
 const App = ({
   tracks = defaultTracks,
-  // eventListener = (...args) => {},
 }) => {
-  const mixer = new Mixer([], [Delay, Reverb, Distortion]);
-  return <Mixdesk mixdesk={mixer} tracks={tracks} />
+  return <Mixdesk tracks={tracks} />
 };
 
 
