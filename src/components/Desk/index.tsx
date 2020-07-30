@@ -65,11 +65,11 @@ const Desk: React.FC<DeskProps> = ({
                 <defs />
                 <text
                   fill='#fff'
-                  dominant-baseline='text-before-edge'
-                  font-family="'Avenir Next','AvenirNext-Bold'"
-                  font-size='9'
-                  font-style='none'
-                  font-weight='700'
+                  dominantBaseline='text-before-edge'
+                  fontFamily="'Avenir Next','AvenirNext-Bold'"
+                  fontSize='9'
+                  fontStyle='none'
+                  fontWeight='700'
                   transform='translate(6 10)'
                 >
                   <tspan>15</tspan>
@@ -112,11 +112,11 @@ const Desk: React.FC<DeskProps> = ({
                 <defs />
                 <text
                   fill='#fff'
-                  dominant-baseline='text-before-edge'
-                  font-family="'Avenir Next','AvenirNext-Bold'"
-                  font-size='9'
-                  font-style='none'
-                  font-weight='700'
+                  dominantBaseline='text-before-edge'
+                  fontFamily="'Avenir Next','AvenirNext-Bold'"
+                  fontSize='9'
+                  fontStyle='none'
+                  fontWeight='700'
                   transform='translate(6 10)'
                 >
                   <tspan>15</tspan>
