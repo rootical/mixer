@@ -10,6 +10,7 @@
 }
 
 .trackControls {
+  position: relative;
   display: flex;
 }
 
@@ -29,7 +30,7 @@
   color: #fff;
   overflow: hidden;
 
-  padding: 4px 8px;
+  padding: 7px 8px;
 
   cursor: pointer;
   transition: all 80ms ease-in-out;
@@ -43,12 +44,19 @@
   position: relative;
 }
 
-.button:not(:last-child):not(.isPressed)::after {
-  content: '|';
+.buttonSeparator {
+  width: 1px;
+  height: 20px;
+  background-color: #ffffff;
   position: absolute;
   top: 50%;
-  right: 0;
-  transform: translateY(-55%);
+  left: 50%;
+  transform: translateY(-50%);
+  visibility: visible;
+}
+
+.isHidden {
+  visibility: hidden;
 }
 
 .button:hover {

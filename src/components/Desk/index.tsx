@@ -101,10 +101,6 @@ const Desk: React.FC<DeskProps> = ({
                 onClick={onPause}
                 disabled={isDisabled}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.6 47.6">
-                  <defs/>
-                  <path d="M18 41c0 3.6-3 6.6-6.6 6.6-3.7 0-6.7-3-6.7-6.6V6.6C4.7 3 7.7 0 11.4 0 15 0 18 3 18 6.6V41zM42.9 41c0 3.6-3 6.6-6.7 6.6-3.6 0-6.6-3-6.6-6.6V6.6c0-3.6 3-6.6 6.6-6.6C40 0 43 3 43 6.6V41z"/>
-                </svg>
               </button>
             )}
             <button className={style.controlButton}>

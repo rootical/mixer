@@ -28,12 +28,20 @@ interface TrackProps {
 const Track: React.FC<TrackProps> = (props) => (
 
     <div className={style.track}>
+        {
+        keys(props.fx).length > 0 && <button
+        className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
+        onClick={() => props.onBypass(props.id)}>
+            Bypass FX
+          </button>
+        }
         <div className={style.trackControls}>
             <button
                 className={classnames(style.button, props.isMuted && style.isPressed)}
                 onClick={() => props.onMute(props.id)}>
                     M
             </button>
+            <div className={classnames(style.buttonSeparator, props.isMuted || props.isSolo ? style.isHidden : '')}></div>
             <button
                 className={classnames(style.button, props.isSolo && style.isPressed)}
                 onClick={() => props.onSolo(props.id)}>
@@ -55,14 +63,6 @@ const Track: React.FC<TrackProps> = (props) => (
         <Fader onChange={props.onVolumeChange} value={props.volume} isVertical={true} />
 
         <div className={style.title}>{props.title}</div>
-
-        {
-            keys(props.fx).length > 0 && <button
-            className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
-            onClick={() => props.onBypass(props.id)}>
-                Bypass FX
-              </button>
-            }
     </div>
 );
 
