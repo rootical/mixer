@@ -1,42 +1,46 @@
 .track {
-    display: flex;
-    flex-flow: column;
-    min-width: 83px;
-    min-height: 380px;
-    text-align: center;
+  display: flex;
+  flex-flow: column;
+  width: 83px;
+  min-height: 380px;
+  text-align: center;
 
-    background: #808080;
-    background-size: contain;
+  background: #808080;
+  background-size: contain;
 }
 
 .trackControls {
   display: flex;
 }
 
+.track:first-child {
+  margin-left: auto;
+}
+
 .track:not(:last-child) {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 .button {
-    font-size: 1em;
-    font-weight: 700;
-    flex: 1 1 auto;
+  font-size: 1em;
+  font-weight: 700;
+  flex: 1 1 auto;
 
-    color: #fff;
-    overflow: hidden;
+  color: #fff;
+  overflow: hidden;
 
-    padding: 4px 8px;
+  padding: 4px 8px;
 
-    cursor: pointer;
-    transition: all 80ms ease-in-out;
-    vertical-align: middle;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  cursor: pointer;
+  transition: all 80ms ease-in-out;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-    border: none;
-    outline: none;
-    background-color: #454545;
-    position: relative;
+  border: none;
+  outline: none;
+  background-color: #454545;
+  position: relative;
 }
 
 .button:not(:last-child):not(.isPressed)::after {
@@ -48,59 +52,59 @@
 }
 
 .button:hover {
-    transform: translateY(1px);
+  transform: translateY(1px);
 }
 
 .isPressed {
-    background-color: #e728ea;
+  background-color: #e728ea;
 }
 
 .mute,
 .reset,
 .bypass {
-    position: relative;
+  position: relative;
 
-    display: flex;
+  display: flex;
 
-    margin: 8px 8px 16px;
+  margin: 8px 8px 16px;
 }
 
 .sends {
-    font-size: .8rem;
+  font-size: 0.8rem;
 
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .send {
-    width: 60%;
-    height: 26px;
-    margin: 0 auto 10px;
+  width: 60%;
+  height: 26px;
+  margin: 0 auto 10px;
 }
 
 .sendTitle {
-    font-weight: bold;
+  font-weight: bold;
 
-    display: inline-block;
-    overflow: hidden;
+  display: inline-block;
+  overflow: hidden;
 
-    width: 100%;
+  width: 100%;
 
-    text-align: left;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-    color: #555;
-    text-shadow: 1px 1px 0 #eee;
+  color: #555;
+  text-shadow: 1px 1px 0 #eee;
 }
 
 .title {
-    line-height: 44px;
-    min-height: 44px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 10px;
-    text-transform: uppercase;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 8px;
+  line-height: 44px;
+  min-height: 44px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 8px;
 }

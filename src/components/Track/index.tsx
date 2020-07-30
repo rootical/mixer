@@ -39,13 +39,6 @@ const Track: React.FC<TrackProps> = (props) => (
                 onClick={() => props.onSolo(props.id)}>
                     S
             </button>
-            {
-            keys(props.fx).length > 0 && <button
-            className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
-            onClick={() => props.onBypass(props.id)}>
-                Bypass FX
-              </button>
-            }
         </div>
 
         {keys(props.fx).length > 0 &&
@@ -62,6 +55,14 @@ const Track: React.FC<TrackProps> = (props) => (
         <Fader onChange={props.onVolumeChange} value={props.volume} isVertical={true} />
 
         <div className={style.title}>{props.title}</div>
+
+        {
+            keys(props.fx).length > 0 && <button
+            className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
+            onClick={() => props.onBypass(props.id)}>
+                Bypass FX
+              </button>
+            }
     </div>
 );
 

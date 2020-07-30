@@ -44,11 +44,14 @@ class Track {
 
     connectNodes(this.bus, this.panner)
     connectNodes(this.panner, masterBus)
+    // Add gain node between bus and panner for solo
+    //
 
     this.fx = {}
 
     // TODO: why default track props doesn't work
     this.volume = volume
+    this.previousVolume = volume
 
     if (sends.length > 0) {
       this.addFx(sends)
@@ -62,7 +65,7 @@ class Track {
   }
 
   set volume(value) {
-    if (this.muted) {
+    if (this.muted || !this.soloed) {
       this.previousVolume = value
     } else {
       setNodeParamNormalizedValue(this.bus.gain, value)
@@ -147,18 +150,25 @@ class Track {
     this.muted ? this.unmute() : this.mute()
   }
 
+  toggleSolo() {
+    this.soloed ? this.unsolo() : this.solo()
+  }
+
   solo() {
+    this.previousVolume = this.volume
     this.soloed = true
-    // this.previousVolume = this.volume
   }
 
   unsolo() {
-    this.soloed = false
+    console.log(this.volume, this.previousVolume)
     this.volume = this.previousVolume
+
+    this.soloed = false
   }
 
-  toggleSolo() {
-    this.soloed ? this.unsolo() : this.solo()
+  setNotSolo() {
+    this.previousVolume = this.volume
+    this.volume = 0
   }
 
   addFx(effects) {
