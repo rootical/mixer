@@ -20,6 +20,7 @@ export class Mixer {
 
   constructor(sources= [], effects = []) {
       if (typeof window !== 'undefined') {
+        console.log('yo');
         this.context = createContext();
 
         this.analyser = createAnalyser(this.context);
