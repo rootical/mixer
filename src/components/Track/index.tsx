@@ -7,9 +7,6 @@ import Knob from '../Knob';
 
 import style from './style.module.css';
 
-export type FXType = 'delay' | 'reverb' | 'distortion'
-type FX = Record<FXType, number>;
-
 interface TrackProps {
     id: string;
     title: string;
@@ -18,7 +15,7 @@ interface TrackProps {
     isSolo: boolean;
     isEffectsDisabled: boolean;
     // TODO: Types
-    fx: FX;
+    fx: any;
     onMute: (id) => {};
     onSolo: (id) => {};
     onBypass: (id) => {};

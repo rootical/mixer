@@ -18,7 +18,8 @@ const deskProps = {
   effects: [],
   onPlay: () => {},
   onPause: () => {},
-  onRewind: () => {}
+  onRewind: () => {},
+  onMasterVolumeChange: () => {}
 }
 
 const PLAY_BUTTON = 0;
