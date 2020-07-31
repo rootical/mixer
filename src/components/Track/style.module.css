@@ -12,6 +12,7 @@
 .trackControls {
   position: relative;
   display: flex;
+  margin-bottom: 16px;
 }
 
 .track:first-child {

@@ -9,7 +9,7 @@ class Knob extends Component {
     this.fullAngle = props.degrees
     this.startAngle = (360 - props.degrees) / 2
     this.endAngle = this.startAngle + props.degrees
-    this.margin = props.size * 0.15
+    this.margin = 0
     this.currentDeg = Math.floor(
       this.convertRange(
         props.min,
@@ -69,26 +69,6 @@ class Knob extends Component {
     )
   }
 
-  renderTicks = () => {
-    let ticks = []
-    const incr = this.fullAngle / this.props.numTicks
-    const size = this.margin + this.props.size / 2
-    for (let deg = this.startAngle; deg <= this.endAngle; deg += incr) {
-      const tick = {
-        deg: deg,
-        tickStyle: {
-          height: size + 10,
-          left: size - 1,
-          top: size + 2,
-          transform: 'rotate(' + deg + 'deg)',
-          transformOrigin: 'top'
-        }
-      }
-      ticks.push(tick)
-    }
-    return ticks
-  }
-
   dcpy = (o) => {
     return JSON.parse(JSON.stringify(o))
   }
@@ -117,19 +97,6 @@ class Knob extends Component {
 
     return (
       <div className={style.knob} style={kStyle}>
-        <div className={style.ticks}>
-          {this.props.numTicks
-            ? this.renderTicks().map((tick, i) => (
-                <div
-                  key={i}
-                  className={
-                    style.tick + (tick.deg <= this.currentDeg ? ` ${style.isActive}` : '')
-                  }
-                  style={tick.tickStyle}
-                />
-              ))
-            : null}
-        </div>
         <div className={`${style.knob} ${style.outer}`} style={oStyle} onMouseDown={this.startDrag}>
           <div className={`${style.knob} ${style.inner}`} style={iStyle}>
             <div className={style.grip} />
