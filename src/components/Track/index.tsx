@@ -3,11 +3,9 @@ import classnames from 'classnames';
 import {keys} from 'ramda';
 
 import Fader from './../Fader';
+import Knob from '../Knob';
 
 import style from './style.module.css';
-
-export type FXType = 'delay' | 'reverb' | 'distortion'
-type FX = Record<FXType, number>;
 
 interface TrackProps {
     id: string;
@@ -17,7 +15,7 @@ interface TrackProps {
     isSolo: boolean;
     isEffectsDisabled: boolean;
     // TODO: Types
-    fx: FX;
+    fx: any;
     onMute: (id) => {};
     onSolo: (id) => {};
     onBypass: (id) => {};
@@ -28,25 +26,36 @@ interface TrackProps {
 const Track: React.FC<TrackProps> = (props) => (
 
     <div className={style.track}>
+        {
+        keys(props.fx).length > 0 && <button
+        className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
+        onClick={() => props.onBypass(props.id)}>
+            Bypass FX
+          </button>
+        }
         <div className={style.trackControls}>
             <button
                 className={classnames(style.button, props.isMuted && style.isPressed)}
                 onClick={() => props.onMute(props.id)}>
                     M
             </button>
+            <div className={classnames(style.buttonSeparator, props.isMuted || props.isSolo ? style.isHidden : '')}></div>
             <button
                 className={classnames(style.button, props.isSolo && style.isPressed)}
                 onClick={() => props.onSolo(props.id)}>
                     S
             </button>
-            {
-            keys(props.fx).length > 0 && <button
-            className={classnames(style.button, props.isEffectsDisabled && style.isPressed)}
-            onClick={() => props.onBypass(props.id)}>
-                Bypass FX
-              </button>
-            }
         </div>
+
+        <Knob
+          numTicks={125}
+          degrees={180}
+          min={1}
+          max={100}
+          value={50}
+          size={50}
+          onChange={(value) => {console.log(value)}}
+        />
 
         {keys(props.fx).length > 0 &&
             <div className={style.sends}>

@@ -1,5 +1,3 @@
-'use strict'
-
 import { generateIdByTitle } from '../helpers/entities'
 import { fetchAudioAsArrayBuffer, createPanner } from '../helpers/audio'
 
@@ -29,6 +27,7 @@ class Track {
   // ?
   state: any = TRACK_STATE.NOT_SET
   bus: GainNode
+  soloBus: GainNode
   fx: any
   loadingState: any
   panner: any
@@ -40,10 +39,12 @@ class Track {
     this.context = context
 
     this.bus = createGainNode(context)
+    this.soloBus = createGainNode(context)
     this.panner = createPanner(context)
 
     connectNodes(this.bus, this.panner)
-    connectNodes(this.panner, masterBus)
+    connectNodes(this.panner, this.soloBus)
+    connectNodes(this.soloBus, masterBus)
 
     this.fx = {}
 
@@ -149,12 +150,16 @@ class Track {
 
   solo() {
     this.soloed = true
-    // this.previousVolume = this.volume
+    setNodeParamNormalizedValue(this.soloBus.gain, 100)
   }
 
   unsolo() {
     this.soloed = false
-    this.volume = this.previousVolume
+    setNodeParamNormalizedValue(this.soloBus.gain, 0)
+  }
+
+  resetSolo() {
+    setNodeParamNormalizedValue(this.soloBus.gain, 100)
   }
 
   toggleSolo() {
