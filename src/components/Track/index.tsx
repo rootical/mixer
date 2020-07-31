@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import {keys} from 'ramda';
 
 import Fader from './../Fader';
+// import Knob from '../Knob';
 
 import style from './style.module.css';
 
@@ -48,6 +49,16 @@ const Track: React.FC<TrackProps> = (props) => (
                     S
             </button>
         </div>
+{/*
+        <Knob
+          numTicks={125}
+          degrees={180}
+          min={1}
+          max={100}
+          value={0}
+          size={40}
+          onChange={(value) => {console.log(value)}}
+        /> */}
 
         {keys(props.fx).length > 0 &&
             <div className={style.sends}>

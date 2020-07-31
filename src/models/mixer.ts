@@ -20,7 +20,6 @@ export class Mixer {
 
   constructor(sources= [], effects = []) {
       if (typeof window !== 'undefined') {
-        console.log('yo');
         this.context = createContext();
 
         this.analyser = createAnalyser(this.context);
@@ -126,18 +125,22 @@ export class Mixer {
    * @returns {Promise<Track[]>}
    */
   async soloTrack(trackId) {
-    return this.tracks.map((track: Track) => {
+    const newTracks = this.tracks.map((track: Track) => {
         if (track.id === trackId) {
             track.toggleSolo();
         } else {
-          if (track.soloed) {
-            // track.unmute();
-          } else {
-            // track.mute();
+          if (!track.soloed) {
+            track.unsolo();
           }
         }
         return track;
     });
+
+    if (newTracks.every(track => !track.soloed)) {
+      newTracks.forEach(track => track.resetSolo())
+    }
+
+    return newTracks
   }
 
   /**
