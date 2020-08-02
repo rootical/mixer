@@ -3,7 +3,7 @@ import React from 'react'
 import { useMixer } from '../../hooks/useMixer'
 import { DeskContainer } from '../Desk'
 import { Context } from '../Context'
-import { Delay, Reverb, Distortion } from '../..'
+import { Delay, Reverb, Distortion } from '../../models/fx'
 
 export const Mixdesk = ({
   tracks = [],

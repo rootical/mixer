@@ -11,6 +11,7 @@ interface TrackProps {
     id: string;
     title: string;
     volume: number;
+    pan: number;
     isMuted: boolean;
     isSolo: boolean;
     isEffectsDisabled: boolean;
@@ -21,6 +22,7 @@ interface TrackProps {
     onBypass: (id) => {};
     onVolumeChange: (id) => {};
     onSendLevelChange?: (id) => {};
+    onPanChange: (id) => {};
 }
 
 const Track: React.FC<TrackProps> = (props) => (
@@ -52,9 +54,9 @@ const Track: React.FC<TrackProps> = (props) => (
           degrees={180}
           min={1}
           max={100}
-          value={50}
+          value={props.pan}
           size={50}
-          onChange={(value) => {console.log(value)}}
+          onChange={props.onPanChange(props.id)}
         />
 
         {keys(props.fx).length > 0 &&

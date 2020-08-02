@@ -10,6 +10,7 @@ class Knob extends Component {
     this.startAngle = (360 - props.degrees) / 2
     this.endAngle = this.startAngle + props.degrees
     this.margin = 0
+    this.isDragging = false
     this.currentDeg = Math.floor(
       this.convertRange(
         props.min,
@@ -24,6 +25,7 @@ class Knob extends Component {
 
   startDrag = (e) => {
     e.preventDefault()
+
     const knob = e.target.getBoundingClientRect()
     const pts = {
       x: knob.left + knob.width / 2,
@@ -31,23 +33,32 @@ class Knob extends Component {
     }
     const moveHandler = (e) => {
       this.currentDeg = this.getDeg(e.clientX, e.clientY, pts)
-      if (this.currentDeg === this.startAngle) this.currentDeg--
-      let newValue = Math.floor(
-        this.convertRange(
-          this.startAngle,
-          this.endAngle,
-          this.props.min,
-          this.props.max,
-          this.currentDeg
-        )
-      )
-      this.setState({ deg: this.currentDeg })
-      this.props.onChange(newValue)
+      this.isDragging = true
+      requestAnimationFrame(this.update)
     }
     document.addEventListener('mousemove', moveHandler)
     document.addEventListener('mouseup', (e) => {
+      this.isDragging = false;
       document.removeEventListener('mousemove', moveHandler)
     })
+  }
+
+  update = () => {
+    if (this.isDragging) {
+      requestAnimationFrame(this.update)
+    }
+    if (this.currentDeg === this.startAngle) this.currentDeg--
+    const newValue = Math.floor(
+      this.convertRange(
+        this.startAngle,
+        this.endAngle,
+        this.props.min,
+        this.props.max,
+        this.currentDeg
+      )
+    )
+    this.setState({ deg: this.currentDeg })
+    this.props.onChange(newValue)
   }
 
   getDeg = (cX, cY, pts) => {

@@ -64,10 +64,11 @@ const createDistortionEntity = ({id, filterType, frequency, strength}) => ({
 export const generateIdByTitle = title => title.replace(/[^A-Za-z0-9]+/gi, '').toLowerCase();
 
 
-export const createTrackEntity = ({id, title, volume, muted, soloed, bypassFX, fx, state}) => ({
+export const createTrackEntity = ({id, title, volume, pan, muted, soloed, bypassFX, fx, state}) => ({
     id,
     title,
     volume,
+    pan,
     state,
     isMuted: muted,
     isSolo: soloed,
@@ -92,11 +93,9 @@ export const createEffectEntity = effect => {
 export const createPlaybackEntity = ({
     analyser,
     status = PLAYBACK_STATUS.NOT_SET,
-    currentPosition = 0,
-    masterVolume = 70
+    currentPosition = 0
 }) => ({
     analyser,
     status,
-    currentPosition,
-    masterVolume
+    currentPosition
 });
