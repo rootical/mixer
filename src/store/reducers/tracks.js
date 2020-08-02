@@ -9,6 +9,16 @@ const setTrackVolume = (volume, trackId, tracks) => tracks.map(track => {
     return track;
 });
 
+const setTrackPan = (pan, trackId, tracks) => tracks.map(track => {
+  if (track.id === trackId) {
+      return {
+          ...track,
+          pan,
+      };
+  }
+  return track;
+});
+
 const setTrackSendLevel = (level, sendId, trackId, tracks) => tracks.map(track => {
     if (track.id === trackId) {
         return {
@@ -75,6 +85,12 @@ export const trackReducer = (tracks, {type, payload}) => {
                 payload.trackId,
                 tracks
             );
+        case 'SET_TRACK_PAN':
+          return setTrackPan(
+              payload.value,
+              payload.trackId,
+              tracks
+          );
         case 'SET_TRACK_SEND_LEVEL':
             return setTrackSendLevel(
                 payload.value,

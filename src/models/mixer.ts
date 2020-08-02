@@ -16,7 +16,6 @@ export class Mixer {
   // TODO: rename fx to sends?
   fx: any[];
   masterBus: GainNode;
-  masterVolume: number = 70;
 
   constructor(sources= [], effects = []) {
       if (typeof window !== 'undefined') {
@@ -88,6 +87,20 @@ export class Mixer {
       });
   }
 
+  /**
+   * @param {TrackId} trackId
+   * @param {number} volume
+   * @returns {Promise<Track[]>}
+   */
+  async setTrackPan(trackId, pan) {
+    return this.tracks.map(track => {
+        if (track.id === trackId) {
+            track.pan = pan;
+        }
+
+        return track;
+    });
+}
   /**
    *
    * @param {TrackId} trackId
@@ -189,8 +202,10 @@ export class Mixer {
 
   async setMasterTrackVolume(value) {
     // TODO:...
-    this.masterVolume = value;
+    console.log(value)
   }
+
+
 
   load(sources) {
       this.tracks = sources.map(({url, title}) => new Track({
@@ -198,7 +213,7 @@ export class Mixer {
           title,
           context: this.context,
           masterBus: this.masterBus,
-          sends: this.fx,
+          sends: this.fx
       }));
 
       return Promise.all(this.tracks.map(track => track.loadingState));

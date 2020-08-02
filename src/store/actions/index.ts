@@ -1,16 +1,5 @@
 import { curry } from 'ramda'
 
-
-// type Context = {
-//   dispatch: () => {},
-//   mx: Mixdesk,
-// };
-
-
-// const getMixdeskFromContext = ({ mx }) => mx.current || null;
-// const mx = getMixdeskFromContext(context);
-
-
 export const play = async ({dispatch, mx}) => {
   if (mx.current) {
       await mx.current.play()
@@ -96,6 +85,20 @@ export const setTrackSendLevel = curry(
     })
   }
 )
+
+export const setTrackPan = curry(async ({dispatch, mx}, trackId, value) => {
+  if (mx.current) {
+      await mx.current.setTrackPan(trackId, value)
+  }
+
+  return dispatch({
+    type: 'SET_TRACK_PAN',
+    payload: {
+      trackId,
+      value
+    }
+  })
+})
 
 
 export const toggleTrackSolo = curry(async ({dispatch, mx}, trackId) => {

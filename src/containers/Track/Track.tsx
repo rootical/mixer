@@ -6,6 +6,7 @@ import {Context} from '../Context'
 import {
     setTrackVolume,
     setTrackSendLevel,
+    setTrackPan,
     toggleTrack,
     toggleTrackFx,
     toggleTrackSolo
@@ -25,6 +26,7 @@ export const TrackContainer = props => {
             onBypass={toggleTrackFx(context)}
             onVolumeChange={setTrackVolume(context, trackId)}
             onSendLevelChange={setTrackSendLevel(context, trackId)}
+            onPanChange={setTrackPan(context)}
         />
     );
 }

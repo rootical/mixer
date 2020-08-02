@@ -25,6 +25,6 @@ const defaultTracks = [
 ]
 
 ReactDOM.render(
-  <Mixdesk tracks={defaultTracks} />,
+  <Mixdesk tracks={defaultTracks} effects={[]} />,
   document.getElementById('root')
 )

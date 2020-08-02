@@ -54,7 +54,7 @@ export class Reverb extends FX {
             await fetchAudioAsArrayBuffer(url)
                 .catch(error => console.log('[ERROR LOADING RESPONSE]', error));
 
-        if (arrayBuffer?.byteLength > 0) {
+        if (arrayBuffer.byteLength > 0) {
             const decodedDataPromise = new Promise((resolve, reject) =>
                 this.context.decodeAudioData(arrayBuffer, resolve, reject));
 

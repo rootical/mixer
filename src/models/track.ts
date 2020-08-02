@@ -32,7 +32,7 @@ class Track {
   loadingState: any
   panner: any
 
-  constructor({ url, title, context, masterBus, sends = [], volume = 70 }) {
+  constructor({ url, title, context, masterBus, sends = [], volume = 70, pan = 50 }) {
     this.id = generateIdByTitle(title)
 
     this.title = title
@@ -48,8 +48,8 @@ class Track {
 
     this.fx = {}
 
-    // TODO: why default track props doesn't work
     this.volume = volume
+    this.pan = pan
 
     if (sends.length > 0) {
       this.addFx(sends)
