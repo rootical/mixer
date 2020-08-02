@@ -1,47 +1,42 @@
-import React from 'react';
+import React from 'react'
 
-import Fader from './../Fader';
-import Radio from './../Radio';
+import Fader from './../Fader'
+import Radio from './../Radio'
 
-import style from './style.module.css';
+import style from './style.module.css'
 
 const EffectParameterMap = {
-    'fader': Fader,
-    'radio': Radio,
-};
+  fader: Fader,
+  radio: Radio
+}
 
-const getControlByType = type => EffectParameterMap[type];
+const getControlByType = (type) => EffectParameterMap[type]
 
-export type EffectParameterType = 'fader' | 'radio';
+export type EffectParameterType = 'fader' | 'radio'
 
 export interface EffectParameterProps {
-  id: string;
-  name: string;
-  type: EffectParameterType;
-  onChange: (id) => void;
+  id: string
+  name: string
+  type: EffectParameterType
+  onChange: (id) => void
 }
 
 const EffectParameter: React.FC<EffectParameterProps> = ({
-    onChange,
-    ...props
+  onChange,
+  ...props
 }) => {
-    const {
-        id,
-        name,
-        type = 'fader',
-    } = props;
+  const { id, name, type = 'fader' } = props
 
-    const Control = getControlByType(type);
+  const Control = getControlByType(type)
 
-    return Control
-    ? (
-        <div className={style.parameter} key={id}>
-            <span className={style.title}>{name}:</span>
-            <div className={style.controlContainer}>
-                <Control {...props} onChange={onChange(id)} />
-            </div>
-        </div>
-    ) : null;
-};
+  return Control ? (
+    <div className={style.parameter} key={id}>
+      <span className={style.title}>{name}:</span>
+      <div className={style.controlContainer}>
+        <Control {...props} onChange={onChange(id)} />
+      </div>
+    </div>
+  ) : null
+}
 
-export default EffectParameter;
+export default EffectParameter

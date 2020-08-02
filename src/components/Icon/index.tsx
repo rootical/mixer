@@ -1,9 +1,10 @@
-import React from 'react';
-import classnames from 'classnames';
+import React from 'react'
+import classnames from 'classnames'
 
-import style from './style.module.css';
+import style from './style.module.css'
 
+const Icon = ({ type }) => (
+  <div className={classnames(style.icon, style[`icon_type_${type}`])} />
+)
 
-const Icon = ({type}) => (<div className={classnames(style.icon, style[`icon_type_${type}`])}></div>);
-
-export default Icon;
+export default Icon
