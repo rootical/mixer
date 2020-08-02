@@ -4,13 +4,9 @@ import {reducer} from '../../store/reducers';
 import {getDispatchWithLog, createState} from '../../store/helpers';
 
 import {Mixer} from '../../models/mixer';
-import {Delay} from '../../models/fx/delay';
-import {Reverb} from '../../models/fx/reverb';
-import {Distortion} from '../../models/fx/distortion';
 
-
-export const useMixer = (tracks, effects = [Delay, Reverb, Distortion]) => {
-    const mx = useRef();
+export const useMixer = (tracks, effects) => {
+    const mx = useRef<Mixer>();
 
     const [state, dispatch] = useReducer(reducer, {
         tracks: [],
