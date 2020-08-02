@@ -1,61 +1,69 @@
-import React, {useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from 'react'
 
-import {getAverage, createMeterGradient} from './helpers';
+import { getAverage, createMeterGradient } from './helpers'
 
-import style from './style.module.css';
-import trackStyle from './../Track/style.module.css';
-import Fader from '../Fader';
+import style from './style.module.css'
+import trackStyle from './../Track/style.module.css'
+import Fader from '../Fader'
 
 interface MasterTrackProps {
-  analyser: AnalyserNode;
-  width?: number;
-  height?: number;
-  volume?: number;
-  onVolumeChange: (value) => void;
+  analyser: AnalyserNode
+  width?: number
+  height?: number
+  volume?: number
+  onVolumeChange: (value) => void
 }
 
 const MasterTrack: React.FC<MasterTrackProps> = ({
-    analyser = null,
-    width = 6,
-    height = 210,
-    volume = 70,
-    onVolumeChange
+  analyser = null,
+  width = 6,
+  height = 210,
+  volume = 70,
+  onVolumeChange
 }) => {
-    if (!analyser) {
-        return null;
+  if (!analyser) {
+    return null
+  }
+
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const context = canvasRef.current && canvasRef.current.getContext('2d')
+    const array = new Uint8Array(analyser.frequencyBinCount)
+
+    const drawMeter = () => {
+      analyser.getByteFrequencyData(array)
+
+      const average = getAverage(array)
+
+      if (context) {
+        context.clearRect(0, 0, width, height)
+        context.fillStyle = createMeterGradient(context as any, {
+          width,
+          height
+        })
+        context.fillRect(0, 0, width, (height / 100) * average)
+      }
+      requestAnimationFrame(drawMeter)
     }
 
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    drawMeter()
+  }, [])
 
-    useEffect(() => {
-        const context = canvasRef.current && canvasRef.current.getContext('2d');
-        const array = new Uint8Array(analyser.frequencyBinCount);
+  return (
+    <div className={`${style.meter} ${trackStyle.track}`}>
+      <canvas
+        className={style.meterValue}
+        width={width}
+        height={height}
+        ref={canvasRef}
+      />
 
-        const drawMeter = () => {
-            analyser.getByteFrequencyData(array);
+      <Fader onChange={onVolumeChange} isVertical value={volume} />
 
-            const average = getAverage(array);
-
-            if (context) {
-              context.clearRect(0, 0, width, height);
-              context.fillStyle = createMeterGradient(context as any, {width, height});
-              context.fillRect(0, 0, width, (height / 100) * average);
-            }
-            requestAnimationFrame(drawMeter);
-        }
-
-        drawMeter();
-    }, []);
-
-    return (
-        <div className={`${style.meter} ${trackStyle.track}`}>
-            <canvas className={style.meterValue} width={width} height={height} ref={canvasRef}></canvas>
-
-            <Fader onChange={onVolumeChange} isVertical={true} value={volume} />
-
-            <div className={trackStyle.title}>Master</div>
-        </div>
-    );
+      <div className={trackStyle.title}>Master</div>
+    </div>
+  )
 }
 
-export default MasterTrack;
+export default MasterTrack

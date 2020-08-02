@@ -1,26 +1,20 @@
-import React from 'react';
+import React from 'react'
 
-import style from './style.module.css';
+import style from './style.module.css'
 
+const FaderThumb = ({ position = 0, isVertical = false, events = {} }) => {
+  const styleProperty = isVertical ? 'bottom' : 'left'
+  const stylePropertyValue = position + '%'
 
-const FaderThumb = ({
-    position = 0,
-    isVertical = false,
-    events = {},
-}) => {
-    const styleProperty = isVertical ? 'bottom' : 'left';
-    const stylePropertyValue = position + '%';
+  return (
+    <div
+      className={style.thumb}
+      style={{
+        [styleProperty]: stylePropertyValue
+      }}
+      {...events}
+    />
+  )
+}
 
-    return (
-        <div
-            className={style.thumb}
-            style={{
-                [styleProperty]: stylePropertyValue,
-            }}
-            {...events}
-        >
-        </div>
-    );
-};
-
-export default FaderThumb;
+export default FaderThumb
