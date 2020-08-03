@@ -5,7 +5,7 @@ import { EffectContainer } from './../Effect'
 import { Context } from './../Context'
 import { TrackContainer } from './../Track/Track'
 
-import { play, pause, rewind, setMasterVolume } from './../../store/actions'
+import { play, pause, rewind, setMasterVolume, loop } from './../../store/actions'
 
 // TODO: add types
 export const DeskContainer = ({ tracks, effects, playback }) => {
@@ -23,6 +23,7 @@ export const DeskContainer = ({ tracks, effects, playback }) => {
       onPlay={() => play(context)}
       onPause={() => pause(context)}
       onRewind={() => rewind(context)}
+      onLoop={(value) => loop(context, value)}
       onMasterVolumeChange={(value) => setMasterVolume(context, value)}
       tracks={Tracks}
       effects={Effects}

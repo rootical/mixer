@@ -63,7 +63,6 @@ const createDistortionEntity = ({id, filterType, frequency, strength}) => ({
 
 export const generateIdByTitle = title => title.replace(/[^A-Za-z0-9]+/gi, '').toLowerCase();
 
-
 export const createTrackEntity = ({id, title, volume, pan, muted, soloed, bypassFX, fx, state}) => ({
     id,
     title,
@@ -90,12 +89,23 @@ export const createEffectEntity = effect => {
     }
 };
 
+export interface Playback {
+  analyser: AnalyserNode
+  status: PLAYBACK_STATUS
+  currentPosition: number
+  isLooped: boolean
+  // volume Doesn't propogate down well, used inside Desk for unclear reason
+  volume?: number
+}
+
 export const createPlaybackEntity = ({
     analyser,
     status = PLAYBACK_STATUS.NOT_SET,
-    currentPosition = 0
-}) => ({
+    currentPosition = 0,
+    isLooped = false,
+}): Playback => ({
     analyser,
     status,
-    currentPosition
+    currentPosition,
+    isLooped
 });

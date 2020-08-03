@@ -5,13 +5,15 @@ import MasterTrack from '../MasterTrack'
 import { isPlaying, isPaused, isNotActive } from './../../helpers/playback'
 
 import style from './style.module.css'
+import { Playback } from '../../helpers'
 
 interface DeskProps {
   // TODO: Types
-  playback: any
+  playback: Playback
   onPlay: () => void
   onPause: () => void
-  onRewind: () => void
+  onRewind?: () => void
+  onLoop: (value) => void
   onMasterVolumeChange: (value) => void
   tracks: any[]
   effects: any[]
@@ -21,8 +23,9 @@ const Desk: React.FC<DeskProps> = ({
   playback = {},
   onPlay = () => {},
   onPause = () => {},
-  onRewind = () => {},
+  // onRewind = () => {},
   onMasterVolumeChange = () => {},
+  onLoop = () => {},
   tracks = [],
   effects = []
 }) => {
@@ -34,6 +37,13 @@ const Desk: React.FC<DeskProps> = ({
     )
 
   const isDisabled = isNotActive(playback)
+
+  const loopButtonClassNames = () =>
+      classnames(
+        style.controlButton,
+        playback.isLooped && style.isActive,
+        !playback.isLooped && style.isNotActive
+      )
 
   return (
     <div className={style.desk}>
@@ -199,8 +209,8 @@ const Desk: React.FC<DeskProps> = ({
               </div>
             </div>
             <button
-              className={style.controlButton}
-              onClick={onRewind}
+              className={loopButtonClassNames()}
+              onClick={() => onLoop(!playback.isLooped)}
               disabled={isDisabled}
             >
               <svg
