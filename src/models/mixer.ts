@@ -3,73 +3,75 @@ import {
   createAnalyser,
   createMasterBus,
   isContextRunning,
-  resumeContext,
-} from '../helpers/audio';
-import {setNodeParams,setNodeParamNormalizedValue} from '../helpers/node';
-import {playAll, pauseAll, rewindAll, stopAll} from '../helpers/playback';
-import Track from './track';
+  resumeContext
+} from '../helpers/audio'
+import { setNodeParams, setNodeParamNormalizedValue } from '../helpers/node'
+import { playAll, pauseAll, rewindAll, stopAll } from '../helpers/playback'
+import Track from './track'
 
 export class Mixer {
-  context: AudioContext;
-  analyser: AnalyserNode;
-  tracks: any[];
+  context: AudioContext
+  analyser: AnalyserNode
+  tracks: any[]
   // TODO: rename fx to sends?
-  fx: any[];
-  masterBus: GainNode;
+  fx: any[]
+  masterBus: GainNode
 
-  constructor(sources= [], effects = []) {
-      if (typeof window !== 'undefined') {
-        this.context = createContext();
+  constructor(sources = [], effects = []) {
+    if (typeof window !== 'undefined') {
+      this.context = createContext()
 
-        this.analyser = createAnalyser(this.context);
-        this.masterBus = createMasterBus(this.context, [this.analyser]);
+      this.analyser = createAnalyser(this.context)
+      this.masterBus = createMasterBus(this.context, [this.analyser])
 
-        this.fx = effects.map(Effect => new Effect(this.context, this.masterBus));
+      this.fx = effects.map(
+        (Effect) => new Effect(this.context, this.masterBus)
+      )
 
-        this.load(sources);
-      }
+      this.load(sources)
+    }
   }
 
   /**
    * @returns {Promise<Mixer>}
    */
   async play() {
-      const {context} = this;
+    const { context } = this
 
-      if (isContextRunning(context) === false) {
-          await resumeContext(context);
-      }
+    if (isContextRunning(context) === false) {
+      await resumeContext(context)
+    }
 
-      playAll(this.tracks);
+    playAll(this.tracks)
 
-      return this;
+    return this
   }
 
   /**
    * @returns {Promise<Mixer>}
    */
   async pause() {
-      pauseAll(this.tracks);
+    pauseAll(this.tracks)
 
-      return this;
+    return this
   }
 
   /**
    * @returns {Promise<Mixer>}
    */
   async rewind() {
-      rewindAll(this.tracks);
+    rewindAll(this.tracks)
 
-      return this;
+    return this
   }
 
   /**
    * @returns {Promise<Mixer>}
    */
   async stop() {
-      stopAll(this.tracks);
+    stopAll(this.tracks)
 
-      return this;
+    return this
   }
 
   /**
@@ -78,13 +80,13 @@ export class Mixer {
    * @returns {Promise<Track[]>}
    */
   async setTrackVolume(trackId, volume) {
-      return this.tracks.map(track => {
-          if (track.id === trackId) {
-              track.volume = volume;
-          }
+    return this.tracks.map((track: Track) => {
+      if (track.id === trackId) {
+        track.volume = volume
+      }
 
-          return track;
-      });
+      return track
+    })
   }
 
   /**
@@ -93,14 +95,14 @@ export class Mixer {
    * @returns {Promise<Track[]>}
    */
   async setTrackPan(trackId, pan) {
-    return this.tracks.map(track => {
-        if (track.id === trackId) {
-            track.pan = pan;
-        }
+    return this.tracks.map((track: Track) => {
+      if (track.id === trackId) {
+        track.pan = pan
+      }
 
-        return track;
-    });
-}
+      return track
+    })
+  }
   /**
    *
    * @param {TrackId} trackId
@@ -109,13 +111,13 @@ export class Mixer {
    * @returns {Promise<Track[]>}
    */
   async setTrackSendLevel(trackId, sendId, level) {
-      return this.tracks.map(track => {
-          if (track.id === trackId) {
-              setNodeParamNormalizedValue(track.fx[sendId].gain, level);
-          }
+    return this.tracks.map((track: Track) => {
+      if (track.id === trackId) {
+        setNodeParamNormalizedValue(track.fx[sendId].gain, level)
+      }
 
-          return track;
-      });
+      return track
+    })
   }
 
   /**
@@ -124,13 +126,13 @@ export class Mixer {
    * @returns {Promise<Track[]>}
    */
   async setTrackPanLevel(trackId, value) {
-      return this.tracks.map(track => {
-          if (track.id === trackId) {
-              track.pan = value;
-          }
+    return this.tracks.map((track: Track) => {
+      if (track.id === trackId) {
+        track.pan = value
+      }
 
-          return track;
-      });
+      return track
+    })
   }
 
   /**
@@ -139,18 +141,18 @@ export class Mixer {
    */
   async soloTrack(trackId) {
     const newTracks = this.tracks.map((track: Track) => {
-        if (track.id === trackId) {
-            track.toggleSolo();
-        } else {
-          if (!track.soloed) {
-            track.unsolo();
-          }
+      if (track.id === trackId) {
+        track.toggleSolo()
+      } else {
+        if (!track.soloed) {
+          track.unsolo()
         }
-        return track;
-    });
+      }
+      return track
+    })
 
-    if (newTracks.every(track => !track.soloed)) {
-      newTracks.forEach(track => track.resetSolo())
+    if (newTracks.every((track: Track) => !track.soloed)) {
+      newTracks.forEach((track: Track) => track.resetSolo())
     }
 
     return newTracks
@@ -161,13 +163,13 @@ export class Mixer {
    * @returns {Promise<Track[]>}
    */
   async toggleTrack(trackId) {
-      return this.tracks.map(track => {
-          if (track.id === trackId) {
-              track.toggleMute();
-          }
+    return this.tracks.map((track: Track) => {
+      if (track.id === trackId) {
+        track.toggleMute()
+      }
 
-          return track;
-      });
+      return track
+    })
   }
 
   /**
@@ -175,13 +177,13 @@ export class Mixer {
    * @returns {Promise<Track[]>}
    */
   async toggleTrackFx(trackId) {
-      return this.tracks.map(track => {
-          if (track.id === trackId) {
-              track.toggleFX();
-          }
+    return this.tracks.map((track: Track) => {
+      if (track.id === trackId) {
+        track.toggleFX()
+      }
 
-          return track;
-      });
+      return track
+    })
   }
 
   /**
@@ -191,13 +193,13 @@ export class Mixer {
    * @retruns {Promise<Send[]>}
    */
   async setSendParamValue(sendId, parameterId, value) {
-      return this.fx.map(fx => {
-          if (fx.id === sendId) {
-              setNodeParams(fx, {[parameterId]: value});
-          }
+    return this.fx.map((fx) => {
+      if (fx.id === sendId) {
+        setNodeParams(fx, { [parameterId]: value })
+      }
 
-          return fx;
-      });
+      return fx
+    })
   }
 
   async setMasterTrackVolume(value) {
@@ -205,17 +207,25 @@ export class Mixer {
     console.log(value)
   }
 
-
+  async loop(value) {
+    return this.tracks.map((track: Track) => {
+      track.looped = value
+      return track
+    })
+  }
 
   load(sources) {
-      this.tracks = sources.map(({url, title}) => new Track({
+    this.tracks = sources.map(
+      ({ url, title }) =>
+        new Track({
           url,
           title,
           context: this.context,
           masterBus: this.masterBus,
           sends: this.fx
-      }));
+        })
+    )
 
-      return Promise.all(this.tracks.map(track => track.loadingState));
+    return Promise.all(this.tracks.map((track: Track) => track.loadingState))
   }
 }

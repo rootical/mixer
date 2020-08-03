@@ -1,32 +1,32 @@
 import { curry } from 'ramda'
 
-export const play = async ({dispatch, mx}) => {
+export const play = async ({ dispatch, mx }) => {
   if (mx.current) {
-      await mx.current.play()
+    await mx.current.play()
   }
 
   return dispatch({ type: 'PLAYBACK_PLAY' })
 }
 
-export const pause = async ({dispatch, mx}) => {
+export const pause = async ({ dispatch, mx }) => {
   if (mx.current) {
-      await mx.current.pause()
+    await mx.current.pause()
   }
 
   return dispatch({ type: 'PLAYBACK_PAUSE' })
 }
 
-export const rewind = async ({dispatch, mx}) => {
+export const rewind = async ({ dispatch, mx }) => {
   if (mx.current) {
-      await mx.current.rewind()
+    await mx.current.rewind()
   }
 
   return dispatch({ type: 'PLAYBACK_REWIND' })
 }
 
-export const setMasterVolume = curry(async ({dispatch, mx}, value) => {
+export const setMasterVolume = curry(async ({ dispatch, mx }, value) => {
   if (mx.current) {
-      await mx.current.setMasterTrackVolume(value)
+    await mx.current.setMasterTrackVolume(value)
   }
 
   return dispatch({
@@ -37,11 +37,21 @@ export const setMasterVolume = curry(async ({dispatch, mx}, value) => {
   })
 })
 
+export const loop = async ({ dispatch, mx }, value) => {
+  if (mx.current) {
+    await mx.current.loop(value)
+  }
+
+  return dispatch({
+    type: 'PLAYBACK_LOOP',
+    payload: value
+  })
+}
 
 export const setSendParamValue = curry(
-  async ({dispatch, mx}, effectId, parameterId, value) => {
+  async ({ dispatch, mx }, effectId, parameterId, value) => {
     if (mx.current) {
-        await mx.current.setSendParamValue(effectId, parameterId, value)
+      await mx.current.setSendParamValue(effectId, parameterId, value)
     }
 
     return dispatch({
@@ -55,24 +65,26 @@ export const setSendParamValue = curry(
   }
 )
 
-export const setTrackVolume = curry(async ({dispatch, mx}, trackId, value) => {
-  if (mx.current) {
+export const setTrackVolume = curry(
+  async ({ dispatch, mx }, trackId, value) => {
+    if (mx.current) {
       await mx.current.setTrackVolume(trackId, value)
-  }
-
-  return dispatch({
-    type: 'SET_TRACK_VOLUME',
-    payload: {
-      trackId,
-      value
     }
-  })
-})
+
+    return dispatch({
+      type: 'SET_TRACK_VOLUME',
+      payload: {
+        trackId,
+        value
+      }
+    })
+  }
+)
 
 export const setTrackSendLevel = curry(
-  async ({dispatch, mx}, trackId, fxId, value) => {
+  async ({ dispatch, mx }, trackId, fxId, value) => {
     if (mx.current) {
-        await mx.current.setTrackSendLevel(trackId, fxId, value)
+      await mx.current.setTrackSendLevel(trackId, fxId, value)
     }
 
     return dispatch({
@@ -86,9 +98,9 @@ export const setTrackSendLevel = curry(
   }
 )
 
-export const setTrackPan = curry(async ({dispatch, mx}, trackId, value) => {
+export const setTrackPan = curry(async ({ dispatch, mx }, trackId, value) => {
   if (mx.current) {
-      await mx.current.setTrackPan(trackId, value)
+    await mx.current.setTrackPan(trackId, value)
   }
 
   return dispatch({
@@ -100,10 +112,9 @@ export const setTrackPan = curry(async ({dispatch, mx}, trackId, value) => {
   })
 })
 
-
-export const toggleTrackSolo = curry(async ({dispatch, mx}, trackId) => {
+export const toggleTrackSolo = curry(async ({ dispatch, mx }, trackId) => {
   if (mx.current) {
-      await mx.current.soloTrack(trackId)
+    await mx.current.soloTrack(trackId)
   }
 
   return dispatch({
@@ -114,11 +125,10 @@ export const toggleTrackSolo = curry(async ({dispatch, mx}, trackId) => {
   })
 })
 
-
-export const toggleTrack = curry(async ({dispatch, mx}, trackId) => {
-  console.log('action', trackId);
+export const toggleTrack = curry(async ({ dispatch, mx }, trackId) => {
+  console.log('action', trackId)
   if (mx.current) {
-      await mx.current.toggleTrack(trackId)
+    await mx.current.toggleTrack(trackId)
   }
 
   return dispatch({
@@ -129,9 +139,9 @@ export const toggleTrack = curry(async ({dispatch, mx}, trackId) => {
   })
 })
 
-export const toggleTrackFx = curry(async ({dispatch, mx}, trackId) => {
+export const toggleTrackFx = curry(async ({ dispatch, mx }, trackId) => {
   if (mx.current) {
-      await mx.current.toggleTrackFx(trackId)
+    await mx.current.toggleTrackFx(trackId)
   }
 
   return dispatch({

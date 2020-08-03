@@ -85,6 +85,14 @@
   border: 0;
 }
 
+.isNotActive path {
+  fill: #808080;
+}
+
+.isActive path {
+  fill: #fff;
+}
+
 .button:hover path,
 .controlButton:hover path {
   fill: #e728ea;

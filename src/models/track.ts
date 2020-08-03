@@ -15,7 +15,7 @@ class Track {
   title: string
   id: string
   // ?
-  buffer: any = null
+  buffer: AudioBuffer = null
   context: AudioContext
   pausedAt: number = 0
   startedAt: number = 0
@@ -78,6 +78,14 @@ class Track {
     setNodeParamNormalizedValue(this.panner.pan, value)
   }
 
+  get looped() {
+    return this.source.loop
+  }
+
+  set looped(value) {
+    this.source.loop = value
+  }
+
   load(url) {
     return fetchAudioAsArrayBuffer(url)
       .then((audioBuffer) => {
@@ -85,9 +93,13 @@ class Track {
           this.context.decodeAudioData(audioBuffer, resolve, reject)
         )
       })
-      .then((decodedAudioData) => {
+      .then((decodedAudioData: AudioBuffer) => {
         this.buffer = decodedAudioData
         this.state = TRACK_STATE.READY
+
+        this.source = this.context.createBufferSource()
+        this.source.buffer = this.buffer
+        this.source.connect(this.bus)
 
         return this
       })
@@ -102,9 +114,6 @@ class Track {
 
   play() {
     if (!this.playing) {
-      this.source = this.context.createBufferSource()
-      this.source.buffer = this.buffer
-      this.source.connect(this.bus)
       this.source.start(0, this.pausedAt)
 
       this.startedAt = this.context.currentTime - this.pausedAt
@@ -125,7 +134,6 @@ class Track {
     if (this.source) {
       this.source.disconnect()
       this.source.stop(0)
-      this.source = null
     }
 
     this.pausedAt = 0
