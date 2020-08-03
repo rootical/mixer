@@ -1,4 +1,4 @@
-import { PLAYBACK_STATUS } from './../../constants'
+import { PLAYBACK_STATUS } from '../../constants'
 
 const play = (state) => ({
   ...state,
