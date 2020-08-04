@@ -27,7 +27,8 @@ const Desk: React.FC<DeskProps> = ({
   onMasterVolumeChange = () => {},
   onLoop = () => {},
   tracks = [],
-  effects = []
+  effects = [],
+  children
 }) => {
   const btnClassNames = (isButtonPressed: boolean) =>
     classnames(
@@ -39,11 +40,11 @@ const Desk: React.FC<DeskProps> = ({
   const isDisabled = isNotActive(playback)
 
   const loopButtonClassNames = () =>
-      classnames(
-        style.controlButton,
-        playback.isLooped && style.isActive,
-        !playback.isLooped && style.isNotActive
-      )
+    classnames(
+      style.controlButton,
+      playback.isLooped && style.isActive,
+      !playback.isLooped && style.isNotActive
+    )
 
   return (
     <div className={style.desk}>
@@ -66,7 +67,7 @@ const Desk: React.FC<DeskProps> = ({
         </div>
         <div className={style.controls}>
           <div className={style.controlsLeft}>
-            <button className={style.controlButton}>
+            <button className={style.controlButton} disabled={isDisabled}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 24 28'
@@ -150,7 +151,7 @@ const Desk: React.FC<DeskProps> = ({
                 </svg>
               </button>
             )}
-            <button className={style.controlButton}>
+            <button className={style.controlButton} disabled={isDisabled}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24px'
@@ -176,9 +177,7 @@ const Desk: React.FC<DeskProps> = ({
             </button>
           </div>
 
-          <div className={style.controlsCustom}>
-            {/* TODO: allow passing custom components */}
-          </div>
+          <div className={style.controlsCustom}>{children}</div>
 
           <div className={style.controlsRight}>
             <div className={style.masterVolume}>
@@ -205,6 +204,7 @@ const Desk: React.FC<DeskProps> = ({
                 <button
                   className={style.masterVolumeKnob}
                   style={{ left: '70%' }}
+                  disabled={isDisabled}
                 />
               </div>
             </div>

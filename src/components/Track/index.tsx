@@ -42,6 +42,7 @@ const Track: React.FC<TrackProps> = (props) => (
       <button
         className={classnames(style.button, props.isMuted && style.isPressed)}
         onClick={() => props.onMute(props.id)}
+        disabled={props.isSolo}
       >
         M
       </button>

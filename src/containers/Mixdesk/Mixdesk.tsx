@@ -7,14 +7,18 @@ import { Delay, Reverb, Distortion } from '../../models/fx'
 
 export const Mixdesk = ({
   tracks = [],
-  effects = [Delay, Reverb, Distortion]
+  effects = [Delay, Reverb, Distortion],
+  children
 }) => {
   const context = useMixer(tracks, effects)
   const { mx, state, dispatch } = context
 
   return (
     <Context.Provider value={{ mx, dispatch }}>
-      <DeskContainer {...state} />
+      <DeskContainer {...state}>
+       {children}
+      </DeskContainer>
+
     </Context.Provider>
   )
 }

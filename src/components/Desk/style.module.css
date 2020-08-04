@@ -105,7 +105,11 @@
 }
 
 .button[disabled] {
-  color: grey;
+  color:#808080;
+}
+
+.button[disabled] path, .button[disabled] text {
+  fill: #808080;
 }
 
 .effects {
