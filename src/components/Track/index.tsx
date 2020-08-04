@@ -60,7 +60,6 @@ const Track: React.FC<TrackProps> = (props) => (
     </div>
 
     <Knob
-      numTicks={125}
       degrees={180}
       min={1}
       max={100}
