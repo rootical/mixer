@@ -8,7 +8,7 @@ import { TrackContainer } from './../Track/Track'
 import { play, pause, rewind, setMasterVolume, loop } from './../../store/actions'
 
 // TODO: add types
-export const DeskContainer = ({ tracks, effects, playback }) => {
+export const DeskContainer = ({ tracks, effects, playback, children }) => {
   const context = useContext(Context)
 
   const Tracks = tracks.map((track) => (
@@ -28,6 +28,6 @@ export const DeskContainer = ({ tracks, effects, playback }) => {
       tracks={Tracks}
       effects={Effects}
       playback={playback}
-    />
+    >{children}</Desk>
   )
 }
