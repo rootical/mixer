@@ -4,6 +4,12 @@ exports[`<Track /> should renders without any errors 1`] = `
 <div
   className="track"
 >
+  <button
+    className="button"
+    onClick={[Function]}
+  >
+    Bypass FX
+  </button>
   <div
     className="trackControls"
   >
@@ -13,23 +19,22 @@ exports[`<Track /> should renders without any errors 1`] = `
     >
       M
     </button>
+    <div
+      className="buttonSeparator"
+    />
     <button
       className="button"
       onClick={[Function]}
     >
       S
     </button>
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      Bypass FX
-    </button>
   </div>
-  <Fader
-    isVertical={true}
-    onChange={[MockFunction]}
-    value={42}
+  <Knob
+    degrees={180}
+    max={100}
+    min={1}
+    size={50}
+    value={50}
   />
   <div
     className="sends"
@@ -61,6 +66,11 @@ exports[`<Track /> should renders without any errors 1`] = `
       />
     </div>
   </div>
+  <Fader
+    isVertical={true}
+    onChange={[MockFunction]}
+    value={42}
+  />
   <div
     className="title"
   >

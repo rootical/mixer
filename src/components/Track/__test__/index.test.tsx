@@ -10,6 +10,7 @@ const propsMock = {
   isSolo: false,
   isMuted: false,
   isEffectsDisabled: false,
+  pan: 50,
   fx: {
     delay: 0,
     reverb: 0
@@ -18,13 +19,14 @@ const propsMock = {
   onBypass: jest.fn(),
   onVolumeChange: jest.fn(),
   onSendLevelChange: jest.fn(),
-  onSolo: jest.fn()
+  onSolo: jest.fn(),
+  onPanChange: jest.fn()
 }
 
-const MUTE_BUTTON = 0
-const SOLO_BUTTON = 1
-const FX_BYPASS_BUTTON = 2
-const FADER_VOLUME = 0
+const MUTE_BUTTON = 1
+const SOLO_BUTTON = 2
+const FX_BYPASS_BUTTON = 0
+const FADER_VOLUME = 2
 const FADER_SEND = 1
 
 describe('<Track />', () => {
@@ -37,7 +39,6 @@ describe('<Track />', () => {
   describe('onMute', () => {
     it('should be called on mute toggler click', () => {
       const wrapper = shallow(<Track {...propsMock} />)
-
       wrapper.find('button').at(MUTE_BUTTON).simulate('click')
 
       expect(propsMock.onMute).toBeCalled()
@@ -67,7 +68,6 @@ describe('<Track />', () => {
   describe('onVolumeChange', () => {
     it('should be called on volume change', () => {
       const wrapper = mount(<Track {...propsMock} />)
-
       wrapper
         .find('Fader')
         .at(FADER_VOLUME)

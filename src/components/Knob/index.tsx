@@ -2,7 +2,35 @@ import React, { Component } from 'react'
 
 import style from './style.module.css'
 
-class Knob extends Component {
+interface KnobProps {
+  min: number
+  max: number
+  color?: string
+  size: number
+  degrees: number
+  value: number
+  onChange: any
+}
+
+type KnobState = {
+  deg: number
+}
+
+class Knob extends Component<KnobProps, KnobState> {
+  fullAngle: number
+  startAngle: number
+  endAngle: number
+  margin: number
+  isDragging: boolean
+  currentDeg: number
+
+  static defaultProps = {
+    size: 150,
+    min: 10,
+    max: 30,
+    degrees: 270,
+    value: 0
+  }
 
   constructor(props) {
     super(props)
@@ -37,7 +65,7 @@ class Knob extends Component {
       requestAnimationFrame(this.update)
     }
     document.addEventListener('mousemove', moveHandler)
-    document.addEventListener('mouseup', (e) => {
+    document.addEventListener('mouseup', () => {
       this.isDragging = false;
       document.removeEventListener('mousemove', moveHandler)
     })
@@ -116,15 +144,6 @@ class Knob extends Component {
       </div>
     )
   }
-}
-
-Knob.defaultProps = {
-  size: 150,
-  min: 10,
-  max: 30,
-  numTicks: 0,
-  degrees: 270,
-  value: 0
 }
 
 export default Knob

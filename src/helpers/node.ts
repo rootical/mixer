@@ -18,7 +18,7 @@ export const getNodeParamNormalizedValue = node => {
     return resultValue;
 }
 
-export const setNodeParamNormalizedValue = (node, value): GainNode => {
+export const setNodeParamNormalizedValue = (node, value): AudioParam => {
     const {maxValue, minValue, defaultValue} = node;
     const dividend = defaultValue === 1 ? 1 : maxValue;
     const absoluteValue = value * (dividend / 100);

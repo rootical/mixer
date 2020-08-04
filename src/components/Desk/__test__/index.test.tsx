@@ -4,11 +4,13 @@ import { shallow } from 'enzyme'
 import Desk from '../'
 
 import { PLAYBACK_STATUS } from '../../../constants'
+import { Playback } from '../../../helpers'
 
-const playbackMock = {
-  analyser: {},
+const playbackMock: Playback = {
+  analyser: null,
   status: PLAYBACK_STATUS.PAUSED,
-  currentPosition: 0
+  currentPosition: 0,
+  isLooped: false
 }
 
 const deskProps = {
@@ -17,12 +19,13 @@ const deskProps = {
   onPlay: () => {},
   onPause: () => {},
   onRewind: () => {},
-  onMasterVolumeChange: () => {}
+  onMasterVolumeChange: () => {},
+  onLoop: () => {}
 }
 
-const PLAY_BUTTON = 0
+const PLAY_BUTTON = 1
 const PAUSE_BUTTON = 1
-const REWIND_BUTTON = 2
+const REWIND_BUTTON = 4
 
 describe('<Desk />', () => {
   it('should renders without any errors', () => {
@@ -49,15 +52,14 @@ describe('<Desk />', () => {
           }}
         />
       )
-
       const result = wrapper.find('button[disabled]').length
 
-      expect(result).toBe(3)
+      expect(result).toBe(2)
     })
   })
 
   describe('play button', () => {
-    it('should call onPlay on press', () => {
+    it.only('should call onPlay on press', () => {
       const onPlay = jest.fn()
       const wrapper = shallow(
         <Desk
