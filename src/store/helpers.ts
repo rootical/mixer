@@ -32,6 +32,7 @@ export const createState = mixdesk => {
 
     const playback = createPlaybackEntity({
         analyser: mixdesk.analyser,
+        masterVolume: mixdesk.volume,
     });
 
     return {
