@@ -5,7 +5,7 @@ import {
   isContextRunning,
   resumeContext
 } from '../helpers/audio'
-import { setNodeParams, setNodeParamNormalizedValue } from '../helpers/node'
+import { setNodeParams, setNodeParamNormalizedValue, getNodeParamNormalizedValue } from '../helpers/node'
 import { playAll, pauseAll, rewindAll, stopAll } from '../helpers/playback'
 import Track from './track'
 
@@ -30,6 +30,26 @@ export class Mixer {
 
       this.load(sources)
     }
+  }
+
+  get volume() {
+    return getNodeParamNormalizedValue(this.masterBus.gain);
+  }
+
+  set volume(value) {
+    setNodeParamNormalizedValue(this.masterBus.gain, value);
+  }
+
+  async fastForward(value = 15) {
+    return this.tracks.map((track: Track) => {
+      track.fastForward(value);
+
+      return track;
+    });
+  }
+
+  async fastRewind(value = 15) {
+    return this.fastForward(-value);
   }
 
   /**
@@ -200,11 +220,6 @@ export class Mixer {
 
       return fx
     })
-  }
-
-  async setMasterTrackVolume(value) {
-    // TODO:...
-    console.log(value)
   }
 
   async loop(value) {

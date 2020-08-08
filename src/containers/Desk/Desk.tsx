@@ -23,8 +23,8 @@ export const DeskContainer = ({ tracks, effects, playback, children }) => {
       onPlay={() => play(context)}
       onPause={() => pause(context)}
       onRewind={() => rewind(context)}
-      onLoop={(value) => loop(context, value)}
-      onMasterVolumeChange={(value) => setMasterVolume(context, value)}
+      onLoop={loop(context)}
+      onMasterVolumeChange={setMasterVolume(context)}
       tracks={Tracks}
       effects={Effects}
       playback={playback}
