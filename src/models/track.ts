@@ -101,8 +101,8 @@ class Track {
         this.source.buffer = this.buffer
         this.source.connect(this.bus)
 
-        return this
-      })
+        return this;
+      }
       .catch((error) => {
         this.state = TRACK_STATE.FAILED
 
@@ -112,11 +112,11 @@ class Track {
       })
   }
 
-  play() {
+  play(offset = 0) {
     if (!this.playing) {
-      this.source.start(0, this.pausedAt)
+      this.source.start(0, this.pausedAt + offset)
 
-      this.startedAt = this.context.currentTime - this.pausedAt
+      this.startedAt = this.context.currentTime - (this.pausedAt + offset)
       this.pausedAt = 0
       this.playing = true
     }
@@ -128,6 +128,11 @@ class Track {
       this.stop()
       this.pausedAt = elapsed
     }
+  }
+
+  fastForward(value = 15) {
+    this.pause();
+    this.play(value);
   }
 
   stop() {

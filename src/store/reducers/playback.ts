@@ -21,7 +21,7 @@ const setPlaybackReady = (state) => ({
   status: PLAYBACK_STATUS.READY
 })
 
-const setPlaybackMasterTrackVolume = (state, value) => ({
+const setMasterVolume = (state, value) => ({
   ...state,
   masterVolume: value
 })
@@ -30,6 +30,16 @@ const playbackLoop = (state, value) => ({
   ...state,
   isLooped: value
 })
+
+const fastRewind = ({currentPosition, ...state}, value) => ({
+  ...state,
+  currentPosition: currentPosition - value,
+});
+
+const fastForward = ({currentPosition, ...state}, value) => ({
+  ...state,
+  currentPosition: currentPosition + value,
+});
 
 export const playbackReducer = (playback, { type, payload }) => {
   switch (type) {
@@ -41,10 +51,14 @@ export const playbackReducer = (playback, { type, payload }) => {
       return rewind(playback)
     case 'PLAYBACK_READY':
       return setPlaybackReady(playback)
-    case 'PLAYBACK_SET_MASTER_TRACK_VOLUME':
-      return setPlaybackMasterTrackVolume(playback, payload)
+    case 'PLAYBACK_SET_MASTER_VOLUME':
+      return setMasterVolume(playback, payload)
     case 'PLAYBACK_LOOP':
       return playbackLoop(playback, payload)
+    case 'PLAYBACK_FAST_REWIND':
+      return fastRewind(playback, payload);
+    case 'PLAYBACK_FAST_FORWARD':
+      return fastForward(playback, payload);
     case 'SET_PLAYBACK':
       return payload
     default:

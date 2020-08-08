@@ -26,18 +26,38 @@ export const rewind = async ({ dispatch, mx }) => {
 
 export const setMasterVolume = curry(async ({ dispatch, mx }, value) => {
   if (mx.current) {
-    await mx.current.setMasterTrackVolume(value)
+    mx.current.volume = value;
   }
 
   return dispatch({
-    type: 'PLAYBACK_SET_MASTER_TRACK_VOLUME',
-    payload: {
-      value
-    }
-  })
-})
+    type: 'PLAYBACK_SET_MASTER_VOLUME',
+    payload: value,
+  });
+});
 
-export const loop = async ({ dispatch, mx }, value) => {
+export const fastForward = curry(async ({dispatch, mx}, value) => {
+  if (mx.current) {
+    await mx.current.fastForward(value);
+  }
+
+  return dispatch({
+    type: 'PLAYBACK_FAST_FORWARD',
+    payload: value,
+  });
+});
+
+export  const fastRewind = curry(async ({dispatch, mx}, value) => {
+  if (mx.current) {
+    await mx.current.fastRewind(value);
+  }
+
+  return dispatch({
+    type: 'PLAYBACK_FAST_REWIND',
+    payload: value,
+  });
+});
+
+export const loop = async curry(({ dispatch, mx }, value) => {
   if (mx.current) {
     await mx.current.loop(value)
   }
@@ -46,7 +66,7 @@ export const loop = async ({ dispatch, mx }, value) => {
     type: 'PLAYBACK_LOOP',
     payload: value
   })
-}
+});
 
 export const setSendParamValue = curry(
   async ({ dispatch, mx }, effectId, parameterId, value) => {
