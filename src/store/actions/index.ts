@@ -26,38 +26,38 @@ export const rewind = async ({ dispatch, mx }) => {
 
 export const setMasterVolume = curry(async ({ dispatch, mx }, value) => {
   if (mx.current) {
-    mx.current.volume = value;
+    mx.current.volume = value
   }
 
   return dispatch({
     type: 'PLAYBACK_SET_MASTER_VOLUME',
-    payload: value,
-  });
-});
+    payload: value
+  })
+})
 
-export const fastForward = curry(async ({dispatch, mx}, value) => {
+export const fastForward = curry(async ({ dispatch, mx }, value) => {
   if (mx.current) {
-    await mx.current.fastForward(value);
+    await mx.current.fastForward(value)
   }
 
   return dispatch({
     type: 'PLAYBACK_FAST_FORWARD',
-    payload: value,
-  });
-});
+    payload: value
+  })
+})
 
-export  const fastRewind = curry(async ({dispatch, mx}, value) => {
+export const fastRewind = curry(async ({ dispatch, mx }, value) => {
   if (mx.current) {
-    await mx.current.fastRewind(value);
+    await mx.current.fastRewind(value)
   }
 
   return dispatch({
     type: 'PLAYBACK_FAST_REWIND',
-    payload: value,
-  });
-});
+    payload: value
+  })
+})
 
-export const loop = async curry(({ dispatch, mx }, value) => {
+export const loop = curry(async ({ dispatch, mx }, value) => {
   if (mx.current) {
     await mx.current.loop(value)
   }
@@ -66,7 +66,21 @@ export const loop = async curry(({ dispatch, mx }, value) => {
     type: 'PLAYBACK_LOOP',
     payload: value
   })
-});
+})
+
+export const setCurrentPosition = curry(async ({ dispatch }, value) => {
+  return dispatch({
+    type: 'PLAYBACK_SET_CURRENT_POSITION',
+    payload: value
+  })
+})
+
+export const setLength = curry(async ({ dispatch }, value) => {
+  return dispatch({
+    type: 'PLAYBACK_SET_DURATION',
+    payload: value
+  })
+})
 
 export const setSendParamValue = curry(
   async ({ dispatch, mx }, effectId, parameterId, value) => {
@@ -146,7 +160,6 @@ export const toggleTrackSolo = curry(async ({ dispatch, mx }, trackId) => {
 })
 
 export const toggleTrack = curry(async ({ dispatch, mx }, trackId) => {
-  console.log('action', trackId)
   if (mx.current) {
     await mx.current.toggleTrack(trackId)
   }

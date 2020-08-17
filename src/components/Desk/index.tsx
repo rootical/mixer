@@ -1,4 +1,6 @@
 import React from 'react'
+// import React, { useState, useEffect } from 'react'
+
 import classnames from 'classnames'
 
 import MasterTrack from '../MasterTrack'
@@ -20,7 +22,7 @@ interface DeskProps {
 }
 
 const Desk: React.FC<DeskProps> = ({
-  playback = {},
+  playback,
   onPlay = () => {},
   onPause = () => {},
   // onRewind = () => {},
@@ -30,6 +32,7 @@ const Desk: React.FC<DeskProps> = ({
   effects = [],
   children
 }) => {
+
   const btnClassNames = (isButtonPressed: boolean) =>
     classnames(
       style.control,
@@ -52,7 +55,7 @@ const Desk: React.FC<DeskProps> = ({
         {tracks}
         {playback.analyser && (
           <MasterTrack
-            volume={playback.volume}
+            volume={playback.masterVolume}
             onVolumeChange={onMasterVolumeChange}
             analyser={playback.analyser}
           />
@@ -61,9 +64,9 @@ const Desk: React.FC<DeskProps> = ({
 
       <div className={style.controlsContainer}>
         <div className={style.progressContainer}>
-          <div className={style.progressBar} style={{ width: '30%' }} />
-          <div className={style.progressTimeNow}>1:17</div>
-          <div className={style.progressTime}>3:22</div>
+          <div className={style.progressBar} style={{ width: `${playback.currentPosition}%` }} />
+          <div className={style.progressTimeNow}>{convertTime(playback.currentPosition)}</div>
+          <div className={style.progressTime}>{convertTime(playback.currentPosition)}</div>
         </div>
         <div className={style.controls}>
           <div className={style.controlsLeft}>
@@ -232,6 +235,10 @@ const Desk: React.FC<DeskProps> = ({
       {effects.length > 0 && <div className={style.effects}>{effects}</div>}
     </div>
   )
+}
+
+const convertTime = (value) => {
+  return Math.floor(value / 60) + ":" + (value % 60 ? value % 60 : '00')
 }
 
 export default Desk

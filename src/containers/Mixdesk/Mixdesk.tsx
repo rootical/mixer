@@ -1,24 +1,33 @@
 import React from 'react'
 
-import { useMixer } from '../../hooks/useMixer'
+import { useMixer, UseMixerHook } from '../../hooks'
 import { DeskContainer } from '../Desk'
 import { Context } from '../Context'
-import { Delay, Reverb, Distortion } from '../../models/fx'
+import { Delay, Reverb, Distortion, FX } from '../../models/fx'
+import { useProgress } from '../../hooks/useProgress'
 
-export const Mixdesk = ({
+interface MixdeskProps  {
+  tracks: any[],
+  effects: FX[]
+}
+
+export const Mixdesk: React.FC<MixdeskProps> = ({
   tracks = [],
   effects = [Delay, Reverb, Distortion],
   children
 }) => {
-  const context = useMixer(tracks, effects)
+
+  const context: UseMixerHook = useMixer(tracks, effects)
+
   const { mx, state, dispatch } = context
+
+  useProgress(context)
 
   return (
     <Context.Provider value={{ mx, dispatch }}>
       <DeskContainer {...state}>
-       {children}
+       {children && children}
       </DeskContainer>
-
     </Context.Provider>
   )
 }

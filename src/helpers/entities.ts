@@ -76,8 +76,7 @@ export const createTrackEntity = ({id, title, volume, pan, muted, soloed, bypass
 });
 
 export const createEffectEntity = effect => {
-
-    switch (effect.id) { //@TODO: switch to type
+    switch (effect.id) {
         case 'delay':
             return createDelayEntity(effect);
         case 'distortion':
@@ -93,19 +92,23 @@ export interface Playback {
   analyser: AnalyserNode
   status: PLAYBACK_STATUS
   currentPosition: number
+  duration: number
   isLooped: boolean
-  // volume Doesn't propogate down well, used inside Desk for unclear reason
-  volume?: number
+  masterVolume: number
 }
 
 export const createPlaybackEntity = ({
     analyser,
     status = PLAYBACK_STATUS.NOT_SET,
     currentPosition = 0,
+    duration = 0,
     isLooped = false,
+    masterVolume = 70
 }): Playback => ({
     analyser,
     status,
     currentPosition,
-    isLooped
+    duration,
+    isLooped,
+    masterVolume
 });

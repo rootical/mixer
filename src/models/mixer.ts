@@ -8,13 +8,14 @@ import {
 import { setNodeParams, setNodeParamNormalizedValue, getNodeParamNormalizedValue } from '../helpers/node'
 import { playAll, pauseAll, rewindAll, stopAll } from '../helpers/playback'
 import Track from './track'
+import { FX } from './fx'
 
 export class Mixer {
   context: AudioContext
   analyser: AnalyserNode
-  tracks: any[]
+  tracks: Track[]
   // TODO: rename fx to sends?
-  fx: any[]
+  fx: FX[]
   masterBus: GainNode
 
   constructor(sources = [], effects = []) {
@@ -32,12 +33,20 @@ export class Mixer {
     }
   }
 
-  get volume() {
+  get volume(): number {
     return getNodeParamNormalizedValue(this.masterBus.gain);
   }
 
   set volume(value) {
     setNodeParamNormalizedValue(this.masterBus.gain, value);
+  }
+
+  get duration(): number {
+    return this.tracks[0].buffer.duration
+  }
+
+  get currentTime(): number {
+    return this.tracks[0].context.currentTime
   }
 
   async fastForward(value = 15) {

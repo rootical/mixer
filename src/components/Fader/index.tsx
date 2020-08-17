@@ -30,12 +30,14 @@ interface FaderProps {
   isVertical?: boolean
   // TODO: 🤯 Refactor onChange due to type inconsistency
   onChange?: any
+  className?: string
 }
 
 const Fader: React.FC<FaderProps> = ({
   value = 0,
   isVertical = false,
-  onChange = () => {}
+  onChange = () => {},
+  className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -100,6 +102,7 @@ const Fader: React.FC<FaderProps> = ({
           position={value}
           events={{ [thumbEventName]: onMoveStart }}
           isVertical={isVertical}
+          className={className}
         />
       </div>
     </div>

@@ -14,7 +14,6 @@ class Track {
   source: AudioBufferSourceNode | null
   title: string
   id: string
-  // ?
   buffer: AudioBuffer = null
   context: AudioContext
   pausedAt: number = 0
@@ -24,8 +23,7 @@ class Track {
   playing: boolean = false
   bypassFX: boolean = false
   previousVolume: number
-  // ?
-  state: any = TRACK_STATE.NOT_SET
+  state: TRACK_STATE = TRACK_STATE.NOT_SET
   bus: GainNode
   soloBus: GainNode
   fx: any
@@ -102,7 +100,7 @@ class Track {
         this.source.connect(this.bus)
 
         return this;
-      }
+      })
       .catch((error) => {
         this.state = TRACK_STATE.FAILED
 
