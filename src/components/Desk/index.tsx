@@ -8,17 +8,18 @@ import { isPlaying, isPaused, isNotActive } from './../../helpers/playback'
 
 import style from './style.module.css'
 import { Playback } from '../../helpers'
+import { FX } from '../../models/fx'
+import Track from '../../models/track'
 
 interface DeskProps {
-  // TODO: Types
   playback: Playback
   onPlay: () => void
   onPause: () => void
   onRewind?: () => void
   onLoop: (value) => void
   onMasterVolumeChange: (value) => void
-  tracks: any[]
-  effects: any[]
+  tracks: Track[]
+  effects: FX[]
 }
 
 const Desk: React.FC<DeskProps> = ({
@@ -32,7 +33,6 @@ const Desk: React.FC<DeskProps> = ({
   effects = [],
   children
 }) => {
-
   const btnClassNames = (isButtonPressed: boolean) =>
     classnames(
       style.control,
@@ -64,9 +64,16 @@ const Desk: React.FC<DeskProps> = ({
 
       <div className={style.controlsContainer}>
         <div className={style.progressContainer}>
-          <div className={style.progressBar} style={{ width: `${playback.currentPosition}%` }} />
-          <div className={style.progressTimeNow}>{convertTime(playback.currentPosition)}</div>
-          <div className={style.progressTime}>{convertTime(playback.currentPosition)}</div>
+          <div
+            className={style.progressBar}
+            style={{ width: `${persentPassed(playback.currentPosition, playback.duration) || 0}%` }}
+          />
+          <div className={style.progressTimeNow}>
+            {convertTime(playback.currentPosition)}
+          </div>
+          <div className={style.progressTime}>
+            {convertTime(playback.duration)}
+          </div>
         </div>
         <div className={style.controls}>
           <div className={style.controlsLeft}>
@@ -237,8 +244,17 @@ const Desk: React.FC<DeskProps> = ({
   )
 }
 
-const convertTime = (value) => {
-  return Math.floor(value / 60) + ":" + (value % 60 ? value % 60 : '00')
+const convertTime = (seconds = 0) => {
+  const secondsResult = Math.floor(seconds % 60);
+  const result = {
+    minutes: Math.floor(((seconds - secondsResult) / 60) % 60),
+    seconds: secondsResult > 10 ? secondsResult : `0${secondsResult}`
+  }
+  return `${result.minutes}:${result.seconds}`
+}
+
+const persentPassed = (seconds, duration) => {
+  return (100 * seconds) / duration;
 }
 
 export default Desk

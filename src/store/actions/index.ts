@@ -75,13 +75,6 @@ export const setCurrentPosition = curry(async ({ dispatch }, value) => {
   })
 })
 
-export const setLength = curry(async ({ dispatch }, value) => {
-  return dispatch({
-    type: 'PLAYBACK_SET_DURATION',
-    payload: value
-  })
-})
-
 export const setSendParamValue = curry(
   async ({ dispatch, mx }, effectId, parameterId, value) => {
     if (mx.current) {

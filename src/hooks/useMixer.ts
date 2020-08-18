@@ -40,7 +40,6 @@ export const useMixer = (tracks, effects): UseMixerHook => {
       await dispatchWithLog({ type: 'SET_TRACKS', payload: tracks })
       await dispatchWithLog({ type: 'SET_EFFECTS', payload: effects })
       await dispatchWithLog({ type: 'SET_PLAYBACK', payload: playback })
-      await dispatchWithLog({ type: 'PLAYBACK_SET_LENGTH', payload: tracks[0].buffer.length })
       await dispatchWithLog({ type: 'PLAYBACK_READY' })
 
     }

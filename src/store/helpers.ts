@@ -5,6 +5,7 @@ import {
     createPlaybackEntity,
     createTrackEntity,
 } from '../helpers/entities';
+import { Mixer } from '../models/mixer';
 
 
 const compact = reject(item => not(Boolean(item)));
@@ -21,7 +22,7 @@ export const getDispatchWithLog = curry((dispatch, args) => {
     return dispatch(args);
 });
 
-export const createState = mixdesk => {
+export const createState = (mixdesk: Mixer) => {
     if (typeof window === 'undefined') {
       return null;
     }
@@ -32,7 +33,8 @@ export const createState = mixdesk => {
 
     const playback = createPlaybackEntity({
         analyser: mixdesk.analyser,
-        masterVolume: mixdesk.volume
+        masterVolume: mixdesk.volume,
+        duration: mixdesk.tracks[0].buffer.duration
     });
 
     return {

@@ -92,7 +92,7 @@ export interface Playback {
   analyser: AnalyserNode
   status: PLAYBACK_STATUS
   currentPosition: number
-  duration: number
+  duration?: number
   isLooped: boolean
   masterVolume: number
 }
@@ -101,7 +101,7 @@ export const createPlaybackEntity = ({
     analyser,
     status = PLAYBACK_STATUS.NOT_SET,
     currentPosition = 0,
-    duration = 0,
+    duration,
     isLooped = false,
     masterVolume = 70
 }): Playback => ({
