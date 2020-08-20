@@ -22,7 +22,7 @@ export interface UseMixerHook {
   dispatch: React.Dispatch<any>
 }
 
-export const useMixer = (tracks, effects): UseMixerHook => {
+export const useMixer = (tracks, effects, hasMasterTrack): UseMixerHook => {
   const mx = useRef<Mixer>()
 
   const [state, dispatch] = useReducer(reducer, <MixerState>{
@@ -35,7 +35,7 @@ export const useMixer = (tracks, effects): UseMixerHook => {
 
   useEffect(() => {
     const onLoad = async () => {
-      const { tracks, effects, playback } = createState(mx.current)
+      const { tracks, effects, playback } = createState(mx.current, hasMasterTrack)
 
       await dispatchWithLog({ type: 'SET_TRACKS', payload: tracks })
       await dispatchWithLog({ type: 'SET_EFFECTS', payload: effects })

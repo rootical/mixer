@@ -6,18 +6,20 @@ import { Context } from '../Context'
 import { Delay, Reverb, Distortion, FX } from '../../models/fx'
 import { useProgress } from '../../hooks/useProgress'
 
-interface MixdeskProps  {
+export interface MixdeskProps  {
   tracks: any[],
-  effects: FX[]
+  effects: FX[],
+  hasMasterTrack?: boolean
 }
 
 export const Mixdesk: React.FC<MixdeskProps> = ({
   tracks = [],
   effects = [Delay, Reverb, Distortion],
+  hasMasterTrack = true,
   children
 }) => {
 
-  const context: UseMixerHook = useMixer(tracks, effects)
+  const context: UseMixerHook = useMixer(tracks, effects, hasMasterTrack)
 
   const { mx, state, dispatch } = context
 

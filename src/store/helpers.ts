@@ -22,7 +22,7 @@ export const getDispatchWithLog = curry((dispatch, args) => {
     return dispatch(args);
 });
 
-export const createState = (mixdesk: Mixer) => {
+export const createState = (mixdesk: Mixer, hasMasterTrack) => {
     if (typeof window === 'undefined') {
       return null;
     }
@@ -32,9 +32,9 @@ export const createState = (mixdesk: Mixer) => {
     const effects = compact(mixdesk.fx.map(createEffectEntity));
 
     const playback = createPlaybackEntity({
-        analyser: mixdesk.analyser,
+        analyser: hasMasterTrack ? mixdesk.analyser : false,
         masterVolume: mixdesk.volume,
-        duration: mixdesk.tracks[0].buffer.duration
+        duration: mixdesk.tracks[0].buffer?.duration
     });
 
     return {

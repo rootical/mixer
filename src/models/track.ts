@@ -30,6 +30,8 @@ class Track {
   loadingState: any
   panner: any
 
+  private isLooped = false;
+
   constructor({ url, title, context, masterBus, sends = [], volume = 70, pan = 50 }) {
     this.id = generateIdByTitle(title)
 
@@ -81,7 +83,13 @@ class Track {
   }
 
   set looped(value) {
+    this.isLooped = value
+    // !this.source && !this.loadingState && this.createSource()
     this.source.loop = value
+  }
+
+  get currentTime() {
+    return this.context.currentTime - this.startedAt
   }
 
   load(url) {
@@ -95,9 +103,7 @@ class Track {
         this.buffer = decodedAudioData
         this.state = TRACK_STATE.READY
 
-        this.source = this.context.createBufferSource()
-        this.source.buffer = this.buffer
-        this.source.connect(this.bus)
+        this.createSource();
 
         return this;
       })
@@ -110,8 +116,29 @@ class Track {
       })
   }
 
+  createSource() {
+    this.source = this.context.createBufferSource()
+    this.source.buffer = this.buffer
+    this.source.connect(this.bus)
+
+    // Get back loop when created again
+    if (this.isLooped) {
+      this.looped = true
+    }
+  }
+
+  removeSource() {
+    if (this.source) {
+      this.source.disconnect()
+      this.source.stop(0)
+      this.source = null
+    }
+  }
+
   play(offset = 0) {
     if (!this.playing) {
+      !this.source && this.createSource();
+
       this.source.start(0, this.pausedAt + offset)
 
       this.startedAt = this.context.currentTime - (this.pausedAt + offset)
@@ -123,7 +150,8 @@ class Track {
   pause() {
     if (this.playing) {
       const elapsed = this.context.currentTime - this.startedAt
-      this.stop()
+      this.removeSource()
+      this.playing = false
       this.pausedAt = elapsed
     }
   }
@@ -134,11 +162,7 @@ class Track {
   }
 
   stop() {
-    if (this.source) {
-      this.source.disconnect()
-      this.source.stop(0)
-    }
-
+    this.removeSource()
     this.pausedAt = 0
     this.startedAt = 0
     this.playing = false

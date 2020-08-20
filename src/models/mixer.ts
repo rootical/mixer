@@ -25,6 +25,9 @@ export class Mixer {
       this.analyser = createAnalyser(this.context)
       this.masterBus = createMasterBus(this.context, [this.analyser])
 
+      // TODO it proper
+      this.volume = 70
+
       this.fx = effects.map(
         (Effect) => new Effect(this.context, this.masterBus)
       )
@@ -46,7 +49,7 @@ export class Mixer {
   }
 
   get currentTime(): number {
-    return this.tracks[0].context.currentTime
+    return this.tracks[0].currentTime
   }
 
   async fastForward(value = 15) {

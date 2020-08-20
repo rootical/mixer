@@ -64,7 +64,7 @@ const Track: React.FC<TrackProps> = (props) => (
       degrees={180}
       min={1}
       max={100}
-      value={props.pan}
+      value={props.pan + 1}
       size={50}
       onChange={props.onPanChange(props.id)}
     />

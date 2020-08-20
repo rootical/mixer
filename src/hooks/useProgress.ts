@@ -1,29 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { UseMixerHook } from './useMixer'
 import { PLAYBACK_STATUS } from '../constants'
 
 export const useProgress = (context: UseMixerHook) => {
 
-  const [seconds, setSeconds] = useState(context.state.playback.currentPosition || 1)
-
-  const { dispatch, state } = context
+  const { dispatch, state, mx } = context
 
   useEffect(() => {
-      if (state.playback.status === PLAYBACK_STATUS.PLAYING) {
-        const interval = setInterval(() => {
-          setSeconds((seconds) => {
-            dispatch({ type: 'PLAYBACK_SET_CURRENT_POSITION', payload: seconds })
-            return seconds + 1
-          })
-        }, 1000)
-        return () => clearInterval(interval)
-      } else if (state.playback.status === PLAYBACK_STATUS.PAUSED) {
-        setSeconds((seconds) => seconds + 1)
-        return dispatch({ type: 'PLAYBACK_SET_CURRENT_POSITION', payload: seconds })
+      switch (state.playback.status) {
+        case PLAYBACK_STATUS.PLAYING:
+          const interval = setInterval(() => {
+            dispatch({ type: 'PLAYBACK_SET_CURRENT_POSITION', payload: mx.current.currentTime })
+          }, 1000)
+          return () => clearInterval(interval)
+        default:
+          return () => {}
       }
-      else return () => {}
-
   }, [state.playback.status])
 
-  return seconds
+  return context.state.playback.currentPosition
 }

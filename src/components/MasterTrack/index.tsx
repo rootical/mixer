@@ -25,6 +25,8 @@ const MasterTrack: React.FC<MasterTrackProps> = ({
     return null
   }
 
+  console.log(volume)
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {

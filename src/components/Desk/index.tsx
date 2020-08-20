@@ -18,6 +18,8 @@ interface DeskProps {
   onRewind?: () => void
   onLoop: (value) => void
   onMasterVolumeChange: (value) => void
+  onFastRewind: (value) => void
+  onFastForward: (value) => void
   tracks: Track[]
   effects: FX[]
 }
@@ -27,6 +29,8 @@ const Desk: React.FC<DeskProps> = ({
   onPlay = () => {},
   onPause = () => {},
   // onRewind = () => {},
+  onFastForward = () => {},
+  onFastRewind = () => {},
   onMasterVolumeChange = () => {},
   onLoop = () => {},
   tracks = [],
@@ -77,7 +81,7 @@ const Desk: React.FC<DeskProps> = ({
         </div>
         <div className={style.controls}>
           <div className={style.controlsLeft}>
-            <button className={style.controlButton} disabled={isDisabled}>
+            <button className={style.controlButton} disabled={isDisabled} onClick={() => onFastRewind(15)}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 24 28'
@@ -161,7 +165,7 @@ const Desk: React.FC<DeskProps> = ({
                 </svg>
               </button>
             )}
-            <button className={style.controlButton} disabled={isDisabled}>
+            <button className={style.controlButton} disabled={isDisabled} onClick={() => onFastForward(15)}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24px'
