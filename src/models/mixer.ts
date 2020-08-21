@@ -5,7 +5,11 @@ import {
   isContextRunning,
   resumeContext
 } from '../helpers/audio'
-import { setNodeParams, setNodeParamNormalizedValue, getNodeParamNormalizedValue } from '../helpers/node'
+import {
+  setNodeParams,
+  setNodeParamNormalizedValue,
+  getNodeParamNormalizedValue
+} from '../helpers/node'
 import { playAll, pauseAll, rewindAll, stopAll } from '../helpers/playback'
 import Track from './track'
 import { FX } from './fx'
@@ -37,11 +41,11 @@ export class Mixer {
   }
 
   get volume(): number {
-    return getNodeParamNormalizedValue(this.masterBus.gain);
+    return getNodeParamNormalizedValue(this.masterBus.gain)
   }
 
   set volume(value) {
-    setNodeParamNormalizedValue(this.masterBus.gain, value);
+    setNodeParamNormalizedValue(this.masterBus.gain, value)
   }
 
   get duration(): number {
@@ -54,14 +58,14 @@ export class Mixer {
 
   async fastForward(value = 15) {
     return this.tracks.map((track: Track) => {
-      track.fastForward(value);
+      track.fastForward(value)
 
-      return track;
-    });
+      return track
+    })
   }
 
   async fastRewind(value = 15) {
-    return this.fastForward(-value);
+    return this.fastForward(-value)
   }
 
   /**
@@ -241,7 +245,7 @@ export class Mixer {
     })
   }
 
-  load(sources) {
+  async load(sources, callback?) {
     this.tracks = sources.map(
       ({ url, title }) =>
         new Track({
@@ -253,6 +257,18 @@ export class Mixer {
         })
     )
 
-    return Promise.all(this.tracks.map((track: Track) => track.loadingState))
+    const tracksLength = this.tracks.length
+
+    return Promise.all(
+      this.tracks.map((track: Track, index) =>
+        track.loadingState.then((sousage) => {
+          callback({
+            length: tracksLength,
+            current: index + 1
+          })
+          return sousage
+        })
+      )
+    )
   }
 }

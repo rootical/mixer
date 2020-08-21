@@ -2,7 +2,13 @@ import React from 'react'
 
 import style from './style.module.css'
 
-const FaderThumb = ({ position = 0, isVertical = false, events = {}, className }) => {
+const FaderThumb = ({
+  position = 0,
+  isVertical = false,
+  events = {},
+  isKnobThumb = false,
+  className
+}) => {
   const styleProperty = isVertical ? 'bottom' : 'left'
   const stylePropertyValue = position + '%'
 
@@ -13,7 +19,12 @@ const FaderThumb = ({ position = 0, isVertical = false, events = {}, className }
         [styleProperty]: stylePropertyValue
       }}
       {...events}
-    />
+    >
+      {isKnobThumb && <div className={style.knobControl} style={{
+        [styleProperty]: stylePropertyValue
+      }}></div>}
+
+    </div>
   )
 }
 

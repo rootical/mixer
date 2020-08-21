@@ -1,27 +1,31 @@
 import React from 'react'
 
-import { useMixer, UseMixerHook } from '../../hooks'
+import { useMixer, UseMixerHook, MixerLoadingState } from '../../hooks/useMixer'
+import { useProgress } from '../../hooks/useProgress'
 import { DeskContainer } from '../Desk'
 import { Context } from '../Context'
 import { Delay, Reverb, Distortion, FX } from '../../models/fx'
-import { useProgress } from '../../hooks/useProgress'
 
 export interface MixdeskProps  {
   tracks: any[],
   effects: FX[],
-  hasMasterTrack?: boolean
+  hasMasterTrack?: boolean,
+  onLoading?: (loadingState) => MixerLoadingState
 }
 
 export const Mixdesk: React.FC<MixdeskProps> = ({
   tracks = [],
   effects = [Delay, Reverb, Distortion],
   hasMasterTrack = true,
+  onLoading = () => {},
   children
 }) => {
 
   const context: UseMixerHook = useMixer(tracks, effects, hasMasterTrack)
 
-  const { mx, state, dispatch } = context
+  const { mx, state, dispatch, loadingState } = context
+
+  onLoading(loadingState)
 
   useProgress(context)
 

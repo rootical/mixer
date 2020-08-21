@@ -28,6 +28,7 @@ const getEventNameByFeature = (eventName) =>
 interface FaderProps {
   value?: number
   isVertical?: boolean
+  isKnobThumb?: boolean
   // TODO: 🤯 Refactor onChange due to type inconsistency
   onChange?: any
   className?: string
@@ -36,6 +37,7 @@ interface FaderProps {
 const Fader: React.FC<FaderProps> = ({
   value = 0,
   isVertical = false,
+  isKnobThumb = false,
   onChange = () => {},
   className = ''
 }) => {
@@ -94,7 +96,7 @@ const Fader: React.FC<FaderProps> = ({
 
   return (
     <div
-      className={classnames(style.fader, !isVertical && style.isHorisontal)}
+      className={classnames(style.fader, !isVertical && style.isHorisontal, isKnobThumb && style.isKnobThumb)}
       ref={containerRef}
     >
       <div className={style.control}>
@@ -102,6 +104,7 @@ const Fader: React.FC<FaderProps> = ({
           position={value}
           events={{ [thumbEventName]: onMoveStart }}
           isVertical={isVertical}
+          isKnobThumb={isKnobThumb}
           className={className}
         />
       </div>

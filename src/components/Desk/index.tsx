@@ -10,6 +10,7 @@ import style from './style.module.css'
 import { Playback } from '../../helpers'
 import { FX } from '../../models/fx'
 import Track from '../../models/track'
+import Fader from '../Fader'
 
 interface DeskProps {
   playback: Playback
@@ -211,7 +212,7 @@ const Desk: React.FC<DeskProps> = ({
                 />
               </svg>
 
-              <div className={style.masterVolumeContainer}>
+              {/* <div className={style.masterVolumeContainer}>
                 <div className={style.masterVolumeBar}>
                   <div style={{ width: '70%' }} />
                 </div>
@@ -220,7 +221,8 @@ const Desk: React.FC<DeskProps> = ({
                   style={{ left: '70%' }}
                   disabled={isDisabled}
                 />
-              </div>
+              </div> */}
+              <Fader onChange={onMasterVolumeChange} isKnobThumb value={playback.masterVolume} />
             </div>
             <button
               className={loopButtonClassNames()}

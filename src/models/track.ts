@@ -27,7 +27,7 @@ class Track {
   bus: GainNode
   soloBus: GainNode
   fx: any
-  loadingState: any
+  loadingState: Promise<this>
   panner: any
 
   private isLooped = false;
@@ -84,7 +84,7 @@ class Track {
 
   set looped(value) {
     this.isLooped = value
-    // !this.source && !this.loadingState && this.createSource()
+    !this.source && this.createSource()
     this.source.loop = value
   }
 
@@ -92,7 +92,7 @@ class Track {
     return this.context.currentTime - this.startedAt
   }
 
-  load(url) {
+  load(url): Promise<this> {
     return fetchAudioAsArrayBuffer(url)
       .then((audioBuffer) => {
         return new Promise((resolve, reject) =>
@@ -139,9 +139,11 @@ class Track {
     if (!this.playing) {
       !this.source && this.createSource();
 
-      this.source.start(0, this.pausedAt + offset)
+      const startValue = (this.pausedAt + offset) > 0 ? (this.pausedAt + offset) : 0
 
-      this.startedAt = this.context.currentTime - (this.pausedAt + offset)
+      this.source.start(0, startValue)
+
+      this.startedAt = this.context.currentTime - startValue
       this.pausedAt = 0
       this.playing = true
     }

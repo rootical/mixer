@@ -1,4 +1,4 @@
-import { useRef, useReducer, useEffect } from 'react'
+import { useRef, useReducer, useEffect, useState } from 'react'
 
 import { reducer } from '../store/reducers'
 import { getDispatchWithLog, createState } from '../store/helpers'
@@ -14,16 +14,27 @@ export interface MixerState {
   playback: Playback
 }
 
+export interface MixerLoadingState {
+  length: number
+  current: number
+}
+
 export interface UseMixerHook {
   mx: {
     current?: Mixer
   }
   state: MixerState
   dispatch: React.Dispatch<any>
+  loadingState: MixerLoadingState
 }
 
 export const useMixer = (tracks, effects, hasMasterTrack): UseMixerHook => {
   const mx = useRef<Mixer>()
+
+  const [loadingProgress, setLoadingProgress] = useState<MixerLoadingState>({
+    length: tracks.length || 0,
+    current: null
+  })
 
   const [state, dispatch] = useReducer(reducer, <MixerState>{
     tracks: [],
@@ -35,13 +46,15 @@ export const useMixer = (tracks, effects, hasMasterTrack): UseMixerHook => {
 
   useEffect(() => {
     const onLoad = async () => {
-      const { tracks, effects, playback } = createState(mx.current, hasMasterTrack)
+      const { tracks, effects, playback } = createState(
+        mx.current,
+        hasMasterTrack
+      )
 
       await dispatchWithLog({ type: 'SET_TRACKS', payload: tracks })
       await dispatchWithLog({ type: 'SET_EFFECTS', payload: effects })
       await dispatchWithLog({ type: 'SET_PLAYBACK', payload: playback })
       await dispatchWithLog({ type: 'PLAYBACK_READY' })
-
     }
 
     if (!mx.current) {
@@ -50,13 +63,14 @@ export const useMixer = (tracks, effects, hasMasterTrack): UseMixerHook => {
 
     mx.current
       .stop()
-      .then(() => mx.current.load(tracks))
+      .then(() => mx.current.load(tracks, setLoadingProgress))
       .then(onLoad)
   }, [tracks])
 
   return {
     mx,
     state,
-    dispatch: dispatchWithLog
+    dispatch: dispatchWithLog,
+    loadingState: loadingProgress
   }
 }
