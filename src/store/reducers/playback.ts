@@ -41,6 +41,11 @@ const fastForward = ({currentPosition, ...state}, value) => ({
   currentPosition: currentPosition + value,
 });
 
+const setCurrentPosition = ({currentPosition, ...state}, value) => ({
+  ...state,
+  currentPosition: value,
+});
+
 export const playbackReducer = (playback, { type, payload }) => {
   switch (type) {
     case 'PLAYBACK_PLAY':
@@ -53,6 +58,8 @@ export const playbackReducer = (playback, { type, payload }) => {
       return setPlaybackReady(playback)
     case 'PLAYBACK_SET_MASTER_VOLUME':
       return setMasterVolume(playback, payload)
+    case 'PLAYBACK_SET_CURRENT_POSITION':
+      return setCurrentPosition(playback, payload)
     case 'PLAYBACK_LOOP':
       return playbackLoop(playback, payload)
     case 'PLAYBACK_FAST_REWIND':

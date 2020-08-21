@@ -14,7 +14,6 @@ class Track {
   source: AudioBufferSourceNode | null
   title: string
   id: string
-  // ?
   buffer: AudioBuffer = null
   context: AudioContext
   pausedAt: number = 0
@@ -24,13 +23,14 @@ class Track {
   playing: boolean = false
   bypassFX: boolean = false
   previousVolume: number
-  // ?
-  state: any = TRACK_STATE.NOT_SET
+  state: TRACK_STATE = TRACK_STATE.NOT_SET
   bus: GainNode
   soloBus: GainNode
   fx: any
-  loadingState: any
+  loadingState: Promise<this>
   panner: any
+
+  private isLooped = false;
 
   constructor({ url, title, context, masterBus, sends = [], volume = 70, pan = 50 }) {
     this.id = generateIdByTitle(title)
@@ -83,10 +83,16 @@ class Track {
   }
 
   set looped(value) {
+    this.isLooped = value
+    !this.source && this.createSource()
     this.source.loop = value
   }
 
-  load(url) {
+  get currentTime() {
+    return this.context.currentTime - this.startedAt
+  }
+
+  load(url): Promise<this> {
     return fetchAudioAsArrayBuffer(url)
       .then((audioBuffer) => {
         return new Promise((resolve, reject) =>
@@ -97,12 +103,10 @@ class Track {
         this.buffer = decodedAudioData
         this.state = TRACK_STATE.READY
 
-        this.source = this.context.createBufferSource()
-        this.source.buffer = this.buffer
-        this.source.connect(this.bus)
+        this.createSource();
 
         return this;
-      }
+      })
       .catch((error) => {
         this.state = TRACK_STATE.FAILED
 
@@ -112,11 +116,34 @@ class Track {
       })
   }
 
+  createSource() {
+    this.source = this.context.createBufferSource()
+    this.source.buffer = this.buffer
+    this.source.connect(this.bus)
+
+    // Get back loop when created again
+    if (this.isLooped) {
+      this.looped = true
+    }
+  }
+
+  removeSource() {
+    if (this.source) {
+      this.source.disconnect()
+      this.source.stop(0)
+      this.source = null
+    }
+  }
+
   play(offset = 0) {
     if (!this.playing) {
-      this.source.start(0, this.pausedAt + offset)
+      !this.source && this.createSource();
 
-      this.startedAt = this.context.currentTime - (this.pausedAt + offset)
+      const startValue = (this.pausedAt + offset) > 0 ? (this.pausedAt + offset) : 0
+
+      this.source.start(0, startValue)
+
+      this.startedAt = this.context.currentTime - startValue
       this.pausedAt = 0
       this.playing = true
     }
@@ -125,7 +152,8 @@ class Track {
   pause() {
     if (this.playing) {
       const elapsed = this.context.currentTime - this.startedAt
-      this.stop()
+      this.removeSource()
+      this.playing = false
       this.pausedAt = elapsed
     }
   }
@@ -136,11 +164,7 @@ class Track {
   }
 
   stop() {
-    if (this.source) {
-      this.source.disconnect()
-      this.source.stop(0)
-    }
-
+    this.removeSource()
     this.pausedAt = 0
     this.startedAt = 0
     this.playing = false

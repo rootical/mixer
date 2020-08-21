@@ -5,16 +5,21 @@ import {
   isContextRunning,
   resumeContext
 } from '../helpers/audio'
-import { setNodeParams, setNodeParamNormalizedValue, getNodeParamNormalizedValue } from '../helpers/node'
+import {
+  setNodeParams,
+  setNodeParamNormalizedValue,
+  getNodeParamNormalizedValue
+} from '../helpers/node'
 import { playAll, pauseAll, rewindAll, stopAll } from '../helpers/playback'
 import Track from './track'
+import { FX } from './fx'
 
 export class Mixer {
   context: AudioContext
   analyser: AnalyserNode
-  tracks: any[]
+  tracks: Track[]
   // TODO: rename fx to sends?
-  fx: any[]
+  fx: FX[]
   masterBus: GainNode
 
   constructor(sources = [], effects = []) {
@@ -24,6 +29,9 @@ export class Mixer {
       this.analyser = createAnalyser(this.context)
       this.masterBus = createMasterBus(this.context, [this.analyser])
 
+      // TODO it proper
+      this.volume = 70
+
       this.fx = effects.map(
         (Effect) => new Effect(this.context, this.masterBus)
       )
@@ -32,24 +40,32 @@ export class Mixer {
     }
   }
 
-  get volume() {
-    return getNodeParamNormalizedValue(this.masterBus.gain);
+  get volume(): number {
+    return getNodeParamNormalizedValue(this.masterBus.gain)
   }
 
   set volume(value) {
-    setNodeParamNormalizedValue(this.masterBus.gain, value);
+    setNodeParamNormalizedValue(this.masterBus.gain, value)
+  }
+
+  get duration(): number {
+    return this.tracks[0].buffer.duration
+  }
+
+  get currentTime(): number {
+    return this.tracks[0].currentTime
   }
 
   async fastForward(value = 15) {
     return this.tracks.map((track: Track) => {
-      track.fastForward(value);
+      track.fastForward(value)
 
-      return track;
-    });
+      return track
+    })
   }
 
   async fastRewind(value = 15) {
-    return this.fastForward(-value);
+    return this.fastForward(-value)
   }
 
   /**
@@ -229,7 +245,7 @@ export class Mixer {
     })
   }
 
-  load(sources) {
+  async load(sources, callback?) {
     this.tracks = sources.map(
       ({ url, title }) =>
         new Track({
@@ -241,6 +257,18 @@ export class Mixer {
         })
     )
 
-    return Promise.all(this.tracks.map((track: Track) => track.loadingState))
+    const tracksLength = this.tracks.length
+
+    return Promise.all(
+      this.tracks.map((track: Track, index) =>
+        track.loadingState.then((sousage) => {
+          callback({
+            length: tracksLength,
+            current: index + 1
+          })
+          return sousage
+        })
+      )
+    )
   }
 }

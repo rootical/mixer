@@ -1,4 +1,6 @@
 import React from 'react'
+// import React, { useState, useEffect } from 'react'
+
 import classnames from 'classnames'
 
 import MasterTrack from '../MasterTrack'
@@ -6,24 +8,30 @@ import { isPlaying, isPaused, isNotActive } from './../../helpers/playback'
 
 import style from './style.module.css'
 import { Playback } from '../../helpers'
+import { FX } from '../../models/fx'
+import Track from '../../models/track'
+import Fader from '../Fader'
 
 interface DeskProps {
-  // TODO: Types
   playback: Playback
   onPlay: () => void
   onPause: () => void
   onRewind?: () => void
   onLoop: (value) => void
   onMasterVolumeChange: (value) => void
-  tracks: any[]
-  effects: any[]
+  onFastRewind: (value) => void
+  onFastForward: (value) => void
+  tracks: Track[]
+  effects: FX[]
 }
 
 const Desk: React.FC<DeskProps> = ({
-  playback = {},
+  playback,
   onPlay = () => {},
   onPause = () => {},
   // onRewind = () => {},
+  onFastForward = () => {},
+  onFastRewind = () => {},
   onMasterVolumeChange = () => {},
   onLoop = () => {},
   tracks = [],
@@ -52,7 +60,7 @@ const Desk: React.FC<DeskProps> = ({
         {tracks}
         {playback.analyser && (
           <MasterTrack
-            volume={playback.volume}
+            volume={playback.masterVolume}
             onVolumeChange={onMasterVolumeChange}
             analyser={playback.analyser}
           />
@@ -61,13 +69,20 @@ const Desk: React.FC<DeskProps> = ({
 
       <div className={style.controlsContainer}>
         <div className={style.progressContainer}>
-          <div className={style.progressBar} style={{ width: '30%' }} />
-          <div className={style.progressTimeNow}>1:17</div>
-          <div className={style.progressTime}>3:22</div>
+          <div
+            className={style.progressBar}
+            style={{ width: `${persentPassed(playback.currentPosition, playback.duration) || 0}%` }}
+          />
+          <div className={style.progressTimeNow}>
+            {convertTime(playback.currentPosition)}
+          </div>
+          <div className={style.progressTime}>
+            {convertTime(playback.duration)}
+          </div>
         </div>
         <div className={style.controls}>
           <div className={style.controlsLeft}>
-            <button className={style.controlButton} disabled={isDisabled}>
+            <button className={style.controlButton} disabled={isDisabled} onClick={() => onFastRewind(15)}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 24 28'
@@ -151,7 +166,7 @@ const Desk: React.FC<DeskProps> = ({
                 </svg>
               </button>
             )}
-            <button className={style.controlButton} disabled={isDisabled}>
+            <button className={style.controlButton} disabled={isDisabled} onClick={() => onFastForward(15)}>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24px'
@@ -197,7 +212,7 @@ const Desk: React.FC<DeskProps> = ({
                 />
               </svg>
 
-              <div className={style.masterVolumeContainer}>
+              {/* <div className={style.masterVolumeContainer}>
                 <div className={style.masterVolumeBar}>
                   <div style={{ width: '70%' }} />
                 </div>
@@ -206,7 +221,8 @@ const Desk: React.FC<DeskProps> = ({
                   style={{ left: '70%' }}
                   disabled={isDisabled}
                 />
-              </div>
+              </div> */}
+              <Fader onChange={onMasterVolumeChange} isKnobThumb value={playback.masterVolume} />
             </div>
             <button
               className={loopButtonClassNames()}
@@ -232,6 +248,19 @@ const Desk: React.FC<DeskProps> = ({
       {effects.length > 0 && <div className={style.effects}>{effects}</div>}
     </div>
   )
+}
+
+const convertTime = (seconds = 0) => {
+  const secondsResult = Math.floor(seconds % 60);
+  const result = {
+    minutes: Math.floor(((seconds - secondsResult) / 60) % 60),
+    seconds: secondsResult > 10 ? secondsResult : `0${secondsResult}`
+  }
+  return `${result.minutes}:${result.seconds}`
+}
+
+const persentPassed = (seconds, duration) => {
+  return (100 * seconds) / duration;
 }
 
 export default Desk
