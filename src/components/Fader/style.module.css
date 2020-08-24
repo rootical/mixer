@@ -93,34 +93,34 @@
   width: 170px;
   height: 11px;
   border-radius: 8px;
-  overflow: hidden;
   margin-left: 18px;
 }
 
 .isKnobThumb .control {
-  box-shadow: 0;
+  box-shadow: none;
   background-color: #2e2e2e;
   height: 11px;
   border-radius: 8px;
+  padding: 0;
 }
 
 .isKnobThumb .thumb {
   width: 23px;
   height: 23px;
-  background-color: #ffffff;
+  background: #ffffff;
   border-radius: 23px;
   position: absolute;
   top: -50%;
-  margin-left: -16px;
   margin-top: -1px;
 }
 
 .isKnobThumb .control:after {
+  display: none;
+}
+
+.knobControl {
   box-shadow: none;
   background-color: #ba14bd;
   height: 11px;
   border-radius: 8px;
 }
-
-
-
