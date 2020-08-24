@@ -18,6 +18,7 @@ export interface MixerState {
 export interface MixerLoadingState {
   length: number
   current: number
+  isLoading: boolean
 }
 
 export interface UseMixerHook {
@@ -45,11 +46,16 @@ export const useMixer = (tracks, effects, hasMasterTrack, onLoading): UseMixerHo
         mx.current,
         hasMasterTrack
       )
-
       await dispatchWithLog({ type: 'SET_TRACKS', payload: tracks })
       await dispatchWithLog({ type: 'SET_EFFECTS', payload: effects })
       await dispatchWithLog({ type: 'SET_PLAYBACK', payload: playback })
       await dispatchWithLog({ type: 'PLAYBACK_READY' })
+
+      onLoading({
+        length: tracks.length,
+        current: tracks.length,
+        isLoading: false
+      })
     }
 
     if (!mx.current) {

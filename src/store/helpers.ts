@@ -34,7 +34,7 @@ export const createState = (mixdesk: Mixer, hasMasterTrack) => {
     const playback = createPlaybackEntity({
         analyser: hasMasterTrack ? mixdesk.analyser : false,
         masterVolume: mixdesk.volume,
-        duration: mixdesk.tracks[0].buffer?.duration
+        duration: mixdesk.tracks[0]?.buffer?.duration
     });
 
     return {
