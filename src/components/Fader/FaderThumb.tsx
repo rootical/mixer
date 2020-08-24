@@ -13,17 +13,18 @@ const FaderThumb = ({
   const stylePropertyValue = position + '%'
 
   return (
-    <div
-      className={`${style.thumb} ${className}`}
-      style={{
-        [styleProperty]: stylePropertyValue
-      }}
-      {...events}
-    >
+    <div>
+      <div
+        className={`${style.thumb} ${className}`}
+        style={{
+          [styleProperty]: stylePropertyValue
+        }}
+        {...events}
+      >
+      </div>
       {isKnobThumb && <div className={style.knobControl} style={{
-        [styleProperty]: stylePropertyValue
-      }}></div>}
-
+          width: stylePropertyValue
+        }}></div>}
     </div>
   )
 }

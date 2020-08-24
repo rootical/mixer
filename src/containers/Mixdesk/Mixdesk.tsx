@@ -21,11 +21,9 @@ export const Mixdesk: React.FC<MixdeskProps> = ({
   children
 }) => {
 
-  const context: UseMixerHook = useMixer(tracks, effects, hasMasterTrack)
+  const context: UseMixerHook = useMixer(tracks, effects, hasMasterTrack, onLoading)
 
-  const { mx, state, dispatch, loadingState } = context
-
-  onLoading(loadingState)
+  const { mx, state, dispatch } = context
 
   useProgress(context)
 

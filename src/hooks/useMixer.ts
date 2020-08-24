@@ -1,4 +1,4 @@
-import { useRef, useReducer, useEffect, useState } from 'react'
+import { useRef, useReducer, useEffect } from 'react'
 
 import { reducer } from '../store/reducers'
 import { getDispatchWithLog, createState } from '../store/helpers'
@@ -12,6 +12,7 @@ export interface MixerState {
   tracks: Track[]
   effects: FX[]
   playback: Playback
+  loadingState?: () => MixerLoadingState
 }
 
 export interface MixerLoadingState {
@@ -25,16 +26,10 @@ export interface UseMixerHook {
   }
   state: MixerState
   dispatch: React.Dispatch<any>
-  loadingState: MixerLoadingState
 }
 
-export const useMixer = (tracks, effects, hasMasterTrack): UseMixerHook => {
+export const useMixer = (tracks, effects, hasMasterTrack, onLoading): UseMixerHook => {
   const mx = useRef<Mixer>()
-
-  const [loadingProgress, setLoadingProgress] = useState<MixerLoadingState>({
-    length: tracks.length || 0,
-    current: null
-  })
 
   const [state, dispatch] = useReducer(reducer, <MixerState>{
     tracks: [],
@@ -63,14 +58,13 @@ export const useMixer = (tracks, effects, hasMasterTrack): UseMixerHook => {
 
     mx.current
       .stop()
-      .then(() => mx.current.load(tracks, setLoadingProgress))
+      .then(() => mx.current.load(tracks, onLoading))
       .then(onLoad)
   }, [tracks])
 
   return {
     mx,
     state,
-    dispatch: dispatchWithLog,
-    loadingState: loadingProgress
+    dispatch: dispatchWithLog
   }
 }
