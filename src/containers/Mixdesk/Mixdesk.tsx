@@ -10,7 +10,7 @@ export interface MixdeskProps  {
   tracks: any[],
   effects: FX[],
   hasMasterTrack?: boolean,
-  onLoading?: (loadingState) => MixerLoadingState
+  onLoading?: (loadingState: MixerLoadingState) => void
 }
 
 export const Mixdesk: React.FC<MixdeskProps> = ({

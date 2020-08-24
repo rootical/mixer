@@ -264,7 +264,8 @@ export class Mixer {
         track.loadingState.then((sousage) => {
           callback({
             length: tracksLength,
-            current: index + 1
+            current: index + 1,
+            isLoading: true
           })
           return sousage
         })

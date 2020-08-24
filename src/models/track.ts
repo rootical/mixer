@@ -21,6 +21,7 @@ class Track {
   muted: boolean = false
   soloed: boolean = false
   playing: boolean = false
+  hasBeenPlayed: boolean = false
   bypassFX: boolean = false
   previousVolume: number
   state: TRACK_STATE = TRACK_STATE.NOT_SET
@@ -130,12 +131,13 @@ class Track {
   removeSource() {
     if (this.source) {
       this.source.disconnect()
-      this.source.stop(0)
+      this.hasBeenPlayed && this.source.stop(0)
       this.source = null
     }
   }
 
   play(offset = 0) {
+    this.hasBeenPlayed = true
     if (!this.playing) {
       !this.source && this.createSource();
 
