@@ -7,7 +7,8 @@ import {
   getX,
   getY,
   getPointerVerticalPosition,
-  getPointerHorizontalPosition
+  getPointerHorizontalPosition,
+  getCloserToDefaultValue
 } from './helpers'
 
 import style from './style.module.css'
@@ -31,6 +32,7 @@ interface FaderProps {
   isKnobThumb?: boolean
   // TODO: 🤯 Refactor onChange due to type inconsistency
   onChange?: any
+  onDoubleClick?: (id) => void
   className?: string
 }
 
@@ -39,6 +41,7 @@ const Fader: React.FC<FaderProps> = ({
   isVertical = false,
   isKnobThumb = false,
   onChange = () => {},
+  onDoubleClick,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -58,19 +61,28 @@ const Fader: React.FC<FaderProps> = ({
     return false
   }
 
+  let timeout;
+
   const onMove = (event) => {
     event.preventDefault()
 
-    const containerElement = containerRef.current
-    const offset = containerElement && containerElement.getBoundingClientRect()
-    const x = getX(event) - document.documentElement.scrollLeft
-    const y = getY(event) - document.documentElement.scrollTop
+    if (timeout) {
+      cancelAnimationFrame(timeout);
+    }
 
-    const newValue = isVertical
-      ? getPointerVerticalPosition(y, offset)
-      : getPointerHorizontalPosition(x, offset)
+    timeout = requestAnimationFrame(() => {
+      const containerElement = containerRef.current
+      const offset = containerElement && containerElement.getBoundingClientRect()
+      const x = getX(event) - document.documentElement.scrollLeft
+      const y = getY(event) - document.documentElement.scrollTop
 
-    onChange(newValue)
+      const newValue = isVertical
+        ? getPointerVerticalPosition(y, offset)
+        : getPointerHorizontalPosition(x, offset)
+
+      onChange(getCloserToDefaultValue(newValue))
+
+    })
 
     return false
   }
@@ -102,7 +114,7 @@ const Fader: React.FC<FaderProps> = ({
       <div className={style.control}>
         <FaderThumb
           position={value}
-          events={{ [thumbEventName]: onMoveStart }}
+          events={{ [thumbEventName]: onMoveStart, onDoubleClick: onDoubleClick }}
           isVertical={isVertical}
           isKnobThumb={isKnobThumb}
           className={className}

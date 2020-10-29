@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import classnames from 'classnames'
 import { keys } from 'ramda'
 
@@ -6,8 +6,12 @@ import Fader from './../Fader'
 import Knob from '../Knob'
 
 import style from './style.module.css'
+import { createMeterGradient, getAverage } from '../MasterTrack/helpers'
+
+const DEFAULT_VOLUME = 70
 
 interface TrackProps {
+  analyser: AnalyserNode
   id: string
   title: string
   volume: number
@@ -20,13 +24,53 @@ interface TrackProps {
   onMute: (id) => {}
   onSolo: (id) => {}
   onBypass: (id) => {}
-  onVolumeChange: (id) => {}
-  onSendLevelChange?: (id) => {}
+  onVolumeChange: (id) => any
+  onSendLevelChange?: (id) => void
   onPanChange: (id) => {}
 }
 
-const Track: React.FC<TrackProps> = (props) => (
-  <div className={style.track}>
+const Track: React.FC<TrackProps> = (props) => {
+
+  if (!props.analyser) {
+    return null
+  }
+
+  const width = 3, height = 210 - props.volume
+
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const context = canvasRef.current && canvasRef.current.getContext('2d')
+    const array = new Uint8Array(props.analyser.frequencyBinCount)
+
+    const drawMeter = () => {
+      props.analyser.getByteFrequencyData(array)
+
+      const average = getAverage(array)
+
+      if (context) {
+        context.clearRect(0, 0, width, height)
+        context.fillStyle = createMeterGradient(context as any, {
+          width,
+          height
+        })
+        context.fillRect(0, 0, width, (height / 100) * average)
+      }
+      requestAnimationFrame(drawMeter)
+    }
+
+    drawMeter()
+  }, [])
+
+  return <div className={style.track}>
+
+    <canvas
+      className={style.meterValue}
+      width={width}
+      height={height}
+      ref={canvasRef}
+    />
+
     {keys(props.fx).length > 0 && (
       <button
         className={classnames(
@@ -83,16 +127,17 @@ const Track: React.FC<TrackProps> = (props) => (
       </div>
     )}
 
-    <Fader onChange={props.onVolumeChange} value={props.volume} isVertical />
+    <Fader onChange={props.onVolumeChange} value={props.volume} onDoubleClick={() => props.onVolumeChange(DEFAULT_VOLUME)} isVertical />
 
     <div className={style.title}>{props.title}</div>
   </div>
-)
+
+}
 
 Track.defaultProps = {
   // TODO: Default track props do not work
   title: 'Untitled',
-  volume: 70,
+  volume: DEFAULT_VOLUME,
   isMuted: false,
   isSolo: false,
   isEffectsDisabled: false,

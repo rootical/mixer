@@ -37,3 +37,7 @@ export const getPointerHorizontalPosition = (position, {width, left}) => {
 
     return value / (width / 100);
 };
+
+export const getCloserToDefaultValue = (value, defaultValue = 70) => {
+  return (Number(value) <= Number(defaultValue + 10) && Number(value) >= Number(defaultValue - 10)) ? defaultValue : value
+}

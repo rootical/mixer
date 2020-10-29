@@ -4,6 +4,7 @@
   width: 83px;
   min-height: 380px;
   text-align: center;
+  position: relative;
 
   background: #808080;
   background-size: contain;
@@ -116,4 +117,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 8px;
+}
+
+.meterValue {
+    position: absolute;
+    left: 50%;
+    transform: rotate(180deg) translateX(50%);
+    bottom: 45px;
+    z-index: 1;
 }
