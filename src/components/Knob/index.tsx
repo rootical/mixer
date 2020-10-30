@@ -51,10 +51,11 @@ class Knob extends Component<KnobProps, KnobState> {
     this.state = { deg: this.currentDeg }
   }
 
-  startDrag = (e) => {
-    e.preventDefault()
+  startDrag = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
 
-    const knob = e.target.getBoundingClientRect()
+    const knob = event.target.getBoundingClientRect()
     const pts = {
       x: knob.left + knob.width / 2,
       y: knob.top + knob.height / 2
@@ -66,7 +67,7 @@ class Knob extends Component<KnobProps, KnobState> {
     }
     document.addEventListener('mousemove', moveHandler)
     document.addEventListener('mouseup', () => {
-      this.isDragging = false;
+      this.isDragging = false
       document.removeEventListener('mousemove', moveHandler)
     })
   }
@@ -112,6 +113,14 @@ class Knob extends Component<KnobProps, KnobState> {
     return JSON.parse(JSON.stringify(o))
   }
 
+  onDoubleClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    this.currentDeg = 180
+    this.setState({ deg: this.currentDeg })
+    this.props.onChange(0)
+  }
+
   render() {
     let kStyle = {
       width: this.props.size,
@@ -135,8 +144,16 @@ class Knob extends Component<KnobProps, KnobState> {
     iStyle.transform = 'rotate(' + this.state.deg + 'deg)'
 
     return (
-      <div className={style.knob} style={kStyle}>
-        <div className={`${style.knob} ${style.outer}`} style={oStyle} onMouseDown={this.startDrag}>
+      <div
+        className={style.knob}
+        style={kStyle}
+        onDoubleClick={this.onDoubleClick}
+      >
+        <div
+          className={`${style.knob} ${style.outer}`}
+          style={oStyle}
+          onMouseDown={this.startDrag}
+        >
           <div className={`${style.knob} ${style.inner}`} style={iStyle}>
             <div className={style.grip} />
           </div>

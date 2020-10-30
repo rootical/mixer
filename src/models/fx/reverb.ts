@@ -52,7 +52,7 @@ export class Reverb extends FX {
         // TODO:
         const arrayBuffer: any =
             await fetchAudioAsArrayBuffer(url)
-                .catch(error => console.log('[ERROR LOADING RESPONSE]', error));
+                .catch(error => console.warn('[ERROR LOADING RESPONSE]', error));
 
         if (arrayBuffer.byteLength > 0) {
             const decodedDataPromise = new Promise((resolve, reject) =>
@@ -60,7 +60,7 @@ export class Reverb extends FX {
 
             this.tweakNode(0, 'buffer', await decodedDataPromise);
         } else {
-            console.log('[ERROR LOADING RESPONSE] arrayBuffer is empty');
+            console.warn('[ERROR LOADING RESPONSE] arrayBuffer is empty');
         }
     }
 }

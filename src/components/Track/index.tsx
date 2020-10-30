@@ -35,7 +35,7 @@ const Track: React.FC<TrackProps> = (props) => {
     return null
   }
 
-  const [height, setHeight] = useState(222)
+  const [height, setHeight] = useState(210)
 
   useEffect(() => {
     const array = new Uint8Array(props.analyser.frequencyBinCount)
@@ -94,7 +94,7 @@ const Track: React.FC<TrackProps> = (props) => {
     </div>
 
     <Knob
-      degrees={180}
+      degrees={260}
       min={1}
       max={100}
       value={props.pan + 1}
