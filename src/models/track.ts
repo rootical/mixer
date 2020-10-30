@@ -1,5 +1,5 @@
 import { generateIdByTitle } from '../helpers/entities'
-import { fetchAudioAsArrayBuffer, createPanner } from '../helpers/audio'
+import { fetchAudioAsArrayBuffer, createPanner, createAnalyser } from '../helpers/audio'
 
 import {
   connectNodes,
@@ -14,6 +14,7 @@ class Track {
   source: AudioBufferSourceNode | null
   title: string
   id: string
+  analyser: AnalyserNode
   buffer: AudioBuffer = null
   context: AudioContext
   pausedAt: number = 0
@@ -39,12 +40,14 @@ class Track {
     this.title = title
     this.context = context
 
+    this.analyser = createAnalyser(this.context)
     this.bus = createGainNode(context)
     this.soloBus = createGainNode(context)
     this.panner = createPanner(context)
 
     connectNodes(this.bus, this.panner)
-    connectNodes(this.panner, this.soloBus)
+    connectNodes(this.panner, this.analyser)
+    connectNodes(this.analyser, this.soloBus)
     connectNodes(this.soloBus, masterBus)
 
     this.fx = {}

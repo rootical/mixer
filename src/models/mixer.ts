@@ -258,16 +258,18 @@ export class Mixer {
     )
 
     const tracksLength = this.tracks.length
-
+    let trackCounter = 1;
     return Promise.all(
-      this.tracks.map((track: Track, index) =>
-        track.loadingState.then((sousage) => {
+      this.tracks.map((track: Track) =>
+        track.loadingState.then((chunk) => {
+          const current = trackCounter++
           callback({
             length: tracksLength,
-            current: index + 1,
+            current: current,
+            progress: Math.floor(current / tracksLength * 100),
             isLoading: true
           })
-          return sousage
+          return chunk
         })
       )
     )

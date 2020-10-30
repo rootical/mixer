@@ -15,12 +15,12 @@ const defaultTracks = [
   {
     title: 'Guide',
     url:
-      'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/130/original/HW_2-GUIDE.m4a?1597937753'
+      'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/132/original/GUIDE.m4a?1598286874'
   },
   {
     title: 'Drums',
     url:
-      'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/129/original/HW_3-DRUMS.m4a?1597937753'
+      'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/133/original/DRUMS.m4a?1598286874'
   }
 ]
 
