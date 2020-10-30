@@ -122,7 +122,20 @@
 .meterValue {
     position: absolute;
     left: 50%;
-    transform: rotate(180deg) translateX(50%);
+    margin-left: -3px;
     bottom: 45px;
+    width: 6px;
     z-index: 1;
+    overflow: hidden;
+}
+
+.meterValue::after {
+  content: '';
+  height: 222px;
+  bottom: 0;
+  width: 6px;
+  position: absolute;
+  border-radius: 8px;
+  left: 0;
+  background: linear-gradient(0deg, rgba(40,234,182,1) 0%, rgba(255,231,0,1) 60%, rgba(255,0,0,1) 100%);
 }

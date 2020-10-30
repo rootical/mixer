@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { keys } from 'ramda'
 
@@ -6,7 +6,7 @@ import Fader from './../Fader'
 import Knob from '../Knob'
 
 import style from './style.module.css'
-import { createMeterGradient, getAverage } from '../MasterTrack/helpers'
+import { getAverage } from '../MasterTrack/helpers'
 
 const DEFAULT_VOLUME = 70
 
@@ -35,12 +35,9 @@ const Track: React.FC<TrackProps> = (props) => {
     return null
   }
 
-  const width = 3, height = 210 - props.volume
-
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [height, setHeight] = useState(222)
 
   useEffect(() => {
-    const context = canvasRef.current && canvasRef.current.getContext('2d')
     const array = new Uint8Array(props.analyser.frequencyBinCount)
 
     const drawMeter = () => {
@@ -48,14 +45,8 @@ const Track: React.FC<TrackProps> = (props) => {
 
       const average = getAverage(array)
 
-      if (context) {
-        context.clearRect(0, 0, width, height)
-        context.fillStyle = createMeterGradient(context as any, {
-          width,
-          height
-        })
-        context.fillRect(0, 0, width, (height / 100) * average)
-      }
+      setHeight((height / 100) * average)
+
       requestAnimationFrame(drawMeter)
     }
 
@@ -64,11 +55,9 @@ const Track: React.FC<TrackProps> = (props) => {
 
   return <div className={style.track}>
 
-    <canvas
+    <div
       className={style.meterValue}
-      width={width}
-      height={height}
-      ref={canvasRef}
+      style={{height: `${height}px`}}
     />
 
     {keys(props.fx).length > 0 && (

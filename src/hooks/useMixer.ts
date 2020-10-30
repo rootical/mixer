@@ -18,6 +18,7 @@ export interface MixerState {
 export interface MixerLoadingState {
   length: number
   current: number
+  progress: number
   isLoading: boolean
 }
 
