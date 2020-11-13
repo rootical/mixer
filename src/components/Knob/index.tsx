@@ -14,7 +14,6 @@ interface KnobProps {
 
 type KnobState = {
   deg: number
-  isHovered: boolean
 }
 
 type Direction = 'up' | 'down' | 'right' | 'left'
@@ -72,7 +71,7 @@ class Knob extends Component<KnobProps, KnobState> {
     )
 
     this.transformDeg = this.currentDeg
-    this.state = { deg: this.transformDeg, isHovered: false }
+    this.state = { deg: this.transformDeg }
   }
 
   startDrag = (event) => {
@@ -87,11 +86,9 @@ class Knob extends Component<KnobProps, KnobState> {
     }
 
     const moveHandler = (e) => {
-      // e.preventDefault()
-      // e.stopPropagation()
+
       this.currentDeg = this.getDeg(e.clientX, e.clientY, pts)
-      // this.getDeg(e.clientX, e.clientY, pts)
-      // throttle(() => this.getMouseDirection(e), 400)
+
       console.log(
         'distance',
         calculateDistance(this.knobRef.current, e.clientX, e.clientY)
@@ -100,14 +97,12 @@ class Knob extends Component<KnobProps, KnobState> {
       this.isDragging = true
       requestAnimationFrame(this.update)
 
-      // document.addEventListener('mousemove', this.getMouseDirection)
     }
 
     document.addEventListener('mousemove', moveHandler)
     document.addEventListener('mouseup', () => {
       this.isDragging = false
       document.removeEventListener('mousemove', moveHandler)
-      // document.removeEventListener('mousemove', this.getMouseDirection)
     })
   }
 
@@ -212,8 +207,6 @@ class Knob extends Component<KnobProps, KnobState> {
         style={kStyle}
         onDoubleClick={this.onDoubleClick}
         onMouseMove={this.getMouseDirection}
-        onMouseEnter={this.handleHover}
-        onMouseLeave={this.handleHover}
         ref={this.knobRef}
       >
         <div
@@ -229,15 +222,7 @@ class Knob extends Component<KnobProps, KnobState> {
     )
   }
 
-  private handleHover = () => {
-    this.setState((prevState) => ({
-      ...prevState,
-      isHovered: !prevState.isHovered
-    }))
-  }
-
   private getMouseDirection = (e) => {
-    // if (!this.state.isHovered) {
     if (this.oldX < e.pageX) {
       this.xDirection = 'right'
     } else {
@@ -253,7 +238,6 @@ class Knob extends Component<KnobProps, KnobState> {
     this.oldX = e.pageX
     this.oldY = e.pageY
   }
-  // }
 }
 
 export default Knob
