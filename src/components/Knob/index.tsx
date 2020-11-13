@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
+import { throttle } from '../../helpers/throttle'
 
 import style from './style.module.css'
 
 interface KnobProps {
   min: number
   max: number
-  color?: string
   size: number
   degrees: number
   value: number
@@ -14,15 +14,38 @@ interface KnobProps {
 
 type KnobState = {
   deg: number
+  isHovered: boolean
+}
+
+type Direction = 'up' | 'down' | 'right' | 'left'
+
+const objectToString = (object) => {
+  return JSON.parse(JSON.stringify(object))
+}
+
+const calculateDistance = (elem: HTMLElement, mouseX, mouseY) => {
+  return Math.floor(
+    Math.sqrt(
+      Math.pow(mouseX - (elem.offsetLeft + 50 / 2), 2) +
+        Math.pow(mouseY - (elem.offsetTop + 50 / 2), 2)
+    )
+  )
 }
 
 class Knob extends Component<KnobProps, KnobState> {
   fullAngle: number
   startAngle: number
   endAngle: number
-  margin: number
-  isDragging: boolean
+  margin: number = 0
   currentDeg: number
+  transformDeg: number
+  isDragging: boolean = false
+
+  private oldX: number = 0
+  private oldY: number = 0
+  private xDirection: Direction
+  private yDirection: Direction
+  private knobRef = createRef<HTMLDivElement>()
 
   static defaultProps = {
     size: 150,
@@ -37,8 +60,7 @@ class Knob extends Component<KnobProps, KnobState> {
     this.fullAngle = props.degrees
     this.startAngle = (360 - props.degrees) / 2
     this.endAngle = this.startAngle + props.degrees
-    this.margin = 0
-    this.isDragging = false
+
     this.currentDeg = Math.floor(
       this.convertRange(
         props.min,
@@ -48,7 +70,9 @@ class Knob extends Component<KnobProps, KnobState> {
         props.value
       )
     )
-    this.state = { deg: this.currentDeg }
+
+    this.transformDeg = this.currentDeg
+    this.state = { deg: this.transformDeg, isHovered: false }
   }
 
   startDrag = (event) => {
@@ -56,49 +80,102 @@ class Knob extends Component<KnobProps, KnobState> {
     event.stopPropagation()
 
     const knob = event.target.getBoundingClientRect()
+
     const pts = {
       x: knob.left + knob.width / 2,
       y: knob.top + knob.height / 2
     }
+
     const moveHandler = (e) => {
+      // e.preventDefault()
+      // e.stopPropagation()
       this.currentDeg = this.getDeg(e.clientX, e.clientY, pts)
+      // this.getDeg(e.clientX, e.clientY, pts)
+      // throttle(() => this.getMouseDirection(e), 400)
+      console.log(
+        'distance',
+        calculateDistance(this.knobRef.current, e.clientX, e.clientY)
+      )
+
       this.isDragging = true
       requestAnimationFrame(this.update)
+
+      // document.addEventListener('mousemove', this.getMouseDirection)
     }
+
     document.addEventListener('mousemove', moveHandler)
     document.addEventListener('mouseup', () => {
       this.isDragging = false
       document.removeEventListener('mousemove', moveHandler)
+      // document.removeEventListener('mousemove', this.getMouseDirection)
     })
   }
 
   update = () => {
-    if (this.isDragging) {
-      requestAnimationFrame(this.update)
+    if (this.isDragging && this.xDirection) {
+      throttle(this.update, 200)
     }
     if (this.currentDeg === this.startAngle) this.currentDeg--
-    const newValue = Math.floor(
-      this.convertRange(
-        this.startAngle,
-        this.endAngle,
-        this.props.min,
-        this.props.max,
-        this.currentDeg
+
+    // 160 and 190 are angle range within fader
+    const isUpDegree =
+      this.currentDeg >= 160 &&
+      this.currentDeg <= 190 &&
+      this.state.deg <= this.endAngle
+
+    const isDownDegree =
+      this.currentDeg >= this.startAngle &&
+      this.currentDeg <= 160 &&
+      this.state.deg >= this.startAngle
+
+    if (this.yDirection === 'up' && isUpDegree) {
+      // console.log('condition only up', this.currentDeg)
+      this.setState({ deg: this.getTransformDegree(this.state.deg + 5) })
+    } else if (this.yDirection === 'down' && isDownDegree) {
+      // console.log('condition only down', this.currentDeg)
+      this.setState({ deg: this.getTransformDegree(this.state.deg - 5) })
+    } else if (this.xDirection === 'left') {
+      // console.log('condition only left', this.currentDeg)
+      this.setState({ deg: this.getTransformDegree(this.state.deg - 5) })
+    } else if (this.xDirection === 'right') {
+      // console.log('condition only right', this.currentDeg)
+      this.setState({ deg: this.getTransformDegree(this.state.deg + 5) })
+    }
+
+    this.props.onChange(
+      Math.floor(
+        this.convertRange(
+          this.startAngle,
+          this.endAngle,
+          this.props.min,
+          this.props.max,
+          this.state.deg
+        )
       )
     )
-    this.setState({ deg: this.currentDeg })
-    this.props.onChange(newValue)
+  }
+
+  getTransformDegree(value: number): number {
+    if (value <= this.startAngle) {
+      return this.startAngle
+    }
+    if (value >= this.endAngle) {
+      return this.endAngle
+    }
+    return value
   }
 
   getDeg = (cX, cY, pts) => {
     const x = cX - pts.x
     const y = cY - pts.y
     let deg = (Math.atan(y / x) * 180) / Math.PI
+
     if ((x < 0 && y >= 0) || (x < 0 && y < 0)) {
       deg += 90
     } else {
       deg += 270
     }
+
     let finalDeg = Math.min(Math.max(this.startAngle, deg), this.endAngle)
     return finalDeg
   }
@@ -107,10 +184,6 @@ class Knob extends Component<KnobProps, KnobState> {
     return (
       ((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin
     )
-  }
-
-  dcpy = (o) => {
-    return JSON.parse(JSON.stringify(o))
   }
 
   onDoubleClick = (event) => {
@@ -126,21 +199,11 @@ class Knob extends Component<KnobProps, KnobState> {
       width: this.props.size,
       height: this.props.size
     }
-    let iStyle = this.dcpy(kStyle)
-    let oStyle = this.dcpy(kStyle)
+    let iStyle = objectToString(kStyle)
+    let oStyle = objectToString(kStyle)
+
     oStyle.margin = this.margin
-    if (this.props.color) {
-      oStyle.backgroundImage =
-        'radial-gradient(100% 70%,hsl(210, ' +
-        this.currentDeg +
-        '%, ' +
-        this.currentDeg / 5 +
-        '%),hsl(' +
-        Math.random() * 100 +
-        ',20%,' +
-        this.currentDeg / 36 +
-        '%))'
-    }
+
     iStyle.transform = 'rotate(' + this.state.deg + 'deg)'
 
     return (
@@ -148,6 +211,10 @@ class Knob extends Component<KnobProps, KnobState> {
         className={style.knob}
         style={kStyle}
         onDoubleClick={this.onDoubleClick}
+        onMouseMove={this.getMouseDirection}
+        onMouseEnter={this.handleHover}
+        onMouseLeave={this.handleHover}
+        ref={this.knobRef}
       >
         <div
           className={`${style.knob} ${style.outer}`}
@@ -161,6 +228,32 @@ class Knob extends Component<KnobProps, KnobState> {
       </div>
     )
   }
+
+  private handleHover = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      isHovered: !prevState.isHovered
+    }))
+  }
+
+  private getMouseDirection = (e) => {
+    // if (!this.state.isHovered) {
+    if (this.oldX < e.pageX) {
+      this.xDirection = 'right'
+    } else {
+      this.xDirection = 'left'
+    }
+
+    if (this.oldY < e.pageY) {
+      this.yDirection = 'down'
+    } else {
+      this.yDirection = 'up'
+    }
+
+    this.oldX = e.pageX
+    this.oldY = e.pageY
+  }
+  // }
 }
 
 export default Knob
