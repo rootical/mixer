@@ -29,13 +29,15 @@ const loading = (loadingState) => {
 }
 
 ReactDOM.render(
-  <Mixdesk
-    tracks={defaultTracks}
-    effects={[]}
-    hasMasterTrack={false}
-    onLoading={loading}
-  >
-    <button>3RD PARTY</button>
-  </Mixdesk>,
+  <div className='example-container'>
+    <Mixdesk
+      tracks={defaultTracks}
+      effects={[]}
+      hasMasterTrack={false}
+      onLoading={loading}
+    >
+      <button>3RD PARTY</button>
+    </Mixdesk>
+  </div>,
   document.getElementById('root')
 )
