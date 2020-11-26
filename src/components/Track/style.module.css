@@ -69,6 +69,10 @@
   background-color: #e728ea;
 }
 
+.soloButton.isPressed {
+  background-color: #49c7f2;
+}
+
 .mute,
 .reset,
 .bypass {

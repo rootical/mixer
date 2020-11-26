@@ -30,10 +30,25 @@ interface TrackProps {
 }
 
 const Track: React.FC<TrackProps> = (props) => {
-
   if (!props.analyser) {
     return null
   }
+
+  const [soloMutePriority, setSoloMutePriority] = useState('')
+
+  const setSoloMutePriorityHelper = (value: 's' | 'm') => {
+    if (soloMutePriority.includes(value)) {
+      setSoloMutePriority(soloMutePriority.replace(value, ''))
+    } else if (soloMutePriority.length <= 2) {
+      setSoloMutePriority(soloMutePriority + value)
+    } else {
+      setSoloMutePriority(value)
+    }
+  }
+
+  useEffect(() => {
+    console.log(soloMutePriority)
+  }, [soloMutePriority])
 
   const [height, setHeight] = useState(210)
 
@@ -53,74 +68,99 @@ const Track: React.FC<TrackProps> = (props) => {
     drawMeter()
   }, [])
 
-  return <div className={style.track}>
+  return (
+    <div className={style.track}>
+      <div className={style.meterValue} style={{ height: `${height}px` }} />
 
-    <div
-      className={style.meterValue}
-      style={{height: `${height}px`}}
-    />
+      {keys(props.fx).length > 0 && (
+        <button
+          className={classnames(
+            style.button,
+            props.isEffectsDisabled && style.isPressed
+          )}
+          onClick={() => props.onBypass(props.id)}
+        >
+          Bypass FX
+        </button>
+      )}
+      <div className={style.trackControls}>
+        <button
+          className={classnames(
+            style.button,
+            props.isMuted && style.isPressed
+          )}
+          onClick={() => {
+            setSoloMutePriorityHelper('m')
+            props.onMute(props.id)
+          }}
 
-    {keys(props.fx).length > 0 && (
-      <button
-        className={classnames(
-          style.button,
-          props.isEffectsDisabled && style.isPressed
-        )}
-        onClick={() => props.onBypass(props.id)}
-      >
-        Bypass FX
-      </button>
-    )}
-    <div className={style.trackControls}>
-      <button
-        className={classnames(style.button, props.isMuted && style.isPressed)}
-        onClick={() => props.onMute(props.id)}
-        disabled={props.isSolo}
-      >
-        M
-      </button>
-      <div
-        className={classnames(
-          style.buttonSeparator,
-          props.isMuted || props.isSolo ? style.isHidden : ''
-        )}
-      />
-      <button
-        className={classnames(style.button, props.isSolo && style.isPressed)}
-        onClick={() => props.onSolo(props.id)}
-      >
-        S
-      </button>
-    </div>
-
-    <Knob
-      degrees={260}
-      min={1}
-      max={100}
-      value={props.pan + 1}
-      size={50}
-      onChange={props.onPanChange(props.id)}
-    />
-
-    {keys(props.fx).length > 0 && (
-      <div className={style.sends}>
-        {keys(props.fx).map((sendId) => (
-          <div className={style.send} key={sendId}>
-            <span className={style.sendTitle}>{sendId}</span>
-            <Fader
-              onChange={props.onSendLevelChange(sendId)}
-              value={props.fx[sendId]}
-            />
-          </div>
-        ))}
+        >
+          M
+        </button>
+        <div
+          className={classnames(
+            style.buttonSeparator,
+            props.isMuted || props.isSolo ? style.isHidden : ''
+          )}
+        />
+        <button
+          className={classnames(
+            style.button,
+            style.soloButton,
+            props.isSolo && style.isPressed
+          )}
+          onClick={() => {
+            setSoloMutePriorityHelper('s')
+            if (soloMutePriority === 'm') {
+              props.onMute(props.id)
+              props.onSolo(props.id)
+            } else if (soloMutePriority === 'ms') {
+              props.onSolo(props.id)
+              props.onMute(props.id)
+            } else if (soloMutePriority === 'sm') {
+              props.onSolo(props.id)
+            } else {
+              props.onSolo(props.id)
+            }
+          }}
+        >
+          S
+        </button>
       </div>
-    )}
 
-    <Fader onChange={props.onVolumeChange} value={props.volume} onDoubleClick={() => props.onVolumeChange(DEFAULT_VOLUME)} isVertical />
+      <Knob
+        degrees={260}
+        min={1}
+        max={100}
+        value={props.pan + 1}
+        size={50}
+        onChange={props.onPanChange(props.id)}
+      />
 
-    <div className={style.title}>{props.title}</div>
-  </div>
+      {keys(props.fx).length > 0 && (
+        <div className={style.sends}>
+          {keys(props.fx).map((sendId) => (
+            <div className={style.send} key={sendId}>
+              <span className={style.sendTitle}>{sendId}</span>
+              <Fader
+                onChange={props.onSendLevelChange(sendId)}
+                value={props.fx[sendId]}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
+      <Fader
+        onChange={props.onVolumeChange}
+        value={props.volume}
+        onDoubleClick={() => props.onVolumeChange(DEFAULT_VOLUME)}
+        isVertical
+      />
+
+      <div className={style.title}>{props.title}</div>
+    </div>
+  )
 }
 
 Track.defaultProps = {
