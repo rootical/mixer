@@ -22,14 +22,12 @@ const objectToString = (object) => {
   return JSON.parse(JSON.stringify(object))
 }
 
-const calculateDistance = (elem: HTMLElement, mouseX, mouseY) => {
-  return Math.floor(
-    Math.sqrt(
-      Math.pow(mouseX - (elem.offsetLeft + 50 / 2), 2) +
-        Math.pow(mouseY - (elem.offsetTop + 50 / 2), 2)
-    )
-  )
-}
+// When to turn on rotating logic
+const DISTANCE_LIMIT = 60
+
+const STICKY_THRESHOLD = 15
+
+const DEGREE_INCRIMENT = 5
 
 class Knob extends Component<KnobProps, KnobState> {
   fullAngle: number
@@ -45,6 +43,8 @@ class Knob extends Component<KnobProps, KnobState> {
   private xDirection: Direction
   private yDirection: Direction
   private knobRef = createRef<HTMLDivElement>()
+  private distanceFromKnob: number = 0
+  private shouldRotate = false
 
   static defaultProps = {
     size: 150,
@@ -86,68 +86,88 @@ class Knob extends Component<KnobProps, KnobState> {
     }
 
     const moveHandler = (e) => {
-
       this.currentDeg = this.getDeg(e.clientX, e.clientY, pts)
-
-      console.log(
-        'distance',
-        calculateDistance(this.knobRef.current, e.clientX, e.clientY)
-      )
-
       this.isDragging = true
-      requestAnimationFrame(this.update)
+      this.distanceFromKnob = this.calculateDistance(e.clientX, e.clientY)
 
+      requestAnimationFrame(this.update)
     }
 
     document.addEventListener('mousemove', moveHandler)
     document.addEventListener('mouseup', () => {
       this.isDragging = false
+      this.shouldRotate = false
       document.removeEventListener('mousemove', moveHandler)
     })
   }
 
   update = () => {
-    if (this.isDragging && this.xDirection) {
+    if (this.isDragging) {
       throttle(this.update, 200)
     }
     if (this.currentDeg === this.startAngle) this.currentDeg--
 
-    // 160 and 190 are angle range within fader
-    const isUpDegree =
-      this.currentDeg >= 160 &&
-      this.currentDeg <= 190 &&
-      this.state.deg <= this.endAngle
+    // 160 and 190 are angle range within fader ]
+    if (this.distanceFromKnob > DISTANCE_LIMIT) {
+      // Turn on auto rotary
+      this.shouldRotate = true
 
-    const isDownDegree =
-      this.currentDeg >= this.startAngle &&
-      this.currentDeg <= 160 &&
-      this.state.deg >= this.startAngle
+      const isUpDegree =
+        this.currentDeg >= 160 &&
+        this.currentDeg <= 190 &&
+        this.state.deg <= this.endAngle
 
-    if (this.yDirection === 'up' && isUpDegree) {
-      // console.log('condition only up', this.currentDeg)
-      this.setState({ deg: this.getTransformDegree(this.state.deg + 5) })
-    } else if (this.yDirection === 'down' && isDownDegree) {
-      // console.log('condition only down', this.currentDeg)
-      this.setState({ deg: this.getTransformDegree(this.state.deg - 5) })
-    } else if (this.xDirection === 'left') {
-      // console.log('condition only left', this.currentDeg)
-      this.setState({ deg: this.getTransformDegree(this.state.deg - 5) })
-    } else if (this.xDirection === 'right') {
-      // console.log('condition only right', this.currentDeg)
-      this.setState({ deg: this.getTransformDegree(this.state.deg + 5) })
-    }
+      const isDownDegree =
+        this.currentDeg >= this.startAngle &&
+        this.currentDeg <= 160 &&
+        this.state.deg >= this.startAngle
 
-    this.props.onChange(
-      Math.floor(
-        this.convertRange(
-          this.startAngle,
-          this.endAngle,
-          this.props.min,
-          this.props.max,
-          this.state.deg
+      if (this.yDirection === 'up' && isUpDegree) {
+        this.setState({ deg: this.getTransformDegree(this.state.deg + DEGREE_INCRIMENT) })
+      } else if (this.yDirection === 'down' && isDownDegree) {
+        // console.log('condition only down', this.currentDeg)
+        this.setState({ deg: this.getTransformDegree(this.state.deg - DEGREE_INCRIMENT) })
+      } else if (this.xDirection === 'left') {
+        // console.log('condition only left', this.currentDeg)
+        this.setState({ deg: this.getTransformDegree(this.state.deg - DEGREE_INCRIMENT) })
+      } else if (this.xDirection === 'right') {
+        // console.log('condition only right', this.currentDeg)
+        this.setState({ deg: this.getTransformDegree(this.state.deg + DEGREE_INCRIMENT) })
+      }
+
+      this.props.onChange(
+        Math.floor(
+          this.convertRange(
+            this.startAngle,
+            this.endAngle,
+            this.props.min,
+            this.props.max,
+            this.state.deg
+          )
         )
       )
-    )
+    } else if (!this.shouldRotate) {
+      if (
+        this.currentDeg >= this.transformDeg - STICKY_THRESHOLD &&
+        this.currentDeg <= this.transformDeg + STICKY_THRESHOLD
+      ) {
+        this.setState({ deg: 180 })
+      } else {
+        this.setState({ deg: this.currentDeg })
+      }
+
+      this.props.onChange(
+        Math.floor(
+          this.convertRange(
+            this.startAngle,
+            this.endAngle,
+            this.props.min,
+            this.props.max,
+            this.currentDeg
+          )
+        )
+      )
+    }
   }
 
   getTransformDegree(value: number): number {
@@ -237,6 +257,16 @@ class Knob extends Component<KnobProps, KnobState> {
 
     this.oldX = e.pageX
     this.oldY = e.pageY
+  }
+
+  private calculateDistance = (mouseX, mouseY) => {
+    const boudingRect: DOMRect = this.knobRef.current.getBoundingClientRect()
+    return Math.floor(
+      Math.sqrt(
+        Math.pow(mouseX - (boudingRect.x + 50 / 2), 2) +
+          Math.pow(mouseY - (boudingRect.y + 50 / 2), 2)
+      )
+    )
   }
 }
 
