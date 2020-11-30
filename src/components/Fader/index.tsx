@@ -32,6 +32,8 @@ interface FaderProps {
   isKnobThumb?: boolean
   // TODO: 🤯 Refactor onChange due to type inconsistency
   onChange?: any
+  // On change end is used for the Progress Bar, no need for progressional change
+  onChangeEnd?: (value) => void
   onDoubleClick?: (id) => void
   className?: string
 }
@@ -41,6 +43,7 @@ const Fader: React.FC<FaderProps> = ({
   isVertical = false,
   isKnobThumb = false,
   onChange = () => {},
+  onChangeEnd = () => {},
   onDoubleClick,
   className = ''
 }) => {
@@ -61,35 +64,14 @@ const Fader: React.FC<FaderProps> = ({
     return false
   }
 
-  let timeout;
-
   const onMove = (event) => {
     event.preventDefault()
-
-    if (timeout) {
-      cancelAnimationFrame(timeout);
-    }
-
-    timeout = requestAnimationFrame(() => {
-      const containerElement = containerRef.current
-      const offset = containerElement && containerElement.getBoundingClientRect()
-      const x = getX(event) - document.documentElement.scrollLeft
-      const y = getY(event) - document.documentElement.scrollTop
-
-      const newValue = isVertical
-        ? getPointerVerticalPosition(y, offset)
-        : getPointerHorizontalPosition(x, offset)
-
-      onChange(getCloserToDefaultValue(newValue))
-
-    })
-
+    triggerChangeEvent(event, onChange)
     return false
   }
 
   const onMoveEnd = (event) => {
     event.preventDefault()
-
     document.documentElement.removeEventListener(
       getEventNameByFeature('mousemove'),
       onMove
@@ -98,7 +80,30 @@ const Fader: React.FC<FaderProps> = ({
       getEventNameByFeature('mouseup'),
       onMoveEnd
     )
+    triggerChangeEvent(event, onChangeEnd)
+    return false
+  }
 
+  let timeout
+
+  const triggerChangeEvent = (event, changeCallback) => {
+    if (timeout) {
+      cancelAnimationFrame(timeout)
+    }
+
+    timeout = requestAnimationFrame(() => {
+      const containerElement = containerRef.current
+      const offset =
+        containerElement && containerElement.getBoundingClientRect()
+      const x = getX(event) - document.documentElement.scrollLeft
+      const y = getY(event) - document.documentElement.scrollTop
+
+      const newValue = isVertical
+        ? getPointerVerticalPosition(y, offset)
+        : getPointerHorizontalPosition(x, offset)
+
+      changeCallback(getCloserToDefaultValue(newValue))
+    })
     return false
   }
 
@@ -106,15 +111,30 @@ const Fader: React.FC<FaderProps> = ({
     ? 'onTouchStart'
     : 'onMouseDown'
 
+  const onClick = (event) =>
+    onChangeEnd(
+      ((event.clientX - containerRef.current.offsetLeft) /
+        containerRef.current.offsetWidth) *
+        100
+    )
+
   return (
     <div
-      className={classnames(style.fader, !isVertical && style.isHorisontal, isKnobThumb && style.isKnobThumb)}
+      className={classnames(
+        style.fader,
+        !isVertical && style.isHorisontal,
+        isKnobThumb && style.isKnobThumb
+      )}
       ref={containerRef}
+      onClick={onClick}
     >
       <div className={style.control}>
         <FaderThumb
           position={value}
-          events={{ [thumbEventName]: onMoveStart, onDoubleClick: onDoubleClick }}
+          events={{
+            [thumbEventName]: onMoveStart,
+            onDoubleClick: onDoubleClick
+          }}
           isVertical={isVertical}
           isKnobThumb={isKnobThumb}
           className={className}

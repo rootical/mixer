@@ -129,11 +129,7 @@
 }
 
 .progressBar {
-  background-color: #e728ea;
-  height: 8px;
-  opacity: 0.77;
-  transition: width 0.5s ease;
-  will-change: width;
+  color: black;
 }
 
 .progressTimeNow, .progressTime {
@@ -154,6 +150,10 @@
 .masterVolume {
   display: flex;
   align-items: center;
+}
+
+.masterVolume svg:first-of-type {
+  margin-right: 18px;
 }
 
 @media only screen and (max-width: 375px) {

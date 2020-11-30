@@ -39,16 +39,12 @@ const Track: React.FC<TrackProps> = (props) => {
   const setSoloMutePriorityHelper = (value: 's' | 'm') => {
     if (soloMutePriority.includes(value)) {
       setSoloMutePriority(soloMutePriority.replace(value, ''))
-    } else if (soloMutePriority.length <= 2) {
+    } else if (soloMutePriority.length < 2) {
       setSoloMutePriority(soloMutePriority + value)
     } else {
       setSoloMutePriority(value)
     }
   }
-
-  useEffect(() => {
-    console.log(soloMutePriority)
-  }, [soloMutePriority])
 
   const [height, setHeight] = useState(210)
 

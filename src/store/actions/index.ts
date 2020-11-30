@@ -68,7 +68,12 @@ export const loop = curry(async ({ dispatch, mx }, value) => {
   })
 })
 
-export const setCurrentPosition = curry(async ({ dispatch }, value) => {
+export const setCurrentPosition = curry(async ({ dispatch, mx }, value) => {
+
+  if (mx.current) {
+    await mx.current.setCurrentPosition(value)
+  }
+
   return dispatch({
     type: 'PLAYBACK_SET_CURRENT_POSITION',
     payload: value

@@ -21,6 +21,7 @@ interface DeskProps {
   onMasterVolumeChange: (value) => void
   onFastRewind: (value) => void
   onFastForward: (value) => void
+  onSetCurrentPosition: (value) => void
   tracks: Track[]
   effects: FX[]
 }
@@ -33,6 +34,7 @@ const Desk: React.FC<DeskProps> = ({
   onFastForward = () => {},
   onFastRewind = () => {},
   onMasterVolumeChange = () => {},
+  onSetCurrentPosition = () => {},
   onLoop = () => {},
   tracks = [],
   effects = [],
@@ -69,10 +71,17 @@ const Desk: React.FC<DeskProps> = ({
 
       <div className={style.controlsContainer}>
         <div className={style.progressContainer}>
-          <div
+          <Fader
             className={style.progressBar}
-            style={{ width: `${persentPassed(playback.currentPosition, playback.duration) || 0}%` }}
+            onChangeEnd={(percent) =>
+              onSetCurrentPosition(secondsParsed(percent, playback.duration))
+            }
+            isKnobThumb
+            value={
+              persentPassed(playback.currentPosition, playback.duration) || 0
+            }
           />
+
           <div className={style.progressTimeNow}>
             {convertTime(playback.currentPosition)}
           </div>
@@ -82,7 +91,11 @@ const Desk: React.FC<DeskProps> = ({
         </div>
         <div className={style.controls}>
           <div className={style.controlsLeft}>
-            <button className={style.controlButton} disabled={isDisabled} onClick={() => onFastRewind(15)}>
+            <button
+              className={style.controlButton}
+              disabled={isDisabled}
+              onClick={() => onFastRewind(15)}
+            >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 24 28'
@@ -166,7 +179,11 @@ const Desk: React.FC<DeskProps> = ({
                 </svg>
               </button>
             )}
-            <button className={style.controlButton} disabled={isDisabled} onClick={() => onFastForward(15)}>
+            <button
+              className={style.controlButton}
+              disabled={isDisabled}
+              onClick={() => onFastForward(15)}
+            >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24px'
@@ -212,17 +229,11 @@ const Desk: React.FC<DeskProps> = ({
                 />
               </svg>
 
-              {/* <div className={style.masterVolumeContainer}>
-                <div className={style.masterVolumeBar}>
-                  <div style={{ width: '70%' }} />
-                </div>
-                <button
-                  className={style.masterVolumeKnob}
-                  style={{ left: '70%' }}
-                  disabled={isDisabled}
-                />
-              </div> */}
-              <Fader onChange={onMasterVolumeChange} isKnobThumb value={playback.masterVolume} />
+              <Fader
+                onChange={onMasterVolumeChange}
+                isKnobThumb
+                value={playback.masterVolume}
+              />
             </div>
             <button
               className={loopButtonClassNames()}
@@ -251,7 +262,7 @@ const Desk: React.FC<DeskProps> = ({
 }
 
 const convertTime = (seconds = 0) => {
-  const secondsResult = Math.floor(seconds % 60);
+  const secondsResult = Math.floor(seconds % 60)
   const result = {
     minutes: Math.floor(((seconds - secondsResult) / 60) % 60),
     seconds: secondsResult > 10 ? secondsResult : `0${secondsResult}`
@@ -259,8 +270,8 @@ const convertTime = (seconds = 0) => {
   return `${result.minutes}:${result.seconds}`
 }
 
-const persentPassed = (seconds, duration) => {
-  return (100 * seconds) / duration;
-}
+const persentPassed = (seconds, duration) => (100 * seconds) / duration
+
+const secondsParsed = (percent, duration) => (percent * duration) / 100
 
 export default Desk

@@ -144,13 +144,17 @@ class Track {
     if (!this.playing) {
       !this.source && this.createSource();
 
-      const startValue = (this.pausedAt + offset) > 0 ? (this.pausedAt + offset) : 0
+      this.pausedAt = (this.pausedAt + offset) > 0 ? (this.pausedAt + offset) : 0
 
-      this.source.start(0, startValue)
+      this.source.start(0, this.pausedAt)
 
-      this.startedAt = this.context.currentTime - startValue
+      this.startedAt = this.context.currentTime - this.pausedAt
+
+      console.log(this.pausedAt, this.startedAt, offset, this.context.currentTime)
+
       this.pausedAt = 0
       this.playing = true
+
     }
   }
 
@@ -160,6 +164,15 @@ class Track {
       this.removeSource()
       this.playing = false
       this.pausedAt = elapsed
+    }
+  }
+
+  setCurrentPosition(offsetValue) {
+    if (this.playing) {
+      this.pause();
+      this.play(offsetValue);
+    } else {
+      this.pausedAt = offsetValue < 0 ? 0 : offsetValue
     }
   }
 

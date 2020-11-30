@@ -56,6 +56,13 @@ export class Mixer {
     return this.tracks[0].currentTime
   }
 
+  async setCurrentPosition(value) {
+    return this.tracks.map((track: Track) => {
+      track.setCurrentPosition(value)
+      return track
+    })
+  }
+
   async fastForward(value = 15) {
     return this.tracks.map((track: Track) => {
       track.fastForward(value)

@@ -13,7 +13,7 @@ interface MasterTrackProps {
   volume?: number
   onVolumeChange: (value) => void
 }
-
+// TODO: remove the master track component and add the isMaster prop to a Track component
 const MasterTrack: React.FC<MasterTrackProps> = ({
   analyser = null,
   width = 6,
