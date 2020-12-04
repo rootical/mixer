@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import classnames from 'classnames'
 
 import FaderThumb from './FaderThumb'
@@ -49,6 +49,8 @@ const Fader: React.FC<FaderProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const [isDragging, setIsDragging] = useState(false)
+
   const onMoveStart = (event) => {
     event.preventDefault()
 
@@ -81,6 +83,7 @@ const Fader: React.FC<FaderProps> = ({
       onMoveEnd
     )
     triggerChangeEvent(event, onChangeEnd)
+    setIsDragging(false)
     return false
   }
 
@@ -92,6 +95,7 @@ const Fader: React.FC<FaderProps> = ({
     }
 
     timeout = requestAnimationFrame(() => {
+      setIsDragging(true)
       const containerElement = containerRef.current
       const offset =
         containerElement && containerElement.getBoundingClientRect()
@@ -123,7 +127,8 @@ const Fader: React.FC<FaderProps> = ({
       className={classnames(
         style.fader,
         !isVertical && style.isHorisontal,
-        isKnobThumb && style.isKnobThumb
+        isKnobThumb && style.isKnobThumb,
+        isDragging && style.isDragging
       )}
       ref={containerRef}
       onClick={onClick}

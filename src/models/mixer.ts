@@ -59,6 +59,7 @@ export class Mixer {
   async setCurrentPosition(value) {
     return this.tracks.map((track: Track) => {
       track.setCurrentPosition(value)
+
       return track
     })
   }

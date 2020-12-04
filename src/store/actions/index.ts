@@ -69,7 +69,6 @@ export const loop = curry(async ({ dispatch, mx }, value) => {
 })
 
 export const setCurrentPosition = curry(async ({ dispatch, mx }, value) => {
-
   if (mx.current) {
     await mx.current.setCurrentPosition(value)
   }

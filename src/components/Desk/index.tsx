@@ -1,5 +1,4 @@
-import React from 'react'
-// import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
@@ -56,6 +55,12 @@ const Desk: React.FC<DeskProps> = ({
       !playback.isLooped && style.isNotActive
     )
 
+  const [progressPosition, setProgressPosition] = useState(0)
+
+  useEffect(() => {
+    setProgressPosition(persentPassed(playback.currentPosition, playback.duration))
+  }, [playback.currentPosition])
+
   return (
     <div className={style.desk}>
       <div className={style.tracks}>
@@ -71,15 +76,17 @@ const Desk: React.FC<DeskProps> = ({
 
       <div className={style.controlsContainer}>
         <div className={style.progressContainer}>
+
           <Fader
             className={style.progressBar}
-            onChangeEnd={(percent) =>
+            onChangeEnd={(percent) => {
               onSetCurrentPosition(secondsParsed(percent, playback.duration))
-            }
+            }}
+            onChange={(percent) => {
+              setProgressPosition(percent)
+            }}
             isKnobThumb
-            value={
-              persentPassed(playback.currentPosition, playback.duration) || 0
-            }
+            value={progressPosition}
           />
 
           <div className={style.progressTimeNow}>
@@ -270,7 +277,10 @@ const convertTime = (seconds = 0) => {
   return `${result.minutes}:${result.seconds}`
 }
 
-const persentPassed = (seconds, duration) => (100 * seconds) / duration
+const persentPassed = (seconds, duration) => {
+  const persent = (100 * seconds) / duration
+  return persent >= 100 ? 100 : persent
+}
 
 const secondsParsed = (percent, duration) => (percent * duration) / 100
 

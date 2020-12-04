@@ -128,8 +128,25 @@
   width: 100%;
 }
 
+/* TODO: refactor all progressContainer styles to belong to fader styles */
+.progressContainer > div:first-child {
+  border-radius: 0;
+}
+
+.progressContainer [data-thumb] {
+  border-radius: 0;
+}
+
+.controlsContainer:hover .progressBar {
+  visibility: visible;
+}
+
 .progressBar {
-  color: black;
+  visibility: hidden;
+}
+
+.progressBar + div {
+  border-radius: 0;
 }
 
 .progressTimeNow, .progressTime {

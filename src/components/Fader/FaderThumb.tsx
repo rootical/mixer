@@ -13,7 +13,7 @@ const FaderThumb = ({
   const stylePropertyValue = position + '%'
 
   return (
-    <div>
+    <div data-thumb>
       <div
         className={`${style.thumb} ${className}`}
         style={{

@@ -1,5 +1,9 @@
 import { generateIdByTitle } from '../helpers/entities'
-import { fetchAudioAsArrayBuffer, createPanner, createAnalyser } from '../helpers/audio'
+import {
+  fetchAudioAsArrayBuffer,
+  createPanner,
+  createAnalyser
+} from '../helpers/audio'
 
 import {
   connectNodes,
@@ -32,9 +36,17 @@ class Track {
   loadingState: Promise<this>
   panner: any
 
-  private isLooped = false;
+  private isLooped = false
 
-  constructor({ url, title, context, masterBus, sends = [], volume = 70, pan = 50 }) {
+  constructor({
+    url,
+    title,
+    context,
+    masterBus,
+    sends = [],
+    volume = 70,
+    pan = 50
+  }) {
     this.id = generateIdByTitle(title)
 
     this.title = title
@@ -107,9 +119,9 @@ class Track {
         this.buffer = decodedAudioData
         this.state = TRACK_STATE.READY
 
-        this.createSource();
+        this.createSource()
 
-        return this;
+        return this
       })
       .catch((error) => {
         this.state = TRACK_STATE.FAILED
@@ -128,34 +140,40 @@ class Track {
     // Get back loop when created again
     if (this.isLooped) {
       this.looped = true
+    } else {
+      this.source.addEventListener('ended', this.onSourceEnded)
     }
+  }
+
+  onSourceEnded = () => {
+    this.stop()
   }
 
   removeSource() {
     if (this.source) {
+      !this.looped &&
+        this.source.removeEventListener('ended', this.onSourceEnded)
       this.source.disconnect()
       this.hasBeenPlayed && this.source.stop(0)
       this.source = null
     }
   }
 
-  play(offset = 0) {
+  play(playPosition) {
     this.hasBeenPlayed = true
     if (!this.playing) {
-      !this.source && this.createSource();
-
-      this.pausedAt = (this.pausedAt + offset) > 0 ? (this.pausedAt + offset) : 0
-
-      this.source.start(0, this.pausedAt)
-
-      this.startedAt = this.context.currentTime - this.pausedAt
-
-      console.log(this.pausedAt, this.startedAt, offset, this.context.currentTime)
-
+      !this.source && this.createSource()
+      this.source.start(0, playPosition || this.pausedAt)
+      this.startedAt = playPosition
+        ? this.context.currentTime - playPosition
+        : this.context.currentTime - this.pausedAt
       this.pausedAt = 0
       this.playing = true
-
     }
+  }
+
+  playWithOffset(offset = 0) {
+    this.play(this.pausedAt + offset > 0 ? this.pausedAt + offset : 0)
   }
 
   pause() {
@@ -167,18 +185,22 @@ class Track {
     }
   }
 
-  setCurrentPosition(offsetValue) {
+  setCurrentPosition(requestedSecond) {
     if (this.playing) {
-      this.pause();
-      this.play(offsetValue);
+      this.pause()
+      this.play(requestedSecond)
     } else {
-      this.pausedAt = offsetValue < 0 ? 0 : offsetValue
+      this.pausedAt = requestedSecond < 0 ? 0 : requestedSecond
     }
   }
 
   fastForward(value = 15) {
-    this.pause();
-    this.play(value);
+    if (this.playing) {
+      this.pause()
+      this.playWithOffset(value)
+    } else {
+      this.pausedAt = this.pausedAt + value > 0 ? this.pausedAt + value : 0
+    }
   }
 
   stop() {
