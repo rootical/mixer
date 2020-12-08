@@ -272,7 +272,7 @@ const convertTime = (seconds = 0) => {
   const secondsResult = Math.floor(seconds % 60)
   const result = {
     minutes: Math.floor(((seconds - secondsResult) / 60) % 60),
-    seconds: secondsResult > 10 ? secondsResult : `0${secondsResult}`
+    seconds: secondsResult >= 10 ? secondsResult : `0${secondsResult}`
   }
   return `${result.minutes}:${result.seconds}`
 }
