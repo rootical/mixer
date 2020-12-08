@@ -128,12 +128,25 @@
   width: 100%;
 }
 
+/* TODO: refactor all progressContainer styles to belong to fader styles */
+.progressContainer > div:first-child {
+  border-radius: 0;
+}
+
+.progressContainer [data-thumb] {
+  border-radius: 0;
+}
+
+.controlsContainer:hover .progressBar {
+  visibility: visible;
+}
+
 .progressBar {
-  background-color: #e728ea;
-  height: 8px;
-  opacity: 0.77;
-  transition: width 0.5s ease;
-  will-change: width;
+  visibility: hidden;
+}
+
+.progressBar + div {
+  border-radius: 0;
 }
 
 .progressTimeNow, .progressTime {
@@ -154,6 +167,10 @@
 .masterVolume {
   display: flex;
   align-items: center;
+}
+
+.masterVolume svg:first-of-type {
+  margin-right: 18px;
 }
 
 @media only screen and (max-width: 375px) {

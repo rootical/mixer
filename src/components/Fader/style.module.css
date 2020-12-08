@@ -1,9 +1,6 @@
 .fader {
     height: 100%;
-
     text-align: center;
-
-    background-color: #808080;
     background-size: contain;
 }
 
@@ -17,7 +14,6 @@
     height: calc(100% - 16px);
     margin-top: 16px;
 }
-
 
 .control:after {
     position: absolute;
@@ -90,10 +86,10 @@
 }
 
 .isKnobThumb {
-  width: 170px;
+  min-width: 170px;
+  max-width: 100%;
   height: 11px;
   border-radius: 8px;
-  margin-left: 18px;
 }
 
 .isKnobThumb .control {
@@ -112,6 +108,7 @@
   position: absolute;
   top: -50%;
   margin-top: -1px;
+  z-index: 2;
 }
 
 .isKnobThumb .control:after {
@@ -123,4 +120,8 @@
   background-color: #ba14bd;
   height: 11px;
   border-radius: 8px;
+}
+
+.isDragging .isKnobThumb[data-thumb] {
+  visibility: visible;
 }

@@ -12,7 +12,8 @@ import {
   setMasterVolume,
   loop,
   fastForward,
-  fastRewind
+  fastRewind,
+  setCurrentPosition
 } from './../../store/actions'
 
 // TODO: add types
@@ -33,6 +34,7 @@ export const DeskContainer = ({ tracks, effects, playback, children }) => {
       onRewind={() => rewind(context)}
       onFastForward={fastForward(context)}
       onFastRewind={fastRewind(context)}
+      onSetCurrentPosition={setCurrentPosition(context)}
       onLoop={loop(context)}
       onMasterVolumeChange={setMasterVolume(context)}
       tracks={Tracks}
