@@ -113,6 +113,7 @@ export class Mixer {
    * @returns {Promise<Mixer>}
    */
   async stop() {
+    pauseAll(this.tracks)
     stopAll(this.tracks)
 
     return this

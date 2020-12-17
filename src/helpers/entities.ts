@@ -63,7 +63,8 @@ const createDistortionEntity = ({id, filterType, frequency, strength}) => ({
 
 export const generateIdByTitle = title => title.replace(/[^A-Za-z0-9]+/gi, '').toLowerCase();
 
-export const createTrackEntity = ({analyser, id, title, volume, pan, muted, soloed, bypassFX, fx, state}) => ({
+export const createTrackEntity = ({analyser, id, title, volume, pan, muted, soloed, bypassFX, fx, state}) => {
+  return ({
     analyser,
     id,
     title,
@@ -74,7 +75,7 @@ export const createTrackEntity = ({analyser, id, title, volume, pan, muted, solo
     isSolo: soloed,
     isEffectsDisabled: bypassFX,
     send: map(send => getNodeParamNormalizedValue(send.gain), fx),
-});
+})};
 
 export const createEffectEntity = effect => {
     switch (effect.id) {
