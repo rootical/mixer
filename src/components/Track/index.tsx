@@ -30,10 +30,6 @@ interface TrackProps {
 }
 
 const Track: React.FC<TrackProps> = (props) => {
-  if (!props.analyser) {
-    return null
-  }
-
   const [soloMutePriority, setSoloMutePriority] = useState('')
 
   const setSoloMutePriorityHelper = (value: 's' | 'm') => {
@@ -48,20 +44,30 @@ const Track: React.FC<TrackProps> = (props) => {
 
   const [height, setHeight] = useState(210)
 
+  const array = new Uint8Array(props.analyser.frequencyBinCount)
+
+  let frame;
   useEffect(() => {
-    const array = new Uint8Array(props.analyser.frequencyBinCount)
 
     const drawMeter = () => {
+
       props.analyser.getByteFrequencyData(array)
 
       const average = getAverage(array)
 
       setHeight((height / 100) * average)
 
-      requestAnimationFrame(drawMeter)
+      frame = requestAnimationFrame(() => {
+        drawMeter()
+      })
     }
 
     drawMeter()
+
+    return () => {
+      cancelAnimationFrame(frame)
+    }
+
   }, [])
 
   return (

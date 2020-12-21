@@ -22,7 +22,6 @@ export const createAnalyser = (context: AudioContext, parameters = {fftSize: 204
     const analyser = context.createAnalyser();
 
     keys(parameters).map(key => analyser[key] = parameters[key]);
-
     return analyser;
 };
 
