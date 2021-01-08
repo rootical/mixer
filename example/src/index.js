@@ -1,6 +1,6 @@
 import 'react-mixdesk/dist/index.css'
 
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Mixdesk } from 'react-mixdesk'
 
@@ -23,21 +23,42 @@ const defaultTracks = [
       'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/133/original/DRUMS.m4a?1598286874'
   }
 ]
+const newTracks = [
+  {
+    title: 'Guide',
+    url:
+      'https://s3.amazonaws.com/worship-online/song_audio_mixer_tracks/audios/000/000/132/original/GUIDE.m4a?1598286874'
+  }
+]
 
 const loading = (loadingState) => {
   console.log('Loading State', loadingState)
 }
 
-ReactDOM.render(
-  <div className='example-container'>
+const Component = () => {
+  const [tracks, setTracks] = useState(defaultTracks)
+
+  return (
     <Mixdesk
-      tracks={defaultTracks}
+      tracks={tracks}
       effects={[]}
       hasMasterTrack={false}
       onLoading={loading}
     >
-      <button>3RD PARTY</button>
+      <button
+        onClick={() => {
+          setTracks(newTracks)
+        }}
+      >
+        3RD PARTY
+      </button>
     </Mixdesk>
+  )
+}
+
+ReactDOM.render(
+  <div className='example-container'>
+    <Component />
   </div>,
   document.getElementById('root')
 )
