@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
 import { keys } from 'ramda'
 
@@ -42,37 +42,34 @@ const Track: React.FC<TrackProps> = (props) => {
     }
   }
 
-  const [height, setHeight] = useState(210)
+  const analyserDiv = useRef<HTMLDivElement>()
 
+  const height = 210
   const array = new Uint8Array(props.analyser.frequencyBinCount)
+  props.analyser.getByteFrequencyData(array)
 
-  let frame;
+  let average, frame
+  const drawMeter = () => {
+    props.analyser.getByteFrequencyData(array)
+    average = getAverage(array)
+
+    frame = requestAnimationFrame(() => {
+      drawMeter()
+      if (analyserDiv.current) {
+        analyserDiv.current.style.height = `${(height / 100) * average}px`
+      }
+    })
+  }
+
+  drawMeter()
+
   useEffect(() => {
-
-    const drawMeter = () => {
-
-      props.analyser.getByteFrequencyData(array)
-
-      const average = getAverage(array)
-
-      setHeight((height / 100) * average)
-
-      frame = requestAnimationFrame(() => {
-        drawMeter()
-      })
-    }
-
-    drawMeter()
-
-    return () => {
-      cancelAnimationFrame(frame)
-    }
-
+    return cancelAnimationFrame(frame)
   }, [])
 
   return (
     <div className={style.track}>
-      <div className={style.meterValue} style={{ height: `${height}px` }} />
+      <div className={style.meterValue} ref={analyserDiv} />
 
       {keys(props.fx).length > 0 && (
         <button
@@ -87,15 +84,11 @@ const Track: React.FC<TrackProps> = (props) => {
       )}
       <div className={style.trackControls}>
         <button
-          className={classnames(
-            style.button,
-            props.isMuted && style.isPressed
-          )}
+          className={classnames(style.button, props.isMuted && style.isPressed)}
           onClick={() => {
             setSoloMutePriorityHelper('m')
             props.onMute(props.id)
           }}
-
         >
           M
         </button>

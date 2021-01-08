@@ -131,6 +131,7 @@
     width: 6px;
     z-index: 1;
     overflow: hidden;
+    will-change: height;
 }
 
 .meterValue::after {
