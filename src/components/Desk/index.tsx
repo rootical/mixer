@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
@@ -10,6 +10,7 @@ import { Playback } from '../../helpers'
 import { FX } from '../../models/fx'
 import Track from '../../models/track'
 import Fader from '../Fader'
+import { useScrollPosition } from '../../hooks/useCurrentPosition'
 
 interface DeskProps {
   playback: Playback
@@ -56,10 +57,38 @@ const Desk: React.FC<DeskProps> = ({
     )
 
   const [progressPosition, setProgressPosition] = useState(0)
+  const [isControlsContainerFixed, setIsControlsContainerFixed] = useState(
+    false
+  )
+
+  const controlsContainerDiv = useRef<HTMLDivElement>()
+
+  let defaultControlsContainerOffset = 0
+  let controlsContainerHeight = 81
 
   useEffect(() => {
-    setProgressPosition(persentPassed(playback.currentPosition, playback.duration))
+    defaultControlsContainerOffset =
+      controlsContainerDiv.current.ownerDocument.documentElement.scrollTop +
+      controlsContainerDiv.current.getBoundingClientRect().top
+    controlsContainerHeight = controlsContainerDiv.current.offsetHeight
+  }, [])
+
+  useEffect(() => {
+    setProgressPosition(
+      persentPassed(playback.currentPosition, playback.duration)
+    )
   }, [playback.currentPosition])
+
+  useScrollPosition(
+    ({ currPos }) => {
+      const shouldBeFixed =
+        defaultControlsContainerOffset + controlsContainerHeight / 2 <
+        currPos.y + defaultControlsContainerOffset
+      setIsControlsContainerFixed(shouldBeFixed)
+    },
+    [isControlsContainerFixed, defaultControlsContainerOffset],
+    100
+  )
 
   return (
     <div className={style.desk}>
@@ -74,9 +103,13 @@ const Desk: React.FC<DeskProps> = ({
         )}
       </div>
 
-      <div className={style.controlsContainer}>
+      <div
+        className={classnames(style.controlsContainer, {
+          [style.isFixed]: isControlsContainerFixed
+        })}
+        ref={controlsContainerDiv}
+      >
         <div className={style.progressContainer}>
-
           <Fader
             className={style.progressBar}
             onChangeEnd={(percent) => {
