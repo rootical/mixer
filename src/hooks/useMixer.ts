@@ -62,7 +62,7 @@ export const useMixer = (tracks, effects, hasMasterTrack, onLoading): UseMixerHo
       onLoading({
         length: tracks.length,
         current: tracks.length,
-        isLoading: true
+        isLoading: false
       })
     }
 
