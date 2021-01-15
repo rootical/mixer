@@ -41,7 +41,8 @@ export const useMixer = (tracks, effects, hasMasterTrack, onLoading): UseMixerHo
   const [state, dispatch] = useReducer(reducer, <MixerState>{
     tracks: [],
     effects: [],
-    playback: {}
+    playback: {},
+    loadingState: {}
   })
 
   const dispatchWithLog = getDispatchWithLog(dispatch)
