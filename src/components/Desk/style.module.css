@@ -30,6 +30,7 @@
   flex: 1 1 auto;
   position: relative;
   color: #fff;
+  width: 100%;
 }
 
 .controls {
@@ -179,6 +180,11 @@
     max-width: 100%;
     margin-bottom: 8px;
   }
+}
+
+.controlsWrapper {
+  z-index: 1;
+  background-color: #343434;
 }
 
 .isFixed {
