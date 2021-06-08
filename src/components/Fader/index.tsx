@@ -21,7 +21,7 @@ const EVENTS_MAP = {
 
 const isServer = typeof window === 'undefined'
 
-const hasTouchEventsSupport = () => isServer && 'ontouchstart' in window
+const hasTouchEventsSupport = () => !isServer && 'ontouchstart' in window
 
 const getEventNameByFeature = (eventName) =>
   hasTouchEventsSupport() ? EVENTS_MAP[eventName] : eventName
